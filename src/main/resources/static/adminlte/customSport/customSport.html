@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>自訂義運動-主頁</title>
+</head>
+<body>
+  <div>自訂義運動測試頁</div>
+
+  <button id="btn_get">查詢全部</button>
+  <button id="btn_insert">新增一筆</button>
+  <br><br>
+
+  <button id="btn_update">更新一筆</button>
+  <br><br>
+
+  <button id="btn_getByStatus">依狀態查詢</button>
+  <br><br>
+
+  <button id="btn_updateStatus">批次更新狀態</button>
+  <br><br>
+
+  <button id="btn_insertMultiple">新增多筆</button>
+  <button id="btn_updateMultiple">更新多筆</button>
+  <br><br>
+
+  <button id="btn_getSingle">查詢單筆</button>
+
+  <script>
+    // 動態取得 contextPath
+    const pathname = window.location.pathname;
+    const contextPath = window.location.origin + pathname.substring(0, pathname.lastIndexOf('/') + 1);
+
+    // 綁定按鈕
+    const btnGetEl = document.getElementById("btn_get");
+    const btnInsertEl = document.getElementById("btn_insert");
+    const btnUpdateEl = document.getElementById("btn_update");
+    const btnGetByStatusEl = document.getElementById("btn_getByStatus");
+    const btnUpdateStatusEl = document.getElementById("btn_updateStatus");
+    const btnInsertMultipleEl = document.getElementById("btn_insertMultiple");
+    const btnUpdateMultipleEl = document.getElementById("btn_updateMultiple");
+    const btnGetSingleEl = document.getElementById("btn_getSingle");
+
+    // 查詢全部
+    async function get() {
+      const res = await fetch(window.location.origin + "/customSport/api/getMultipleAll", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" }
+      });
+      const data = await res.json();
+      console.log("全部查詢結果:", data);
+    }
+
+    // 查詢單筆
+    async function getSingle() {
+      const res = await fetch(window.location.origin + "/customSport/api/getSingle", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sportId: 1 }) // 測試用 ID
+      });
+      const data = await res.json();
+      console.log("單筆查詢結果:", data);
+    }
+
+    // 依狀態查詢
+    async function getByStatuses() {
+      const res = await fetch(window.location.origin + "/customSport/api/getMultipleBySportDataStatuses", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ statuses: [1] })
+      });
+      const data = await res.json();
+      console.log("依狀態查詢結果:", data);
+    }
+
+    // 新增一筆
+    async function insert() {
+      await fetch(window.location.origin + "/customSport/api/insertMultiple", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sports: [{
+            customSportId: null,
+            sportName: "跳繩",
+            sportDescription: "跳繩 10 分鐘",
+            sportEstimatedCalories: 120,
+            sportPic: null,
+            sportDataStatus: 1,
+            userId: 1
+          }]
+        })
+      });
+      console.log("新增一筆完成");
+    }
+
+    // 新增多筆
+    async function insertMultiple() {
+      await fetch(window.location.origin + "/customSport/api/insertMultiple", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sports: [
+            {
+              customSportId: null,
+              sportName: "伏地挺身",
+              sportDescription: "做 50 下",
+              sportEstimatedCalories: 80,
+              sportPic: null,
+              sportDataStatus: 1,
+              userId: 1
+            },
+            {
+              customSportId: null,
+              sportName: "仰臥起坐",
+              sportDescription: "做 40 下",
+              sportEstimatedCalories: 70,
+              sportPic: null,
+              sportDataStatus: 1,
+              userId: 1
+            }
+          ]
+        })
+      });
+      console.log("新增多筆完成");
+    }
+
+    // 更新一筆
+    async function update() {
+      await fetch(window.location.origin + "/customSport/api/updateMultiple", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sports: [{
+            customSportId: 6,
+            sportName: "壺鈴(修改後)",
+            sportDescription: "甩壺鈴15 分鐘",
+            sportEstimatedCalories: 150,
+            sportPic: null,
+            sportDataStatus: 1,
+            userId: 1
+          }]
+        })
+      });
+      console.log("更新一筆完成");
+    }
+
+    // 更新多筆
+    async function updateMultiple() {
+      await fetch(window.location.origin + "/customSport/api/updateMultiple", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sports: [
+            {
+              customSportId: 7,
+              sportName: "仰臥起坐(修改)",
+              sportDescription: "做 60 下",
+              sportEstimatedCalories: 90,
+              sportPic: null,
+              sportDataStatus: 1,
+              userId: 1
+            },
+            {
+              customSportId: 8,
+              sportName: "伏地挺身(修改)",
+              sportDescription: "做 70 下",
+              sportEstimatedCalories: 100,
+              sportPic: null,
+              sportDataStatus: 1,
+              userId: 1
+            }
+          ]
+        })
+      });
+      console.log("更新多筆完成");
+    }
+
+    // 批次更新狀態
+    async function updateMultipleSportDataStatus() {
+      await fetch(window.location.origin + "/customSport/api/updateMultipleSportDataStatus", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sportIds: [6, 7],
+          sportDataStatus: 0
+        })
+      });
+      console.log("批次更新狀態完成");
+    }
+
+    // 綁定事件
+    btnGetEl.addEventListener("click", get);
+    btnInsertEl.addEventListener("click", insert);
+    btnUpdateEl.addEventListener("click", update);
+    btnGetByStatusEl.addEventListener("click", getByStatuses);
+    btnUpdateStatusEl.addEventListener("click", updateMultipleSportDataStatus);
+    btnInsertMultipleEl.addEventListener("click", insertMultiple);
+    btnUpdateMultipleEl.addEventListener("click", updateMultiple);
+    btnGetSingleEl.addEventListener("click", getSingle);
+  </script>
+</body>
+</html>

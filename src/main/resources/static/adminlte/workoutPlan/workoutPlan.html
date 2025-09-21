@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>WorkoutPlan 測試頁</title>
+</head>
+<body>
+	<h1>WorkoutPlan 測試頁</h1>
+
+	<button id="btn_insertMultiple">新增多筆計畫</button>
+	<button id="btn_updateMultiple">更新多筆計畫</button>
+	<br>
+	<br>
+
+	<button id="btn_updateStatus">更新計畫狀態</button>
+	<button id="btn_getSingle">查詢單筆計畫</button>
+	<br>
+	<br>
+
+	<button id="btn_getByRange">依日期區間查詢</button>
+	<button id="btn_getByDate">依日期查詢</button>
+
+	<script>
+        const baseUrl = window.location.origin + "/workoutPlan/api";
+
+        async function insertMultiple() {
+            let res = await fetch(baseUrl + "/insertMultiple", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    list: [
+                        {
+                            workoutPlanId: null,
+                            workoutPlanName: "早晨跑步",
+                            userId: 1,
+                            sportFrom: "system",
+                            sportId: 1,
+                            customSportId: null,
+                            workoutPlanDate: "2025-09-20",
+                            workoutPlanTime: "07:30",
+                            workoutPlanIsNotify: 0,
+                            workoutPlanExpectedDuration: 30
+                        }
+                    ]
+                })
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function updateMultiple() {
+            let res = await fetch(baseUrl + "/updateMultiple", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    list: [
+                        {
+                            workoutPlanId: 17,
+                            workoutPlanName: "晚間健身房",
+                            userId: 1,
+                            sportFrom: "custom",
+                            sportId: null,
+                            customSportId: 3,
+                            workoutPlanDate: "2025-09-21",
+                            workoutPlanTime: "19:00",
+                            workoutPlanIsNotify: 0,
+                            workoutPlanExpectedDuration: 60
+                        }
+                    ]
+                })
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function updateStatus() {
+            let res = await fetch(baseUrl + "/updateMultipleWorkoutPlanDataStatus", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    dataStatus: 0,
+                    workoutPlanIds: [17, 18]
+                })
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function getSingle() {
+            let res = await fetch(baseUrl + "/getSingleByWorkoutPlanId", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ workoutPlanId: 5 })
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function getByRange() {
+            let res = await fetch(baseUrl + "/getMultipleByUserIdAndDateRange", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    userId: 1,
+                    startDate: "2025-08-01",
+                    endDate: "2025-09-30",
+                    dataStatuses: [0, 1]
+                })
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function getByDate() {
+            let res = await fetch(baseUrl + "/getMultipleByUserIdAndWorkoutPlanDate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    userId: 1,
+                    workoutPlanDate: "2025-09-20",
+                    dataStatuses: [1]
+                })
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        document.getElementById("btn_insertMultiple").addEventListener("click", insertMultiple);
+        document.getElementById("btn_updateMultiple").addEventListener("click", updateMultiple);
+        document.getElementById("btn_updateStatus").addEventListener("click", updateStatus);
+        document.getElementById("btn_getSingle").addEventListener("click", getSingle);
+        document.getElementById("btn_getByRange").addEventListener("click", getByRange);
+        document.getElementById("btn_getByDate").addEventListener("click", getByDate);
+    </script>
+</body>
+</html>

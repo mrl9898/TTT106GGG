@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SportType 測試頁</title>
+</head>
+<body>
+    <h1>SportType 測試頁</h1>
+
+    <button id="btn_insertMultiple">新增多筆 SportType</button>
+    <button id="btn_updateMultiple">更新多筆 SportType</button>
+    <br><br>
+
+    <button id="btn_isExistName">檢查名稱是否存在</button>
+    <br><br>
+    
+    <button id="btn_getSingle">查詢單筆</button>
+    <button id="btn_getMultiple">查詢多筆</button>
+    <br><br>
+
+    <button id="btn_getSingleWithStatuses">查單筆(含狀態篩選)</button>
+    <button id="btn_getMultipleWithStatuses">查多筆(含狀態篩選)</button>
+    <button id="btn_getAllByStatuses">查全部(依狀態)</button>
+    <br><br>
+
+    <button id="btn_updateStatus">更新狀態</button>
+
+    <script>
+        const baseUrl = window.location.origin + "/sportType/api";
+
+        async function insertMultiple() {
+            let res = await fetch(baseUrl + "/insertMultiple", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify([
+                    { sportTypeId: null, sportTypeName: "加分類01", sportTypePic: "aerobic.png", sportTypeDataStatus: 1 },
+                    { sportTypeId: null, sportTypeName: "加分類02", sportTypePic: "weights.png", sportTypeDataStatus: 1 }
+                ])
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function updateMultiple() {
+            let res = await fetch(baseUrl + "/updateMultiple", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                // 不送 sportTypeDataStatus
+                body: JSON.stringify([
+                    { sportTypeId: 3, sportTypeName: "更新-加分類01", sportTypePic: "aerobic2.png" }
+                ])
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function isExistName() {
+            let res = await fetch(baseUrl + "/isExistSportTypeName", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: "有氧"
+                // 這樣送解析會是"有氧"
+//                 body: JSON.stringify("有氧")
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function getSingle() {
+            let res = await fetch(baseUrl + "/getSingleBySportTypeId", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(1)
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function getMultiple() {
+            let res = await fetch(baseUrl + "/getMultipleBySportTypeIds", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify([1, 2])
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function getSingleWithStatuses() {
+            let res = await fetch(baseUrl + "/getSingleSportTypeIdAndDataStatuses", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    sportTypeId: 2,
+                    statuses: [0, 1]
+                })
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function getMultipleWithStatuses() {
+            let res = await fetch(baseUrl + "/getMultipleBySportTypeIdsAndDataStatuses", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    sportTypeIds: [1, 2],
+                    statuses: [1]
+                })
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function getAllByStatuses() {
+            let res = await fetch(baseUrl + "/getMultipleBySportTypeDataStatuses", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+//                 body: JSON.stringify([0])
+                body: JSON.stringify([1])
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function updateStatus() {
+            let res = await fetch(baseUrl + "/updateSportTypeDataStatusBySportTypeIds", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    dataStatus: 0,
+                    sportTypeIds: [3]
+                })
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        document.getElementById("btn_insertMultiple").addEventListener("click", insertMultiple);
+        document.getElementById("btn_updateMultiple").addEventListener("click", updateMultiple);
+        document.getElementById("btn_isExistName").addEventListener("click", isExistName);
+        document.getElementById("btn_getSingle").addEventListener("click", getSingle);
+        document.getElementById("btn_getMultiple").addEventListener("click", getMultiple);
+        document.getElementById("btn_getSingleWithStatuses").addEventListener("click", getSingleWithStatuses);
+        document.getElementById("btn_getMultipleWithStatuses").addEventListener("click", getMultipleWithStatuses);
+        document.getElementById("btn_getAllByStatuses").addEventListener("click", getAllByStatuses);
+        document.getElementById("btn_updateStatus").addEventListener("click", updateStatus);
+    </script>
+</body>
+</html>

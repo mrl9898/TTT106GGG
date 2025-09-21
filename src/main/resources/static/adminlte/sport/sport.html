@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>系統運動-主頁</title>
+</head>
+<body>
+	<div>嗨嗨喔</div>
+	<button id="btn_get">查詢按鈕</button>
+	<button id="btn_insert">新增按鈕</button>
+	<br>
+	<br>
+	<button id="btn_update">更新按鈕</button>
+	<br>
+	<br>
+	<button id="btn_getByStatus">查詢status按鈕</button>
+	<br>
+	<br>
+	<button id="btn_updateStatus">更新status按鈕</button>
+	<br>
+	<br>
+	<button id="btn_insertMultiple">新增多筆按鈕</button>
+	<button id="btn_updateMultiple">更新多筆按鈕</button>
+	<br>
+	<br>
+	<button id="btn_getSingle">查詢一筆按鈕</button>
+
+	<script>
+		const pathname = window.location.pathname; // JavaScript動態取得專案路徑的作法
+		const contextPath = window.location.origin + pathname.substring(0, pathname.lastIndexOf('/') + 1);
+		const container = document.getElementById("book-container");
+	
+		let btnGetEl = document.getElementById("btn_get");
+		let btnInsertEl = document.getElementById("btn_insert");
+		let btnUpdateEl = document.getElementById("btn_update");
+		let btnGetByStatusEl = document.getElementById("btn_getByStatus");
+		let btnUpdateStatusEl = document.getElementById("btn_updateStatus");
+		let btnInsertMultipleEl = document.getElementById("btn_insertMultiple");
+		let btnUpdateMultipleEl = document.getElementById("btn_updateMultiple");
+		let btnGetSingleEl = document.getElementById("btn_getSingle");
+
+		async function get() {
+			console.log("觸發get", {
+				pathname,
+				contextPath
+			});
+			let res = await fetch(window.location.origin + "/sport/api/getMultipleAll", {
+				method : "POST",
+			    headers: {
+			        "Content-Type": "application/json"
+			    },
+				body : JSON.stringify({
+					hi: "嗨"
+				})
+			});
+			console.log(res);
+			let data = await res.json();
+			console.log(data); // 後端回傳的資料，這裡取得
+		}
+		
+		async function getSingle() {
+			console.log("觸發getSingle", {
+				pathname,
+				contextPath
+			});
+			let res = await fetch(window.location.origin + "/sport/api/getSingle", {
+				method : "POST",
+			    headers: {
+			        "Content-Type": "application/json"
+			    },
+				body : JSON.stringify({
+					sportId: 14
+				})
+			});
+			console.log(res);
+			let data = await res.json();
+			console.log(data); // 後端回傳的資料，這裡取得
+		}
+		
+		async function getByStatuses() {
+			console.log("觸發getByStatuses", {
+				pathname,
+				contextPath
+			});
+			let res = await fetch(window.location.origin + "/sport/api/getMultipleBySportDataStatuses", {
+				method : "POST",
+			    headers: {
+			        "Content-Type": "application/json"
+			    },
+				body : JSON.stringify({
+					statuses: [0, 1]
+				})
+			});
+			console.log(res);
+			let data = await res.json();
+			console.log(data); // 後端回傳的資料，這裡取得
+		}
+		
+		async function insert() {
+			console.log("觸發insert", {
+				pathname,
+				contextPath
+			});
+			let res = await fetch(window.location.origin + "/sport/api/insert", {
+				method : "POST",
+			    headers: {
+			        "Content-Type": "application/json"
+			    },
+				body : JSON.stringify({
+					  sportId: null,                      // 範例：運動 ID
+					  sportName: "哈哈哈",               // 範例：運動名稱
+					  sportDescription: "慢跑 30 分鐘", // 範例：運動描述
+					  sportMets: 8.0,                  // 範例：MET 值
+					  sportEstimatedCalories: 250,     // 範例：預估消耗卡路里
+					  sportPic: null,                  // 範例：運動圖片 URL
+					  sportDataStatus: 1,              // 範例：資料狀態（1:啟用, 0:停用）
+					  adminId: 1                       // 範例：管理員 ID
+				})
+			});
+// 			console.log(res);
+// 			let data = await res.json();
+// 			console.log(data); // 後端回傳的資料，這裡取得
+		}
+		
+		async function insertMultiple() {
+			console.log("觸發insertMultiple", {
+				pathname,
+				contextPath
+			});
+			let res = await fetch(window.location.origin + "/sport/api/insertMultiple", {
+				method : "POST",
+			    headers: {
+			        "Content-Type": "application/json"
+			    },
+				body : JSON.stringify({
+					sports:[ 
+						{
+						  sportId: null,                      // 範例：運動 ID
+						  sportName: "哈哈哈咦",               // 範例：運動名稱
+						  sportDescription: "慢跑 30 分鐘", // 範例：運動描述
+						  sportMets: 8.0,                  // 範例：MET 值
+						  sportEstimatedCalories: 250,     // 範例：預估消耗卡路里
+						  sportPic: null,                  // 範例：運動圖片 URL
+						  sportDataStatus: 1,              // 範例：資料狀態（1:啟用, 0:停用）
+						  adminId: 1                       // 範例：管理員 ID
+						}
+					]
+				})
+			});
+// 			console.log(res);
+// 			let data = await res.json();
+// 			console.log(data); // 後端回傳的資料，這裡取得
+		}
+		
+		async function update() {
+			console.log("觸發update", {
+				pathname,
+				contextPath
+			});
+			let res = await fetch(window.location.origin + "/sport/api/update", {
+				method : "POST",
+			    headers: {
+			        "Content-Type": "application/json"
+			    },
+				body : JSON.stringify({
+					  sportId: 13,                      // 範例：運動 ID
+					  sportName: "哈哈哈哈哈哈:)",               // 範例：運動名稱
+					  sportDescription: "慢跑 30 分鐘", // 範例：運動描述
+					  sportMets: 8.0,                  // 範例：MET 值
+					  sportEstimatedCalories: 300,     // 範例：預估消耗卡路里
+					  sportPic: null,                  // 範例：運動圖片 URL
+					  sportDataStatus: 1,              // 範例：資料狀態（1:啟用, 0:停用）
+					  adminId: 1                       // 範例：管理員 ID
+				})
+			});
+// 			console.log(res);
+// 			let data = await res.json();
+// 			console.log(data); // 後端回傳的資料，這裡取得
+		}
+		
+		async function updateMultiple() {
+			console.log("觸發updateMultiple", {
+				pathname,
+				contextPath
+			});
+			let res = await fetch(window.location.origin + "/sport/api/updateMultiple", {
+				method : "POST",
+			    headers: {
+			        "Content-Type": "application/json"
+			    },
+				body : JSON.stringify({
+					sports:[ 
+						{
+						  sportId: 14,                      // 範例：運動 ID
+						  sportName: "哈哈哈XD",               // 範例：運動名稱
+						  sportDescription: "慢跑 30 分鐘", // 範例：運動描述
+						  sportMets: 8.0,                  // 範例：MET 值
+						  sportEstimatedCalories: 250,     // 範例：預估消耗卡路里
+						  sportPic: null,                  // 範例：運動圖片 URL
+						  sportDataStatus: 1,              // 範例：資料狀態（1:啟用, 0:停用）
+						  adminId: 1                       // 範例：管理員 ID
+						}
+					]
+				})
+			});
+// 			console.log(res);
+// 			let data = await res.json();
+// 			console.log(data); // 後端回傳的資料，這裡取得
+		}
+		
+		
+		async function updateMultipleSportDataStatus() {
+			console.log("觸發update", {
+				pathname,
+				contextPath
+			});
+			let res = await fetch(window.location.origin + "/sport/api/updateMultipleSportDataStatus", {
+				method : "POST",
+			    headers: {
+			        "Content-Type": "application/json"
+			    },
+				body : JSON.stringify({
+					  sportIds: [14],                      // 範例：運動 ID
+					  sportDataStatus: 2             // 範例：資料狀態（1:啟用, 0:停用）                     // 範例：管理員 ID
+				})
+			});
+// 			console.log(res);
+// 			let data = await res.json();
+// 			console.log(data); // 後端回傳的資料，這裡取得
+		}
+
+		btnGetEl.addEventListener("click", get);
+		btnInsertEl.addEventListener("click", insert);
+		btnUpdateEl.addEventListener("click", update);
+		btnGetByStatusEl.addEventListener("click", getByStatuses);
+		btnUpdateStatusEl.addEventListener("click", updateMultipleSportDataStatus);
+		btnInsertMultipleEl.addEventListener("click", insertMultiple);
+		btnUpdateMultipleEl.addEventListener("click", updateMultiple);
+		btnGetSingleEl.addEventListener("click", getSingle);
+	</script>
+</body>
+</html>

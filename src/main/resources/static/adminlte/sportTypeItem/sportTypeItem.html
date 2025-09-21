@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SportTypeItem 測試頁</title>
+</head>
+<body>
+    <h1>SportTypeItem 測試頁</h1>
+
+    <button id="btn_insertMultiple">新增多筆</button>
+    <button id="btn_updateMultiple">更新多筆</button>
+    <br><br>
+
+    <button id="btn_isExist">檢查是否存在 (sportTypeId + sportId)</button>
+    <br><br>
+    
+    <button id="btn_getSingle">查單筆 (sportTypeItemId)</button>
+    <button id="btn_getMultipleByTypeId">查多筆 (sportTypeId)</button>
+    <br><br>
+
+    <button id="btn_getSingleByTypeAndSport">查單筆 (sportTypeId + sportId)</button>
+    <button id="btn_getSingleByItemIdAndStatuses">查單筆 (itemId + 狀態)</button>
+    <button id="btn_getMultipleByTypeIdAndStatuses">查多筆 (typeId + 狀態)</button>
+    <button id="btn_getSingleByTypeIdSportIdStatuses">查單筆 (typeId + sportId + 狀態)</button>
+    <br><br>
+
+    <button id="btn_updateStatus">更新狀態 (by sportTypeItemIds)</button>
+
+    <script>
+        const baseUrl = window.location.origin + "/sportTypeItem/api";
+
+        async function insertMultiple() {
+            let res = await fetch(baseUrl + "/insertMultiple", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify([
+                    { sportTypeItemId: null, sportTypeId: 3, sportId: 1 },
+                    { sportTypeItemId: null, sportTypeId: 3, sportId: 2 },
+                    { sportTypeItemId: null, sportTypeId: 4, sportId: 1 },
+                    { sportTypeItemId: null, sportTypeId: 4, sportId: 2 }
+                ])
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function updateMultiple() {
+            let res = await fetch(baseUrl + "/updateMultiple", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify([
+                    { sportTypeItemId: 13, sportTypeId: 3, sportId: 3 },
+                    { sportTypeItemId: 14, sportTypeId: 3, sportId: 4 }
+                ])
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function isExist() {
+            let res = await fetch(baseUrl + "/isExitBySportTypeIdAndSportId", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ sportTypeId: 4, sportId: 1 })
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function getSingle() {
+            let res = await fetch(baseUrl + "/getSingleBySportTypeItemId", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ sportTypeItemId: 1 })
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function getMultipleByTypeId() {
+            let res = await fetch(baseUrl + "/getMultipleBySportTypeId", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ sportTypeId: 1 })
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function getSingleByTypeAndSport() {
+            let res = await fetch(baseUrl + "/getSingleByTypeIdAndSportId", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ sportTypeId: 1, sportId: 8 })
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function getSingleByItemIdAndStatuses() {
+            let res = await fetch(baseUrl + "/getSingleBySportTypeItemIdAndDataStatuses", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ sportTypeItemId: 1, statuses: [0,1] })
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function getMultipleByTypeIdAndStatuses() {
+            let res = await fetch(baseUrl + "/getMultipleBySportTypeIdAndDataStatuses", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+//                 body: JSON.stringify({ sportTypeId: 1, statuses: [0, 1] })
+                body: JSON.stringify({ sportTypeId: 2, statuses: [1] })
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function getSingleByTypeIdSportIdStatuses() {
+            let res = await fetch(baseUrl + "/getSingleBySportTypeIdAndSportIdAndDataStatuses", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ sportTypeId: 1, sportId: 8, statuses: [1] })
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        async function updateStatus() {
+            let res = await fetch(baseUrl + "/updateDataStatusBySportTypeItemIds", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    dataStatus: 1,
+                    sportTypeItemIds: [13, 14, 15, 16]
+                })
+            });
+            console.log(await res.json().catch(()=>res.text()));
+        }
+
+        document.getElementById("btn_insertMultiple").addEventListener("click", insertMultiple);
+        document.getElementById("btn_updateMultiple").addEventListener("click", updateMultiple);
+        document.getElementById("btn_isExist").addEventListener("click", isExist);
+        document.getElementById("btn_getSingle").addEventListener("click", getSingle);
+        document.getElementById("btn_getMultipleByTypeId").addEventListener("click", getMultipleByTypeId);
+        document.getElementById("btn_getSingleByTypeAndSport").addEventListener("click", getSingleByTypeAndSport);
+        document.getElementById("btn_getSingleByItemIdAndStatuses").addEventListener("click", getSingleByItemIdAndStatuses);
+        document.getElementById("btn_getMultipleByTypeIdAndStatuses").addEventListener("click", getMultipleByTypeIdAndStatuses);
+        document.getElementById("btn_getSingleByTypeIdSportIdStatuses").addEventListener("click", getSingleByTypeIdSportIdStatuses);
+        document.getElementById("btn_updateStatus").addEventListener("click", updateStatus);
+    </script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>WorkoutPlanRecord 測試頁</title>
+</head>
+<body>
+	<h2>WorkoutPlanRecord 測試頁</h2>
+
+	<button id="btn_insertMultiple">批次新增紀錄</button>
+	<br>
+	<br>
+	<button id="btn_getSingle">查詢單筆紀錄</button>
+	<br>
+	<br>
+	<button id="btn_getMultipleByPlanId">依計畫ID查詢紀錄</button>
+	<br>
+	<br>
+	<button id="btn_getMultipleByPlanIdAndStatuses">依計畫ID+狀態查詢紀錄</button>
+	<br>
+	<br>
+	<button id="btn_getPageByPlanIdAndStatuses">分頁查詢(計畫ID+狀態)</button>
+	<br>
+	<br>
+	<button id="btn_getMultipleByPlanIds">多筆計畫IDs查詢紀錄</button>
+	<br>
+	<br>
+	<button id="btn_getMultipleByPlanIdsAndStatuses">多筆計畫IDs+狀態查詢紀錄</button>
+	<br>
+	<br>
+
+	<script>
+		async function insertMultiple() {
+			console.log("觸發 insertMultiple");
+			let res = await fetch("/workoutPlanRecord/api/insertMultiple", {
+				method : "POST",
+				headers : {
+					"Content-Type" : "application/json"
+				},
+				body : JSON.stringify([ {
+					workoutPlanId : 17,
+					sportFrom : "custom",
+					sportId : null,
+					customSportId: 3,
+					actualStartTime : "2025-09-19 10:00",
+					actualEndTime : "2025-09-19 10:30"
+				} ])
+			});
+			let data = await res.json();
+			console.log(data);
+		}
+
+		async function getSingle() {
+			console.log("觸發 getSingle");
+			let res = await fetch("/workoutPlanRecord/api/getSingle", {
+				method : "POST",
+				headers : {
+					"Content-Type" : "application/json"
+				},
+				body : JSON.stringify({
+					workoutPlanRecordId : 1
+				})
+			});
+			let data = await res.json();
+			console.log(data);
+		}
+
+		async function getMultipleByPlanId() {
+			console.log("觸發 getMultipleByPlanId");
+			let res = await fetch("/workoutPlanRecord/api/getMultipleByWorkoutPlanId", {
+				method : "POST",
+				headers : {
+					"Content-Type" : "application/json"
+				},
+				body : JSON.stringify({
+					workoutPlanId : 12
+				})
+			});
+			let data = await res.json();
+			console.log(data);
+		}
+
+		async function getMultipleByPlanIdAndStatuses() {
+			console.log("觸發 getMultipleByPlanIdAndStatuses");
+			let res = await fetch(
+					"/workoutPlanRecord/api/getMultipleByWorkoutPlanIdAndWorkouPlanDataStatuses",
+					{
+						method : "POST",
+						headers : {
+							"Content-Type" : "application/json"
+						},
+						body : JSON.stringify({
+							workoutPlanId : 12,
+							dataStatuses : [ 0, 1 ]
+						})
+					});
+			let data = await res.json();
+			console.log(data);
+		}
+
+		async function getPageByPlanIdAndStatuses() {
+			console.log("觸發 getPageByPlanIdAndStatuses");
+			let res = await fetch(
+					"/workoutPlanRecord/api/getMultipleByWorkoutPlanIdAndWorkouPlanDataStatusesPage?page=0&size=5",
+					{
+						method : "POST",
+						headers : {
+							"Content-Type" : "application/json"
+						},
+						body : JSON.stringify({
+							workoutPlanId : 12,
+							dataStatuses : [ 1 ]
+						})
+					});
+			let data = await res.json();
+			console.log(data);
+		}
+
+		async function getMultipleByPlanIds() {
+			console.log("觸發 getMultipleByPlanIds");
+			let res = await fetch("/workoutPlanRecord/api/getMultipleByWorkoutPlanIds", {
+				method : "POST",
+				headers : {
+					"Content-Type" : "application/json"
+				},
+				body : JSON.stringify({
+					workoutPlanIds : [ 1, 2, 12 ]
+				})
+			});
+			let data = await res.json();
+			console.log(data);
+		}
+
+		async function getMultipleByPlanIdsAndStatuses() {
+			console.log("觸發 getMultipleByPlanIdsAndStatuses");
+			let res = await fetch(
+					"/workoutPlanRecord/api/getMultipleByWorkoutPlanIdsAndDataStatuses",
+					{
+						method : "POST",
+						headers : {
+							"Content-Type" : "application/json"
+						},
+						body : JSON.stringify({
+							workoutPlanIds : [ 1, 2, 12 ],
+							dataStatuses : [ 1 ]
+						})
+					});
+			let data = await res.json();
+			console.log(data);
+		}
+
+		document.getElementById("btn_insertMultiple").addEventListener("click",
+				insertMultiple);
+		document.getElementById("btn_getSingle").addEventListener("click",
+				getSingle);
+		document.getElementById("btn_getMultipleByPlanId").addEventListener(
+				"click", getMultipleByPlanId);
+		document.getElementById("btn_getMultipleByPlanIdAndStatuses")
+				.addEventListener("click", getMultipleByPlanIdAndStatuses);
+		document.getElementById("btn_getPageByPlanIdAndStatuses")
+				.addEventListener("click", getPageByPlanIdAndStatuses);
+		document.getElementById("btn_getMultipleByPlanIds").addEventListener(
+				"click", getMultipleByPlanIds);
+		document.getElementById("btn_getMultipleByPlanIdsAndStatuses")
+				.addEventListener("click", getMultipleByPlanIdsAndStatuses);
+	</script>
+</body>
+</html>
