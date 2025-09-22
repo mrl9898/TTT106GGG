@@ -28,6 +28,10 @@
 	<button id="btn_getMultipleByPlanIdsAndStatuses">多筆計畫IDs+狀態查詢紀錄</button>
 	<br>
 	<br>
+	<!-- 批次更新紀錄狀態 -->
+	<button id="btn_updateWorkoutPlanRecordDataStatusByRecordIds">批次更新紀錄狀態</button>
+	<br>
+	<br>
 
 	<script>
 		async function insertMultiple() {
@@ -149,6 +153,28 @@
 			console.log(data);
 		}
 
+		// 批次更新紀錄狀態
+		async function updateWorkoutPlanRecordDataStatusByRecordIds() {
+			console.log("觸發 updateWorkoutPlanRecordDataStatusByRecordIds");
+			let res = await fetch("/workoutPlanRecord/api/updateWorkoutPlanRecordDataStatusByRecordIds", {
+				method : "POST",
+				headers : { "Content-Type" : "application/json" },
+				body : JSON.stringify({
+					dataStatus : 0,
+					recordIds : [ 9 ]
+				})
+			});
+			// 伺服器回傳 Integer 時同樣屬於合法 JSON（例如 1），可直接解析
+			let data = null;
+			try {
+				data = await res.json();
+			} catch(e) {
+				// 若非 JSON（極少數情境），退回文字
+				data = await res.text();
+			}
+			console.log("受影響筆數:", data);
+		}
+
 		document.getElementById("btn_insertMultiple").addEventListener("click",
 				insertMultiple);
 		document.getElementById("btn_getSingle").addEventListener("click",
@@ -163,6 +189,9 @@
 				"click", getMultipleByPlanIds);
 		document.getElementById("btn_getMultipleByPlanIdsAndStatuses")
 				.addEventListener("click", getMultipleByPlanIdsAndStatuses);
+		// 綁定新增的測試鈕
+		document.getElementById("btn_updateWorkoutPlanRecordDataStatusByRecordIds")
+				.addEventListener("click", updateWorkoutPlanRecordDataStatusByRecordIds);
 	</script>
 </body>
 </html>

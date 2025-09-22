@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.persistence.Transient;
 import lombok.Data;
 
 @Data
@@ -73,10 +74,12 @@ public class User {
 	@Column(name = "points_balance", nullable = false)
 	private Integer pointsBalance = 0;
 	
-	@Column(name = "reset_password_token")
+	@Transient
+//	@Column(name = "reset_password_token")
 	private String resetPasswordToken;
 
-    @Column(name = "token_expiry_date")
+	@Transient
+//    @Column(name = "token_expiry_date")
     private LocalDateTime tokenExpiryDate;
     //Java 8 之後處理日期和時間的標準 API，它不含時區資訊
 }

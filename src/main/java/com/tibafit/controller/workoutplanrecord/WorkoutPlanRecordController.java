@@ -116,4 +116,20 @@ public class WorkoutPlanRecordController {
 				.getRecordsByWorkoutPlanIdsAndDataStatuses(planIds, statuses);
 		return result;
 	}
+	
+	/**
+	 * 批次更新紀錄狀態
+	 */
+	@PostMapping("/updateWorkoutPlanRecordDataStatusByRecordIds")
+	@ResponseBody
+	public Integer updateWorkoutPlanRecordDataStatusByRecordIds(
+			@RequestBody Map<String, Object> req) {
+		@SuppressWarnings("unchecked")
+		Integer dataStatus = (Integer) req.get("dataStatus");
+		@SuppressWarnings("unchecked")
+		List<Integer> workoutPlanRecordIds = (List<Integer>) req.get("workoutPlanRecordIds");
+		Integer affectNum = workoutPlanRecordSvc
+				.updateWorkoutPlanRecordDataStatusByRecordIds(dataStatus, workoutPlanRecordIds);
+		return affectNum;
+	}
 }

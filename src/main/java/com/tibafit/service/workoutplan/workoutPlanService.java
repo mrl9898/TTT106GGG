@@ -132,7 +132,7 @@ public class workoutPlanService implements workoutPlanService_interface {
 			}
 		}
 		
-		planRecordRepo.updateWorkoutPlanRecordDataStatusByIds(status, recordIds);
+		planRecordRepo.updateWorkoutPlanRecordDataStatusByRecordIds(status, recordIds);
 		
 		return affectNumOfPlan;
 	}

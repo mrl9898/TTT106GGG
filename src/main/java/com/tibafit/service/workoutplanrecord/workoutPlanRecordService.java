@@ -5,8 +5,10 @@ import java.math.RoundingMode;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,7 @@ import com.tibafit.model.user.User;
 import com.tibafit.model.workoutplan.WorkoutPlanSportFrom;
 import com.tibafit.model.workoutplan.WorkoutPlanStatus;
 import com.tibafit.model.workoutplan.WorkoutPlanVO;
+import com.tibafit.model.workoutplanrecord.WorkoutPlanRecordCalorieCountMethoed;
 import com.tibafit.model.workoutplanrecord.WorkoutPlanRecordConverter;
 import com.tibafit.model.workoutplanrecord.WorkoutPlanRecordVO;
 import com.tibafit.repository.customsport.CustomSportRepository;
@@ -59,15 +62,129 @@ public class workoutPlanRecordService implements workoutPlanRecordService_interf
 //		planRecordRepo.saveAll(vos);
 //	}
 	
-//	@Override
-//	public Integer updateWorkoutPlanRecordDataStatusByIds(Integer status, List<Integer> recordIds) {
-//		Integer affectNum = planRecordRepo.updateWorkoutPlanRecordDataStatusByIds(status, recordIds);
-//		return affectNum;
-//	}
+	@Override
+	public Integer updateWorkoutPlanRecordDataStatusByRecordIds(Integer status, List<Integer> recordIds) {
+		// 更新records狀態
+		Integer affectNum = planRecordRepo.updateWorkoutPlanRecordDataStatusByRecordIds(status, recordIds);
+		
+		if(affectNum == 0) {
+			return affectNum;
+		}
+		
+		Set<Integer> planIds = new HashSet<>();
+		List<Integer> planIdList = new ArrayList<>();
+		
+		// PO
+		List<WorkoutPlanRecordVO> workoutPlanRecordVOs = planRecordRepo.findByWorkoutPlanRecordIdIn(recordIds);
+		
+		for (WorkoutPlanRecordVO vo : workoutPlanRecordVOs) {
+			if(vo!=null && vo.getWorkoutPlanId() != null) {
+				planIds.add(vo.getWorkoutPlanId());
+			}
+		}
+		
+		for (Integer planId : planIds) {
+			planIdList.add(planId);
+		}
+		
+		System.out.println("recordSvc planIds:" + planIds);
+		
+		// PO
+		List<WorkoutPlanVO> workoutPlanVOs = planRepo.findByWorkoutPlanIdIn(planIdList);
+		
+		
+		// 根據 計畫ID (planId)，將紀錄分組用於資料累加的Map，為了更新計畫(plan) 的 total相關資料
+		Map<Integer, List<WorkoutPlanRecordVO>> planIdAndRecordsMap = new HashMap<>();
+
+		// 遍歷 取得計畫個別的紀錄VOs，組成Map資料
+		for (WorkoutPlanVO planVO : workoutPlanVOs) {
+		    if (planVO == null || planVO.getWorkoutPlanRecordVOs() == null) {
+		        continue;
+		    }
+		    
+		    // 拿 計畫ID (planId)
+		    Integer planId = planVO.getWorkoutPlanId();
+		    
+		    // PO
+		    Set<WorkoutPlanRecordVO> recordVOs = planVO.getWorkoutPlanRecordVOs();
+		    List<WorkoutPlanRecordVO> recordVoActiveList = new ArrayList();
+		    
+			for (WorkoutPlanRecordVO recordVO : recordVOs) {
+				// 過濾出 存在狀態 的紀錄
+				if(recordVO != null && recordVO.getWorkoutPlanRecordDataStatus() == 1) {
+					recordVoActiveList.add(recordVO);	
+				}
+			}
+			
+		    // 沒有此key的話，新建一組key-value
+		    if(!planIdAndRecordsMap.containsKey(planId)) {
+		        planIdAndRecordsMap.put(planId, recordVoActiveList);
+		    }
+		}
+
+		// 遍歷Map資料 (轉Set資料格式)
+		for (Map.Entry<Integer, List<WorkoutPlanRecordVO>> entry : planIdAndRecordsMap.entrySet()) {
+			Integer planId = entry.getKey();
+			
+			// PO
+			WorkoutPlanVO planVO = planRepo.findById(planId).orElse(null);
+			
+			if(planVO == null || planVO.getActualTotalCount() == null) {
+				continue;
+			}
+			if(planVO == null || planVO.getActualTotalCalories() == null) {
+				continue;
+			}
+			if(planVO == null || planVO.getActualTotalDuration() == null) {
+				continue;
+			}
+			
+					
+			List<WorkoutPlanRecordVO> activeRecords = entry.getValue();
+			if(activeRecords == null) {
+				continue;
+			}
+			
+			Integer sumCalories = 0;
+			Integer sumDuration = 0;
+			Integer count = 0;
+			for (WorkoutPlanRecordVO rvo: activeRecords) {
+				if(rvo.getActualCalories() != null) {
+					sumCalories += rvo.getActualCalories();
+				}
+				if(rvo.getActualDuration() != null) {
+					sumDuration += rvo.getActualDuration();
+				}
+			}
+			count = activeRecords.size();
+			
+			if(count > 0) {
+				// 更新計畫狀態: 已執行
+				planVO.setWorkoutPlanStatus(WorkoutPlanStatus.DONE.getCodeNum());
+			} else {
+				// 更新計畫狀態: 未執行
+				planVO.setWorkoutPlanStatus(WorkoutPlanStatus.NOTYET.getCodeNum());
+			}
+
+			// 放入VO (PO已更新資料庫計畫total相關欄位，應不需save，保險起見)
+			planVO.setActualTotalCount(count);
+			planVO.setActualTotalCalories(sumCalories);
+			planVO.setActualTotalDuration(sumDuration);
+			
+			System.out.println("updateWorkoutPlanRecordDataStatusByRecordIds Managed? " + entityManager.contains(planVO));
+			planRepo.save(planVO);
+			
+		}
+		
+		
+		return affectNum;
+	}
 	
 
 	@Override
 	public List<WorkoutPlanRecordResponseDTO> insertWorkoutPlanRecordMultiple(List<WorkoutPlanRecordRequestDTO> dtos) {
+		String calorieCountMethod = WorkoutPlanRecordCalorieCountMethoed.RAWCOUNT.getDisplayName();
+		
 		List<WorkoutPlanRecordResponseDTO> returnRecordDTOs = new ArrayList<>();
 		if (dtos == null || dtos.isEmpty()) {
 			return returnRecordDTOs;
@@ -103,6 +220,8 @@ public class workoutPlanRecordService implements workoutPlanRecordService_interf
 				User userVO = planRecordVO.getWorkoutPlanVO() != null ? planRecordVO.getWorkoutPlanVO().getUserVO() : null;
 				if (userVO != null && userVO.getWeightKg() != null
 						&& userVO.getWeightKg().compareTo(BigDecimal.ZERO) > 0) {
+					
+					calorieCountMethod = WorkoutPlanRecordCalorieCountMethoed.KGCOUNT.getDisplayName();
 					weightKg = userVO.getWeightKg();
 				}
 
@@ -122,6 +241,8 @@ public class workoutPlanRecordService implements workoutPlanRecordService_interf
 
 			// 如果是 自訂義運動 (custom)
 			if ((WorkoutPlanSportFrom.CUSTOM.getCodeName()).equals(planRecordVO.getSportFrom()) && planRecordVO.getCustomSportId() != null) {
+				calorieCountMethod = WorkoutPlanRecordCalorieCountMethoed.FILLIN.getDisplayName();
+				
 				// PO，拿運動資料
 				CustomSportVO customSport = customSportRepo.findById(planRecordVO.getCustomSportId()).orElse(null);
 				
@@ -139,6 +260,8 @@ public class workoutPlanRecordService implements workoutPlanRecordService_interf
 					planRecordVO.setActualCalories(countCalories.setScale(0, RoundingMode.HALF_UP).intValue());
 				}
 			}
+			
+			planRecordVO.setCalorieCountMethod(calorieCountMethod);
 
 			planRecordVOs.add(planRecordVO);
 		}
@@ -225,12 +348,14 @@ public class workoutPlanRecordService implements workoutPlanRecordService_interf
 				planVO.setWorkoutPlanStatus(WorkoutPlanStatus.DONE.getCodeNum());
 			}
 
-			// 放入VO (PO已更新資料庫計畫total相關欄位，不需save)
+			// 放入VO (PO已更新資料庫計畫total相關欄位，應不需save，保險起見)
 			planVO.setActualTotalCount(oriTotalCount + count);
 			planVO.setActualTotalCalories(oriTotalCalories + sumCalories);
 			planVO.setActualTotalDuration(oriTotalDuration + sumDuration);
 			
-			System.out.println("Managed? " + entityManager.contains(planVO));
+			System.out.println("insertWorkoutPlanRecordMultiple Managed? " + entityManager.contains(planVO));
+			planRepo.save(planVO);
+			
 		}
 		
 		return returnRecordDTOs;

@@ -25,6 +25,14 @@ public interface WorkoutPlanRepository extends JpaRepository<WorkoutPlanVO, Inte
 	    "workoutPlanRecordVOs"
 	})
 	public Optional<WorkoutPlanVO> findByWorkoutPlanId(Integer workoutPlanId);
+	
+	@EntityGraph(attributePaths = {
+	    "userVO",
+	    "sportVO",
+	    "customSportVO",
+	    "workoutPlanRecordVOs"
+	})
+	public List<WorkoutPlanVO> findByWorkoutPlanIdIn(List<Integer> workoutPlanIds);
 
 	// 日期區間查詢 (區間最長一個月)
 	@EntityGraph(attributePaths = {
