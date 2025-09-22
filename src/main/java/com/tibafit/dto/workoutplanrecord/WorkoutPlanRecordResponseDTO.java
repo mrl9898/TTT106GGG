@@ -8,11 +8,18 @@ public class WorkoutPlanRecordResponseDTO implements Serializable {
     private String sportFrom;
     private Integer sportId;
     private Integer customSportId;
+    
     private Integer actualCalories;
+    private String calorieCountMethod;
+    
     private String actualStartTime;
     private String actualEndTime;
+    
     private Integer actualDuration;
+    private String actualDurationText;
+    
     private String actualRecordDatetime;
+    
     private Integer workoutPlanRecordDataStatus;
     private String createDatetime;
     private String updateDatetime;
@@ -30,6 +37,7 @@ public class WorkoutPlanRecordResponseDTO implements Serializable {
         this.workoutPlanRecordId = workoutPlanRecordId;
     }
 
+    
     public Integer getWorkoutPlanId() {
         return workoutPlanId;
     }
@@ -37,6 +45,7 @@ public class WorkoutPlanRecordResponseDTO implements Serializable {
         this.workoutPlanId = workoutPlanId;
     }
 
+    
     public String getSportFrom() {
         return sportFrom;
     }
@@ -44,6 +53,7 @@ public class WorkoutPlanRecordResponseDTO implements Serializable {
         this.sportFrom = sportFrom;
     }
 
+    
     public Integer getSportId() {
         return sportId;
     }
@@ -51,6 +61,7 @@ public class WorkoutPlanRecordResponseDTO implements Serializable {
         this.sportId = sportId;
     }
 
+    
     public Integer getCustomSportId() {
         return customSportId;
     }
@@ -58,20 +69,31 @@ public class WorkoutPlanRecordResponseDTO implements Serializable {
         this.customSportId = customSportId;
     }
 
+    
     public Integer getActualCalories() {
         return actualCalories;
     }
     public void setActualCalories(Integer actualCalories) {
         this.actualCalories = actualCalories;
     }
+    
+    
+    public String getCalorieCountMethod() {
+		return calorieCountMethod;
+	}
+	public void setCalorieCountMethod(String calorieCountMethod) {
+		this.calorieCountMethod = calorieCountMethod;
+	}
 
-    public String getActualStartTime() {
+
+	public String getActualStartTime() {
         return actualStartTime;
     }
     public void setActualStartTime(String actualStartTime) {
         this.actualStartTime = actualStartTime;
     }
 
+    
     public String getActualEndTime() {
         return actualEndTime;
     }
@@ -79,13 +101,21 @@ public class WorkoutPlanRecordResponseDTO implements Serializable {
         this.actualEndTime = actualEndTime;
     }
 
+    
     public Integer getActualDuration() {
         return actualDuration;
     }
     public void setActualDuration(Integer actualDuration) {
         this.actualDuration = actualDuration;
     }
+	public String getActualDurationText() {
+		return actualDurationText;
+	}
+	public void setActualDurationText(String actualDurationText) {
+		this.actualDurationText = actualDurationText;
+	}
 
+	
     public String getActualRecordDatetime() {
         return actualRecordDatetime;
     }
@@ -93,6 +123,7 @@ public class WorkoutPlanRecordResponseDTO implements Serializable {
         this.actualRecordDatetime = actualRecordDatetime;
     }
 
+    
     public Integer getWorkoutPlanRecordDataStatus() {
         return workoutPlanRecordDataStatus;
     }
@@ -100,6 +131,7 @@ public class WorkoutPlanRecordResponseDTO implements Serializable {
         this.workoutPlanRecordDataStatus = workoutPlanRecordDataStatus;
     }
 
+    
     public String getCreateDatetime() {
         return createDatetime;
     }
@@ -107,6 +139,7 @@ public class WorkoutPlanRecordResponseDTO implements Serializable {
         this.createDatetime = createDatetime;
     }
 
+    
     public String getUpdateDatetime() {
         return updateDatetime;
     }
@@ -114,6 +147,7 @@ public class WorkoutPlanRecordResponseDTO implements Serializable {
         this.updateDatetime = updateDatetime;
     }
 
+    
     @Override
     public String toString() {
         return "WorkoutPlanRecordResponseDTO {" +
@@ -123,9 +157,11 @@ public class WorkoutPlanRecordResponseDTO implements Serializable {
                 ", sportId=" + sportId +
                 ", customSportId=" + customSportId +
                 ", actualCalories=" + actualCalories +
+                ", calorieCountMethod=" + calorieCountMethod +
                 ", actualStartTime=" + actualStartTime +
                 ", actualEndTime=" + actualEndTime +
                 ", actualDuration=" + actualDuration +
+                ", actualDurationText=" + actualDurationText +
                 ", actualRecordDatetime=" + actualRecordDatetime +
                 ", workoutPlanRecordDataStatus=" + workoutPlanRecordDataStatus +
                 ", createDatetime=" + createDatetime +

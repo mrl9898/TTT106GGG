@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.tibafit.dto.workoutplan.WorkoutPlanRequestDTO;
 import com.tibafit.dto.workoutplan.WorkoutPlanResponseDTO;
-import com.tibafit.model.customsport.CustomSportVO;
-import com.tibafit.model.sport.SportVO;
-import com.tibafit.model.user.User;
+import com.tibafit.dto.workoutplanrecord.WorkoutPlanRecordResponseDTO;
+import com.tibafit.model.sport.SportLevel;
+import com.tibafit.model.workoutplanrecord.WorkoutPlanRecordConverter;
+import com.tibafit.model.workoutplanrecord.WorkoutPlanRecordVO;
 
 public class WorkoutPlanConverter {
 
@@ -156,10 +158,10 @@ public class WorkoutPlanConverter {
 		
 		String tempSportFrom = vo.getSportFrom();
 		String tempWorkoutPlanDate = vo.getWorkoutPlanDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		String tempWorkoutPlanTime = dto.getWorkoutPlanTime() == null? null : vo.getWorkoutPlanTime().format(DateTimeFormatter.ofPattern("HH:mm"));
+		String tempWorkoutPlanTime = vo.getWorkoutPlanTime() == null? null : vo.getWorkoutPlanTime().format(DateTimeFormatter.ofPattern("HH:mm"));
 		
 		Integer tempExpectedDuration = vo.getWorkoutPlanExpectedDuration();
-		StringBuilder durationStr = new StringBuilder("0 小時 0 分鐘");
+		StringBuilder durationStr = new StringBuilder("0 hr 0 min");
 		if (tempExpectedDuration != null && tempExpectedDuration > 0) {
 			// 小時
 		    int hours = tempExpectedDuration / 60;
@@ -167,11 +169,11 @@ public class WorkoutPlanConverter {
 		    int minutes = tempExpectedDuration % 60;
 		    
 		    durationStr.setLength(0);
-		    durationStr.append( hours + " 小時 " + minutes + " 分鐘");
+		    durationStr.append( hours + " hr " + minutes + " min");
 		}
 		
 		Integer tempActualTotalDuration = vo.getActualTotalDuration();
-		StringBuilder totalDurationStr = new StringBuilder("0 小時 0 分鐘");
+		StringBuilder totalDurationStr = new StringBuilder("0 hr 0 min");
 		if (tempActualTotalDuration != null && tempActualTotalDuration > 0) {
 			// 小時
 		    int hours = tempActualTotalDuration / 60;
@@ -179,7 +181,7 @@ public class WorkoutPlanConverter {
 		    int minutes = tempActualTotalDuration % 60;
 
 		    totalDurationStr.setLength(0);
-		    totalDurationStr.append( hours + " 小時 " + minutes + " 分鐘");
+		    totalDurationStr.append( hours + " hr " + minutes + " min");
 		}
 		
 		dto.setWorkoutPlanId(vo.getWorkoutPlanId());
@@ -192,12 +194,55 @@ public class WorkoutPlanConverter {
 		dto.setSportId(vo.getSportId());
 		dto.setCustomSportId(vo.getCustomSportId());
 		if(WorkoutPlanSportFrom.SYSTEM.getCodeName().equals(tempSportFrom)) {
-			dto.setSportName(vo.getSportVO().getSportName());
+			if(vo.getSportVO() != null) {
+				if(vo.getSportVO().getSportName() != null) {
+					dto.setSportName(vo.getSportVO().getSportName());
+				} else {
+					dto.setSportName("");
+				}
+				if(vo.getSportVO().getSportLevel() != null) {
+					dto.setSportLevel(vo.getSportVO().getSportLevel());
+					dto.setSportLevelText(SportLevel.getDisplayNameByCodeName(vo.getSportVO().getSportLevel()));				
+				} else {
+					dto.setSportLevel("");
+					dto.setSportLevelText("");	
+				}
+				if(vo.getSportVO().getSportEstimatedCalories() != null) {
+					dto.setSportCalories(vo.getSportVO().getSportEstimatedCalories());
+				} else {
+					dto.setSportCalories(0);
+				}
+			}
 		}
 		if(WorkoutPlanSportFrom.CUSTOM.getCodeName().equals(tempSportFrom)) {
-			dto.setSportName(vo.getCustomSportVO().getSportName());		
+			if(vo.getCustomSportVO() != null) {
+				if(vo.getCustomSportVO().getSportName() != null) {
+					dto.setSportName(vo.getCustomSportVO().getSportName());
+				} else {
+					dto.setSportName("");
+				}
+				
+				dto.setSportLevel("");
+				dto.setSportLevelText("");	
+				
+				if(vo.getCustomSportVO().getSportEstimatedCalories() != null) {
+					dto.setSportCalories(vo.getCustomSportVO().getSportEstimatedCalories());
+				} else {
+					dto.setSportCalories(0);
+				}
+			}
 		}
 		
+		Set<WorkoutPlanRecordVO> tempRecordVoSets = vo.getWorkoutPlanRecordVOs();
+		List<WorkoutPlanRecordVO> tempRecordVoList = new ArrayList<>();
+		for (WorkoutPlanRecordVO rsvo : tempRecordVoSets) {
+			if(rsvo != null) {
+				tempRecordVoList.add(rsvo);
+			}
+		}
+		List<WorkoutPlanRecordResponseDTO> tempRecordDtoList = WorkoutPlanRecordConverter.toDtoList(tempRecordVoList);
+		dto.setWorkoutPlanRecordResponseDTOs(tempRecordDtoList);
+		;
 		dto.setWorkoutPlanStatus(vo.getWorkoutPlanStatus());
 		dto.setWorkoutPlanStatusText(WorkoutPlanStatus.getDisplayNameByCodeNum(vo.getWorkoutPlanStatus()));
 		

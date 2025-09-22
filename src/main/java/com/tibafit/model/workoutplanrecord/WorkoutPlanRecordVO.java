@@ -17,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "workout_plan_record")
@@ -34,6 +35,8 @@ public class WorkoutPlanRecordVO implements Serializable {
 	
 	
 	private Integer actualCalories;
+	private String calorieCountMethod;
+	
 	private LocalDateTime actualStartTime;
 	private LocalDateTime actualEndTime;
 	private Integer actualDuration;
@@ -128,8 +131,15 @@ public class WorkoutPlanRecordVO implements Serializable {
 	public void setActualCalories(Integer actualCalories) {
 		this.actualCalories = actualCalories;
 	}
+	@Transient
+	public String getCalorieCountMethod() {
+		return calorieCountMethod;
+	}
+	public void setCalorieCountMethod(String calorieCountMethod) {
+		this.calorieCountMethod = calorieCountMethod;
+	}
 
-	
+
 	@Column(name = "actual_start_time", nullable = false)
 	public LocalDateTime getActualStartTime() {
 		return actualStartTime;
@@ -202,6 +212,7 @@ public class WorkoutPlanRecordVO implements Serializable {
 	            ", sportId=" + sportId +
 	            ", customSportId=" + customSportId +
 	            ", actualCalories=" + actualCalories +
+	            ", calorieCountMethod=" + calorieCountMethod +
 	            ", actualStartTime=" + actualStartTime +
 	            ", actualEndTime=" + actualEndTime +
 	            ", actualDuration=" + actualDuration +

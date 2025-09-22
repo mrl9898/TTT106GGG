@@ -1,9 +1,9 @@
 package com.tibafit.dto.workoutplan;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.List;
+
+import com.tibafit.dto.workoutplanrecord.WorkoutPlanRecordResponseDTO;
 
 public class WorkoutPlanResponseDTO implements Serializable {
     private Integer workoutPlanId;
@@ -16,6 +16,12 @@ public class WorkoutPlanResponseDTO implements Serializable {
     private Integer sportId;
     private Integer customSportId;
     private String sportName;
+    
+    private String sportLevel;
+    private String sportLevelText;
+    
+    private Integer sportCalories;
+    private List<WorkoutPlanRecordResponseDTO> workoutPlanRecordResponseDTOs;
     
     private Integer workoutPlanStatus;
     private String workoutPlanStatusText;
@@ -105,7 +111,38 @@ public class WorkoutPlanResponseDTO implements Serializable {
 		this.sportName = sportName;
 	}
 
-    public Integer getWorkoutPlanStatus() {
+
+    public String getSportLevel() {
+		return sportLevel;
+	}
+	public void setSportLevel(String sportLevel) {
+		this.sportLevel = sportLevel;
+	}
+	public String getSportLevelText() {
+		return sportLevelText;
+	}
+	public void setSportLevelText(String sportLevelText) {
+		this.sportLevelText = sportLevelText;
+	}
+	
+	
+	public Integer getSportCalories() {
+		return sportCalories;
+	}
+	public void setSportCalories(Integer sportCalories) {
+		this.sportCalories = sportCalories;
+	}
+
+
+	public List<WorkoutPlanRecordResponseDTO> getWorkoutPlanRecordResponseDTOs() {
+		return workoutPlanRecordResponseDTOs;
+	}
+	public void setWorkoutPlanRecordResponseDTOs(List<WorkoutPlanRecordResponseDTO> workoutPlanRecordResponseDTOs) {
+		this.workoutPlanRecordResponseDTOs = workoutPlanRecordResponseDTOs;
+	}
+
+
+	public Integer getWorkoutPlanStatus() {
         return workoutPlanStatus;
     }
     public void setWorkoutPlanStatus(Integer workoutPlanStatus) {
@@ -228,6 +265,9 @@ public class WorkoutPlanResponseDTO implements Serializable {
                 ", sportId=" + sportId +
                 ", customSportId=" + customSportId +
                 ", sportName=" + sportName +
+                ", sportLevel=" + sportLevel +
+                ", sportLevelText=" + sportLevelText +
+                ", sportCalories=" + sportCalories +
                 ", workoutPlanStatus=" + workoutPlanStatus +
                 ", workoutPlanStatusText=" + workoutPlanStatusText +
                 ", workoutPlanDate=" + workoutPlanDate +

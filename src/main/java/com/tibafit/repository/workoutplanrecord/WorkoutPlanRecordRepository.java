@@ -68,9 +68,19 @@ public List<WorkoutPlanRecordVO> findByWorkoutPlanIdInAndWorkoutPlanRecordDataSt
     "workoutPlanVO.userVO"
  })
  public Optional<WorkoutPlanRecordVO> findByWorkoutPlanRecordId(Integer workoutPlanRecordId);
+ 
+ 
+ // 計畫紀錄ID查詢
+ @EntityGraph(attributePaths = {
+    "sportVO",
+	"customSportVO",
+    "workoutPlanVO",
+    "workoutPlanVO.userVO"
+ })
+ public List<WorkoutPlanRecordVO> findByWorkoutPlanRecordIdIn(List<Integer> workoutPlanRecordIds);
 
 
  @Modifying
  @Query(value = "UPDATE workout_plan_record SET workout_plan_record_data_status = :status WHERE workout_plan_record_id IN :ids", nativeQuery = true)
- public Integer updateWorkoutPlanRecordDataStatusByIds(@Param("status") Integer status, @Param("ids") List<Integer> recordIds);
+ public Integer updateWorkoutPlanRecordDataStatusByRecordIds(@Param("status") Integer status, @Param("ids") List<Integer> recordIds);
 }
