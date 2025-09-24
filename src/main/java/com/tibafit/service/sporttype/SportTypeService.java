@@ -113,6 +113,20 @@ public class SportTypeService implements SportTypeService_interface {
         List<SportTypeResponseDTO> dtos = SportTypeConverter.toDtoList(vos);
         return dtos;
     }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public List<SportTypeResponseDTO> getByComplexCondition(
+	        String sportTypeNameFuzzy,
+	        String createStartDate, 
+	        String createEndDate, 
+	        String updateStartDate, 
+	        String updateEndDate, 
+	        List<Integer> statuses){
+        List<SportTypeVO> vos = sportTypeRepo.findByComplexCondition(sportTypeNameFuzzy, createStartDate, createEndDate, updateStartDate, updateEndDate, statuses);
+        List<SportTypeResponseDTO> dtos = SportTypeConverter.toDtoList(vos);
+        return dtos;
+    }
 
     
     @Override
