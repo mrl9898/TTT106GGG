@@ -10,7 +10,8 @@ public class WorkoutPlanRecordResponseDTO implements Serializable {
     private Integer customSportId;
     
     private Integer actualCalories;
-    private String calorieCountMethod;
+    private Integer calorieCountMethod;
+    private String calorieCountMethodText;
     
     private String actualStartTime;
     private String actualEndTime;
@@ -78,11 +79,17 @@ public class WorkoutPlanRecordResponseDTO implements Serializable {
     }
     
     
-    public String getCalorieCountMethod() {
+    public Integer getCalorieCountMethod() {
 		return calorieCountMethod;
 	}
-	public void setCalorieCountMethod(String calorieCountMethod) {
+	public void setCalorieCountMethod(Integer calorieCountMethod) {
 		this.calorieCountMethod = calorieCountMethod;
+	}
+	public String getCalorieCountMethodText() {
+		return calorieCountMethodText;
+	}
+	public void setCalorieCountMethodText(String calorieCountMethodText) {
+		this.calorieCountMethodText = calorieCountMethodText;
 	}
 
 
@@ -158,6 +165,7 @@ public class WorkoutPlanRecordResponseDTO implements Serializable {
                 ", customSportId=" + customSportId +
                 ", actualCalories=" + actualCalories +
                 ", calorieCountMethod=" + calorieCountMethod +
+                ", calorieCountMethodText=" + calorieCountMethodText +
                 ", actualStartTime=" + actualStartTime +
                 ", actualEndTime=" + actualEndTime +
                 ", actualDuration=" + actualDuration +
