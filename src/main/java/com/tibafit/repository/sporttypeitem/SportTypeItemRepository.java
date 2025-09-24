@@ -35,6 +35,12 @@ public interface SportTypeItemRepository extends JpaRepository<SportTypeItemVO, 
        	"sportVO"
     })
     List<SportTypeItemVO> findBySportTypeId(Integer sportTypeId);
+    
+    @EntityGraph(attributePaths = { 
+    	"sportTypeVO",
+       	"sportVO"
+   })
+   List<SportTypeItemVO> findBySportTypeIdIn(List<Integer> sportTypeIds);
 
     @EntityGraph(attributePaths = { 
     	"sportTypeVO",
@@ -63,7 +69,7 @@ public interface SportTypeItemRepository extends JpaRepository<SportTypeItemVO, 
     Optional<SportTypeItemVO> findBySportTypeIdAndSportIdAndSportTypeItemDataStatusIn(Integer sportTypeId, Integer sportId, List<Integer> SportTypeDataItemStatuses);
     
     
-    
+    // TODO: update好像沒用到，因後來加deleteBySportTypeItemIdIn了
 	@Modifying
 	@Query(value = "UPDATE sport_type_item SET sport_type_item_data_status = :dataStatus WHERE sport_type_item_id IN :sportTypeItemIds", nativeQuery = true)
 	public Integer updateSportTypeItemDataStatusBySportTypeItemIds(@Param("dataStatus") Integer dataStatus, @Param("sportTypeItemIds") List<Integer> sportTypeItemIds);
@@ -75,4 +81,7 @@ public interface SportTypeItemRepository extends JpaRepository<SportTypeItemVO, 
 	@Modifying
 	@Query(value = "UPDATE sport_type_item SET sport_type_item_data_status = :dataStatus WHERE sport_id IN :sportIds", nativeQuery = true)
 	public Integer updateSportTypeItemDataStatusBySportIds(@Param("dataStatus") Integer dataStatus, @Param("sportIds") List<Integer> sportIds);
+
+
+	public void deleteBySportTypeItemIdIn(List<Integer> sportTypeRecordIds);
 }

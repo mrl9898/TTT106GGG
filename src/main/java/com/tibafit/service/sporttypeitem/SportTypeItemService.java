@@ -122,4 +122,9 @@ public class SportTypeItemService implements SportTypeItemService_interface {
         Integer affectNumOfTypeItem = sportTypeItemRepo.updateSportTypeItemDataStatusBySportIds(dataStatus, sportIds);
         return affectNumOfTypeItem;
     }
+    
+    @Override
+    public void deleteBySportTypeItemIds(List<Integer> sportTypeRecordIds) {
+        sportTypeItemRepo.deleteBySportTypeItemIdIn(sportTypeRecordIds);
+    }
 }

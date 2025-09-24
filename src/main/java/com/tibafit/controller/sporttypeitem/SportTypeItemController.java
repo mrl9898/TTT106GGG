@@ -97,6 +97,13 @@ public class SportTypeItemController {
                 sportTypeItemSvc.updateSportTypeItemDataStatusBySportTypeItemIds(req.getDataStatus(), req.getSportTypeItemIds());
         return affected;
     }
+    
+    
+    // 刪除
+    @PostMapping("/deleteBySportTypeItemIds")
+    public void deleteBySportTypeItemIds(@RequestBody @Valid DeleteBySportTypeItemIdsRequest req) {
+          sportTypeItemSvc.deleteBySportTypeItemIds(req.getSportTypeItemIds());
+    }
 
     // ==== Request DTOs ====
     public static class SportTypeIdAndSportIdRequest {
@@ -227,6 +234,18 @@ public class SportTypeItemController {
         public void setDataStatus(Integer dataStatus) {
             this.dataStatus = dataStatus;
         }
+
+        @NotEmpty(message = "運動分類明細IDs不可為空")
+        public List<Integer> getSportTypeItemIds() {
+            return sportTypeItemIds;
+        }
+        public void setSportTypeItemIds(List<Integer> sportTypeItemIds) {
+            this.sportTypeItemIds = sportTypeItemIds;
+        }
+    }
+    
+    public static class DeleteBySportTypeItemIdsRequest {
+        private List<Integer> sportTypeItemIds;
 
         @NotEmpty(message = "運動分類明細IDs不可為空")
         public List<Integer> getSportTypeItemIds() {

@@ -11,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tibafit.dto.sporttype.SportTypeRequestDTO;
 import com.tibafit.dto.sporttype.SportTypeResponseDTO;
 import com.tibafit.model.sporttype.SportTypeConverter;
+import com.tibafit.model.sporttype.SportTypeDataStatus;
 import com.tibafit.model.sporttype.SportTypeVO;
+import com.tibafit.model.sporttypeitem.SportTypeItemVO;
 import com.tibafit.repository.sporttype.SportTypeRepository;
 import com.tibafit.repository.sporttypeitem.SportTypeItemRepository;
 
@@ -133,10 +135,19 @@ public class SportTypeService implements SportTypeService_interface {
     public Integer updateSportTypeDataStatusBySportTypeIds(Integer dataStatus, List<Integer> sportTypeIds) {
         Integer affectNumOfType = sportTypeRepo.updateSportTypeDataStatusBySportTypeIds(dataStatus, sportTypeIds);
         
-        // 一併更新該分類詳細狀態
-        if(affectNumOfType > 0) {
-        	sportTypeItemRepo.updateSportTypeItemDataStatusBySportTypeIds(dataStatus, sportTypeIds);
-        }
+        // 如為 刪除分類
+        if(affectNumOfType > 0 && (SportTypeDataStatus.DELETE.getCodeNum()).equals(dataStatus)) {
+        	// 一併刪除該分類明細
+        	// PO
+        	List<SportTypeItemVO> itemList = sportTypeItemRepo.findBySportTypeIdIn(sportTypeIds);
+        	List<Integer> itemIdList = new ArrayList<>();
+        	for (SportTypeItemVO item : itemList) {
+        		if(item != null && item.getSportTypeItemId() != null) {
+        			itemIdList.add(item.getSportTypeItemId());
+        		}
+        	}
+        	sportTypeItemRepo.deleteBySportTypeItemIdIn(itemIdList);
+    	}
         
         return affectNumOfType;
     }

@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,16 +13,12 @@ import com.tibafit.model.sport.SportConverter;
 import com.tibafit.model.sport.SportDataStatus;
 import com.tibafit.model.sport.SportVO;
 import com.tibafit.repository.sport.SportRepository;
-import com.tibafit.repository.sporttypeitem.SportTypeItemRepository;
 
 @Service("sportService")
 public class SportService implements SportService_Interface {
 
 	@Autowired
 	private SportRepository sportRepo;
-
-	@Autowired
-	private SportTypeItemRepository sportTypeItemRepo;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -127,10 +121,6 @@ public class SportService implements SportService_Interface {
 
 		Integer affectNumOfSport = sportRepo.updateSportDataStatusByIds(targetStatus, sportIds);
 
-		// 一併更新該分類詳細狀態
-		if (affectNumOfSport > 0) {
-			sportTypeItemRepo.updateSportTypeItemDataStatusBySportIds(targetStatus, sportIds);
-		}
 		return affectNumOfSport;
 	}
 
