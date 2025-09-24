@@ -25,7 +25,7 @@ import com.tibafit.model.user.User;
 import com.tibafit.model.workoutplan.WorkoutPlanSportFrom;
 import com.tibafit.model.workoutplan.WorkoutPlanStatus;
 import com.tibafit.model.workoutplan.WorkoutPlanVO;
-import com.tibafit.model.workoutplanrecord.WorkoutPlanRecordCalorieCountMethoed;
+import com.tibafit.model.workoutplanrecord.WorkoutPlanRecordCalorieCountMethod;
 import com.tibafit.model.workoutplanrecord.WorkoutPlanRecordConverter;
 import com.tibafit.model.workoutplanrecord.WorkoutPlanRecordVO;
 import com.tibafit.repository.customsport.CustomSportRepository;
@@ -183,7 +183,7 @@ public class workoutPlanRecordService implements workoutPlanRecordService_interf
 
 	@Override
 	public List<WorkoutPlanRecordResponseDTO> insertWorkoutPlanRecordMultiple(List<WorkoutPlanRecordRequestDTO> dtos) {
-		String calorieCountMethod = WorkoutPlanRecordCalorieCountMethoed.RAWCOUNT.getDisplayName();
+		Integer calorieCountMethod = WorkoutPlanRecordCalorieCountMethod.RAWCOUNT.getCodeNum();
 		
 		List<WorkoutPlanRecordResponseDTO> returnRecordDTOs = new ArrayList<>();
 		if (dtos == null || dtos.isEmpty()) {
@@ -221,7 +221,7 @@ public class workoutPlanRecordService implements workoutPlanRecordService_interf
 				if (userVO != null && userVO.getWeightKg() != null
 						&& userVO.getWeightKg().compareTo(BigDecimal.ZERO) > 0) {
 					
-					calorieCountMethod = WorkoutPlanRecordCalorieCountMethoed.KGCOUNT.getDisplayName();
+					calorieCountMethod = WorkoutPlanRecordCalorieCountMethod.KGCOUNT.getCodeNum();
 					weightKg = userVO.getWeightKg();
 				}
 
@@ -241,7 +241,7 @@ public class workoutPlanRecordService implements workoutPlanRecordService_interf
 
 			// 如果是 自訂義運動 (custom)
 			if ((WorkoutPlanSportFrom.CUSTOM.getCodeName()).equals(planRecordVO.getSportFrom()) && planRecordVO.getCustomSportId() != null) {
-				calorieCountMethod = WorkoutPlanRecordCalorieCountMethoed.FILLIN.getDisplayName();
+				calorieCountMethod = WorkoutPlanRecordCalorieCountMethod.FILLIN.getCodeNum();
 				
 				// PO，拿運動資料
 				CustomSportVO customSport = customSportRepo.findById(planRecordVO.getCustomSportId()).orElse(null);

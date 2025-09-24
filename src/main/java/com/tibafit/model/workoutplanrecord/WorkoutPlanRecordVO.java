@@ -35,7 +35,7 @@ public class WorkoutPlanRecordVO implements Serializable {
 	
 	
 	private Integer actualCalories;
-	private String calorieCountMethod;
+	private Integer calorieCountMethod;
 	
 	private LocalDateTime actualStartTime;
 	private LocalDateTime actualEndTime;
@@ -131,11 +131,12 @@ public class WorkoutPlanRecordVO implements Serializable {
 	public void setActualCalories(Integer actualCalories) {
 		this.actualCalories = actualCalories;
 	}
-	@Transient
-	public String getCalorieCountMethod() {
+	
+	@Column(name = "calorie_count_method", nullable = false)
+	public Integer getCalorieCountMethod() {
 		return calorieCountMethod;
 	}
-	public void setCalorieCountMethod(String calorieCountMethod) {
+	public void setCalorieCountMethod(Integer calorieCountMethod) {
 		this.calorieCountMethod = calorieCountMethod;
 	}
 

@@ -7,10 +7,7 @@ import java.util.List;
 
 import com.tibafit.dto.workoutplanrecord.WorkoutPlanRecordRequestDTO;
 import com.tibafit.dto.workoutplanrecord.WorkoutPlanRecordResponseDTO;
-import com.tibafit.model.customsport.CustomSportVO;
-import com.tibafit.model.sport.SportVO;
 import com.tibafit.model.workoutplan.WorkoutPlanSportFrom;
-import com.tibafit.model.workoutplan.WorkoutPlanVO;
 
 public class WorkoutPlanRecordConverter {
 
@@ -25,14 +22,19 @@ public class WorkoutPlanRecordConverter {
 		String tempSportFrom = dto.getSportFrom();
 		Integer tempSportId = dto.getSportId();
 		Integer tempCustomSportId = dto.getCustomSportId();
+		Integer tempCalorieCountMethod = WorkoutPlanRecordCalorieCountMethod.RAWCOUNT.getCodeNum();
         
 		boolean checkResult = false;
 		if((WorkoutPlanSportFrom.SYSTEM.getCodeName()).equals(tempSportFrom) && tempSportId != null) {
 			tempCustomSportId = null;
+			// 系統運動紀錄先預設 "估算"
+			tempCalorieCountMethod = WorkoutPlanRecordCalorieCountMethod.RAWCOUNT.getCodeNum();
 			checkResult = true;
 		}
 		if ((WorkoutPlanSportFrom.CUSTOM.getCodeName()).equals(tempSportFrom) && tempCustomSportId != null) {
 			tempSportId = null;
+			// 自訂義運動紀錄先預設 "自填"
+			tempCalorieCountMethod = WorkoutPlanRecordCalorieCountMethod.FILLIN.getCodeNum();
 			checkResult = true;
 		}
 		
@@ -52,6 +54,9 @@ public class WorkoutPlanRecordConverter {
         vo.setSportId(tempSportId);
         vo.setCustomSportId(tempCustomSportId);
         
+        // 先放預設，到svc裡會再依計算方式變動
+        vo.setCalorieCountMethod(tempCalorieCountMethod);
+        
         vo.setActualStartTime(tempActualStartTime);
         vo.setActualEndTime(tempActualEndTime);
 
@@ -68,15 +73,36 @@ public class WorkoutPlanRecordConverter {
 
         WorkoutPlanRecordResponseDTO dto = new WorkoutPlanRecordResponseDTO();
         
+		Integer tempExpectedDuration = vo.getActualDuration();
+		StringBuilder durationStr = new StringBuilder("0 hr 0 min");
+		if (tempExpectedDuration != null && tempExpectedDuration > 0) {
+			// 小時
+		    int hours = tempExpectedDuration / 60;
+		    // 分鐘
+		    int minutes = tempExpectedDuration % 60;
+		    
+		    durationStr.setLength(0);
+		    durationStr.append( hours + " hr " + minutes + " min");
+		}
+		
+		Integer tempCalorieCountMethod = vo.getCalorieCountMethod();
+        
         dto.setWorkoutPlanRecordId(vo.getWorkoutPlanRecordId());
         dto.setWorkoutPlanId(vo.getWorkoutPlanId());
+        
         dto.setSportFrom(vo.getSportFrom());
         dto.setSportId(vo.getSportId());
         dto.setCustomSportId(vo.getCustomSportId());
+        
         dto.setActualCalories(vo.getActualCalories());
+        dto.setCalorieCountMethod(tempCalorieCountMethod);
+        dto.setCalorieCountMethodText(WorkoutPlanRecordCalorieCountMethod.getDisplayNameByCodeNum(tempCalorieCountMethod));
+        
         dto.setActualStartTime(vo.getActualStartTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         dto.setActualEndTime(vo.getActualEndTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-        dto.setActualDuration(vo.getActualDuration());
+        dto.setActualDuration(tempExpectedDuration);
+        dto.setActualDurationText(durationStr.toString());
+        
         dto.setActualRecordDatetime(vo.getActualRecordDatetime() == null? "" : vo.getActualRecordDatetime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         dto.setWorkoutPlanRecordDataStatus(vo.getWorkoutPlanRecordDataStatus());
         dto.setCreateDatetime(vo.getCreateDatetime() == null? "" : vo.getCreateDatetime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
