@@ -30,4 +30,9 @@ public interface SportService_Interface {
 	
 	public List<SportDataStatus> getSportDataStatusNeed(List<Integer> needStatusCodeNums);
 
+	public List<SportVO> getByComplexCondition(
+			String sportNameDescFuzzy, String sportLevel, 
+			String createStartDate, String createEndDate, 
+			String updateStartDate, String updateEndDate, 
+			List<Integer> statuses);
 }

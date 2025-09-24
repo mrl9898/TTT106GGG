@@ -1,12 +1,18 @@
 package com.tibafit.controller.sporttype;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tibafit.dto.sport.SportResponseDTO;
 import com.tibafit.dto.sporttype.SportTypeRequestDTO;
 import com.tibafit.dto.sporttype.SportTypeResponseDTO;
+import com.tibafit.model.sport.SportConverter;
+import com.tibafit.model.sport.SportVO;
 import com.tibafit.service.sporttype.SportTypeService;
 
 import jakarta.validation.constraints.NotEmpty;
@@ -86,6 +92,38 @@ public class SportTypeController {
                 sportTypeSvc.updateSportTypeDataStatusBySportTypeIds(req.getDataStatus(), req.getSportTypeIds());
         return affected;
     }
+    
+    
+	/*
+	 * Test
+	 */
+	@PostMapping("/getByComplexCondition")
+	@ResponseBody
+	public List<SportTypeResponseDTO> getByComplexCondition(@RequestBody Map<String, Object> map) {
+	    ObjectMapper objectMapper = new ObjectMapper();
+
+	    // 字串型別參數
+	    String sportTypeNameFuzzy = objectMapper.convertValue(map.get("sportTypeNameFuzzy"), String.class);
+	    String createStartDate   = objectMapper.convertValue(map.get("createStartDate"), String.class);
+	    String createEndDate     = objectMapper.convertValue(map.get("createEndDate"), String.class);
+	    String updateStartDate   = objectMapper.convertValue(map.get("updateStartDate"), String.class);
+	    String updateEndDate     = objectMapper.convertValue(map.get("updateEndDate"), String.class);
+
+	    // List<Integer>
+	    List<Integer> statuses = objectMapper.convertValue(map.get("statuses"), new TypeReference<List<Integer>>() {});
+
+
+	    List<SportTypeResponseDTO> dtoList = sportTypeSvc.getByComplexCondition(
+	    	sportTypeNameFuzzy, 
+	        createStartDate, 
+	        createEndDate, 
+	        updateStartDate, 
+	        updateEndDate, 
+	        statuses
+	    );
+
+	     return dtoList;
+	}
 
     // Request DTO 
     public static class SportTypeIdAndStatusesRequest {

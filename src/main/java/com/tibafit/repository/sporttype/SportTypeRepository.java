@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.tibafit.model.sport.SportVO;
 import com.tibafit.model.sporttype.SportTypeVO;
 
 @Repository
@@ -49,7 +50,27 @@ public interface SportTypeRepository extends JpaRepository<SportTypeVO, Integer>
     public List<SportTypeVO> findBySportTypeDataStatusIn(List<Integer> SportTypeDataStatuses);
     
     
+	@Query(value = 
+		       "SELECT * " +
+		       "FROM sport_type s " +
+		       "WHERE (:name IS NULL OR s.sport_type_name LIKE CONCAT('%', :name, '%')) " +
+		       "  AND (:createStart IS NULL OR s.create_datetime >= :createStart) " +
+		       "  AND (:createEnd IS NULL OR s.create_datetime <= :createEnd) " +
+		       "  AND (:updateStart IS NULL OR s.update_datetime >= :updateStart) " +
+		       "  AND (:updateEnd IS NULL OR s.update_datetime <= :updateEnd) " +
+		       "  AND (s.sport_type_data_status IN :statuses)", 
+		       nativeQuery = true)
+		public List<SportTypeVO> findByComplexCondition(
+		        @Param("name") String sportTypeNameFuzzy,
+		        @Param("createStart") String createStartDate, 
+		        @Param("createEnd") String createEndDate, 
+		        @Param("updateStart") String updateStartDate, 
+		        @Param("updateEnd") String updateEndDate, 
+		        @Param("statuses") List<Integer> statuses);
+    
+    
 	@Modifying
 	@Query(value = "UPDATE sport_type SET sport_type_data_status = :dataStatus WHERE sport_type_id IN :sportTypeIds", nativeQuery = true)
 	public Integer updateSportTypeDataStatusBySportTypeIds(@Param("dataStatus") Integer dataStatus, @Param("sportTypeIds") List<Integer> sportTypeIds);
+
 }

@@ -3,6 +3,8 @@ package com.tibafit.service.sporttype;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.repository.query.Param;
+
 import com.tibafit.dto.sporttype.SportTypeRequestDTO;
 import com.tibafit.dto.sporttype.SportTypeResponseDTO;
 import com.tibafit.model.sporttype.SportTypeVO;
@@ -35,6 +37,15 @@ public interface SportTypeService_interface {
 
     // 查詢所有符合狀態的
     public List<SportTypeResponseDTO> getBySportTypeDataStatuses(List<Integer> statuses);
+    
+    // 複合查詢 + 狀態
+    public List<SportTypeResponseDTO> getByComplexCondition(
+	        String sportTypeNameFuzzy,
+	        String createStartDate, 
+	        String createEndDate, 
+	        String updateStartDate, 
+	        String updateEndDate, 
+	        List<Integer> statuses);
 
     // 批次更新狀態
     public Integer updateSportTypeDataStatusBySportTypeIds(Integer dataStatus, List<Integer> sportTypeIds);

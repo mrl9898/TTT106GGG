@@ -205,5 +205,37 @@ public class SportController {
 //		return SportConverter.toDtoList(rawList);
 	}
 	
+	
+	/*
+	 * Test
+	 */
+	@PostMapping("/getByComplexCondition")
+	@ResponseBody
+	public List<SportResponseDTO> getByComplexCondition(@RequestBody Map<String, Object> map) {
+	    ObjectMapper objectMapper = new ObjectMapper();
 
+	    // 字串型別參數
+	    String sportNameDescFuzzy = objectMapper.convertValue(map.get("sportNameDescFuzzy"), String.class);
+	    String sportLevel        = objectMapper.convertValue(map.get("sportLevel"), String.class);
+	    String createStartDate   = objectMapper.convertValue(map.get("createStartDate"), String.class);
+	    String createEndDate     = objectMapper.convertValue(map.get("createEndDate"), String.class);
+	    String updateStartDate   = objectMapper.convertValue(map.get("updateStartDate"), String.class);
+	    String updateEndDate     = objectMapper.convertValue(map.get("updateEndDate"), String.class);
+
+	    // List<Integer>
+	    List<Integer> statuses = objectMapper.convertValue(map.get("statuses"), new TypeReference<List<Integer>>() {});
+
+
+	    List<SportVO> voList = sportSvc.getByComplexCondition(
+	        sportNameDescFuzzy, 
+	        sportLevel, 
+	        createStartDate, 
+	        createEndDate, 
+	        updateStartDate, 
+	        updateEndDate, 
+	        statuses
+	    );
+
+	     return SportConverter.toDtoList(voList);
+	}
 }

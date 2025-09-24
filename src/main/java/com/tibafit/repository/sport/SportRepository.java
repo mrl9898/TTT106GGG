@@ -43,9 +43,37 @@ public interface SportRepository extends JpaRepository<SportVO, Integer> {
 	
 
 //	List<SportVO> saveAll(List<SportVO> sportVOs);
+	
+    
+    @Query(value = 
+    	       "SELECT * " +
+    	       "FROM sport s " +
+    	       "WHERE ( " +
+    	       "        :nameDesc IS NULL " +
+    	       "        OR ( " +
+    	       "            s.sport_name LIKE CONCAT('%', :nameDesc, '%') " +
+    	       "            OR s.sport_description LIKE CONCAT('%', :nameDesc, '%') " +
+    	       "        ) " +
+    	       "      ) " +
+    	       "  AND (:level IS NULL OR s.sport_level = :level) " +
+    	       "  AND (:createStart IS NULL OR s.create_datetime >= :createStart) " +
+    	       "  AND (:createEnd IS NULL OR s.create_datetime <= :createEnd) " +
+    	       "  AND (:updateStart IS NULL OR s.update_datetime >= :updateStart) " +
+    	       "  AND (:updateEnd IS NULL OR s.update_datetime <= :updateEnd) " +
+    	       "  AND (s.sport_data_status IN :statuses)", 
+    	       nativeQuery = true)
+    	public List<SportVO> findByComplexCondition(
+    	        @Param("nameDesc") String sportNameDescFuzzy,
+    	        @Param("level") String sportLevel,
+    	        @Param("createStart") String createStartDate,
+    	        @Param("createEnd") String createEndDate,
+    	        @Param("updateStart") String updateStartDate,
+    	        @Param("updateEnd") String updateEndDate,
+    	        @Param("statuses") List<Integer> statuses);
     
 	
     @Modifying
     @Query(value = "UPDATE sport SET sport_data_status = :sport_data_status WHERE sport_id IN :ids", nativeQuery = true)
     Integer updateSportDataStatusByIds(@Param("sport_data_status") Integer status, @Param("ids") List<Integer> ids);
 }
+
