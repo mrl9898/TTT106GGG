@@ -46,4 +46,6 @@ public interface SportTypeItemService_interface {
 
     // 批次更新狀態 (sportIds)
     public Integer updateSportTypeItemDataStatusBySportIds(Integer dataStatus, List<Integer> sportIds);
+    
+    public void deleteBySportTypeItemIds(List<Integer> sportTypeRecordIds);
 }
