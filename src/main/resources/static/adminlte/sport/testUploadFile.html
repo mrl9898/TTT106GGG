@@ -87,21 +87,63 @@
     </form>
 
     <hr>
+
     <h2>結果</h2>
     <pre id="result"></pre>
 
     <script>
+        async function callApi(url, options) {
+            const resultEl = document.getElementById("result");
+
+            // 顯示 Loading 狀態
+            resultEl.textContent = "處理中，請稍候...";
+
+            try {
+                let res = await fetch(url, options);
+
+                // 情況 A: HTTP 層級錯誤
+                if (!res.ok) {
+                    throw new Error("HTTP 錯誤狀態碼: " + res.status);
+                }
+
+                let data;
+                try {
+                    data = await res.json();
+                } catch (parseErr) {
+                    throw new Error("回傳內容非 JSON，API 壞掉了");
+                }
+
+                // 情況 B: API 回傳格式不完整
+                if (!data || typeof data.returnCode === "undefined") {
+                    resultEl.textContent =
+                        "錯誤: API 回傳格式不正確，可能壞掉了\n" +
+                        JSON.stringify(data, null, 2);
+                    return;
+                }
+
+                // 情況 C: 正常判斷 returnCode
+                if (data.returnCode !== "000") {
+                    resultEl.textContent =
+                        `錯誤: [${data.returnCode}] ${data.returnMsg}`;
+                } else {
+                    resultEl.textContent = JSON.stringify(data, null, 2);
+                }
+
+            } catch (err) {
+                // 情況 D: 完全沒回應 or 其他例外
+                resultEl.textContent = "系統錯誤: " + err.message;
+            }
+        }
+
         window.uploadFile = async function () {
             let formData = new FormData();
             formData.append("funcType", document.getElementById("uploadFuncType").value);
             formData.append("file", document.getElementById("uploadFileInput").files[0]);
 
-            let res = await fetch("/fileImg/api/upload", {
+            await callApi("/fileImg/api/upload", {
                 method: "POST",
                 body: formData
             });
-            let data = await res.json();
-            document.getElementById("result").textContent = JSON.stringify(data, null, 2);
         };
 
         window.deleteFile = async function () {
@@ -109,45 +151,44 @@
             formData.append("funcType", document.getElementById("deleteFuncType").value);
             formData.append("fileName", document.getElementById("deleteFileName").value);
 
-            let res = await fetch("/fileImg/api/delete", {
+            await callApi("/fileImg/api/delete", {
                 method: "POST",
                 body: formData
             });
-            let data = await res.json();
-            document.getElementById("result").textContent = JSON.stringify(data, null, 2);
         };
 
         window.updateFile = async function () {
             let formData = new FormData();
             formData.append("funcType", document.getElementById("updateFuncType").value);
             formData.append("oldFileName", document.getElementById("oldFileName").value);
+
             if (document.getElementById("newFile").files.length > 0) {
                 formData.append("newFile", document.getElementById("newFile").files[0]);
             }
 
-            let res = await fetch("/fileImg/api/update", {
+            await callApi("/fileImg/api/update", {
                 method: "POST",
                 body: formData
             });
-            let data = await res.json();
-            document.getElementById("result").textContent = JSON.stringify(data, null, 2);
         };
 
         window.getSingle = async function () {
             let funcType = document.getElementById("getSingleFuncType").value;
             let fileName = document.getElementById("getSingleFileName").value;
 
-            let res = await fetch(`/fileImg/api/getSingle?funcType=${funcType}&fileName=${encodeURIComponent(fileName)}`);
-            let data = await res.json();
-            document.getElementById("result").textContent = JSON.stringify(data, null, 2);
+            await callApi(
+                `/fileImg/api/getSingle?funcType=${funcType}&fileName=${encodeURIComponent(fileName)}`,
+                { method: "GET" }
+            );
         };
 
         window.getMultiple = async function () {
             let funcType = document.getElementById("getMultipleFuncType").value;
 
-            let res = await fetch(`/fileImg/api/getMultipleByFunc?funcType=${funcType}`);
-            let data = await res.json();
-            document.getElementById("result").textContent = JSON.stringify(data, null, 2);
+            await callApi(
+                `/fileImg/api/getMultipleByFunc?funcType=${funcType}`,
+                { method: "GET" }
+            );
         };
     </script>
 </body>
