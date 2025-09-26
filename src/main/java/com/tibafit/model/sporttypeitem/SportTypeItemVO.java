@@ -1,5 +1,6 @@
 package com.tibafit.model.sporttypeitem;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -19,7 +20,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "sport_type_item")
-public class SportTypeItemVO {
+public class SportTypeItemVO implements Serializable {
     private Integer sportTypeItemId;
     
     private Integer sportTypeId;

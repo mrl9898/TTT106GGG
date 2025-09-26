@@ -1,5 +1,6 @@
 package com.tibafit.model.sporttype;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "sport_type")
-public class SportTypeVO {
+public class SportTypeVO implements Serializable {
     private Integer sportTypeId;
     
     private Set<SportTypeItemVO> sportTypeItemVOs;

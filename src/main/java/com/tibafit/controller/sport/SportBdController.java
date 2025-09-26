@@ -59,4 +59,12 @@ public class SportBdController {
 	public String workoutPlanRecordMain(ModelMap model) {
 		return "redirect:/adminlte/workoutPlanRecord/workoutPlanRecord.html";
 	}
+	
+	/*
+	 * 
+	 */
+	@GetMapping("/testUploadFile")
+	public String testUploadFileMain(ModelMap model) {
+		return "redirect:/adminlte/sport/testUploadFile.html";
+	}
 }

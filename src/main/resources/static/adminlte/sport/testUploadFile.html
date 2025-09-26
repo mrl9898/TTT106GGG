@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>檔案上傳測試</title>
+</head>
+<body>
+    <h2>上傳檔案</h2>
+    <form id="uploadForm">
+        <label>功能類型 (funcType):</label>
+        <select name="funcType" id="uploadFuncType">
+            <option value="sport">sport</option>
+            <option value="customSport">customSport</option>
+            <option value="sportType">sportType</option>
+        </select>
+        <br><br>
+        <input type="file" name="file" id="uploadFileInput" />
+        <br><br>
+        <button type="button" onclick="uploadFile()">上傳</button>
+    </form>
+
+    <hr>
+
+    <h2>刪除檔案</h2>
+    <form id="deleteForm">
+        <label>功能類型 (funcType):</label>
+        <select name="funcType" id="deleteFuncType">
+            <option value="sport">sport</option>
+            <option value="customSport">customSport</option>
+            <option value="sportType">sportType</option>
+        </select>
+        <br><br>
+        <label>檔名:</label>
+        <input type="text" id="deleteFileName" placeholder="例如 abc123.png" />
+        <br><br>
+        <button type="button" onclick="deleteFile()">刪除</button>
+    </form>
+
+    <hr>
+
+    <h2>更新檔案</h2>
+    <form id="updateForm">
+        <label>功能類型 (funcType):</label>
+        <select name="funcType" id="updateFuncType">
+            <option value="sport">sport</option>
+            <option value="customSport">customSport</option>
+            <option value="sportType">sportType</option>
+        </select>
+        <br><br>
+        <label>舊檔名:</label>
+        <input type="text" id="oldFileName" placeholder="例如 abc123.png" />
+        <br><br>
+        <input type="file" id="newFile" />
+        <br><br>
+        <button type="button" onclick="updateFile()">更新</button>
+    </form>
+
+    <hr>
+
+    <h2>查詢單一檔案 (getSingle)</h2>
+    <form id="getSingleForm">
+        <label>功能類型 (funcType):</label>
+        <select name="funcType" id="getSingleFuncType">
+            <option value="sport">sport</option>
+            <option value="customSport">customSport</option>
+            <option value="sportType">sportType</option>
+        </select>
+        <br><br>
+        <label>檔名:</label>
+        <input type="text" id="getSingleFileName" placeholder="例如 abc123.png" />
+        <br><br>
+        <button type="button" onclick="getSingle()">查詢單一檔案</button>
+    </form>
+
+    <hr>
+
+    <h2>查詢多筆檔案 (getMultipleByFunc)</h2>
+    <form id="getMultipleForm">
+        <label>功能類型 (funcType):</label>
+        <select name="funcType" id="getMultipleFuncType">
+            <option value="sport">sport</option>
+            <option value="customSport">customSport</option>
+            <option value="sportType">sportType</option>
+        </select>
+        <br><br>
+        <button type="button" onclick="getMultiple()">查詢多筆檔案</button>
+    </form>
+
+    <hr>
+    <h2>結果</h2>
+    <pre id="result"></pre>
+
+    <script>
+        window.uploadFile = async function () {
+            let formData = new FormData();
+            formData.append("funcType", document.getElementById("uploadFuncType").value);
+            formData.append("file", document.getElementById("uploadFileInput").files[0]);
+
+            let res = await fetch("/fileImg/api/upload", {
+                method: "POST",
+                body: formData
+            });
+            let data = await res.json();
+            document.getElementById("result").textContent = JSON.stringify(data, null, 2);
+        };
+
+        window.deleteFile = async function () {
+            let formData = new FormData();
+            formData.append("funcType", document.getElementById("deleteFuncType").value);
+            formData.append("fileName", document.getElementById("deleteFileName").value);
+
+            let res = await fetch("/fileImg/api/delete", {
+                method: "POST",
+                body: formData
+            });
+            let data = await res.json();
+            document.getElementById("result").textContent = JSON.stringify(data, null, 2);
+        };
+
+        window.updateFile = async function () {
+            let formData = new FormData();
+            formData.append("funcType", document.getElementById("updateFuncType").value);
+            formData.append("oldFileName", document.getElementById("oldFileName").value);
+            if (document.getElementById("newFile").files.length > 0) {
+                formData.append("newFile", document.getElementById("newFile").files[0]);
+            }
+
+            let res = await fetch("/fileImg/api/update", {
+                method: "POST",
+                body: formData
+            });
+            let data = await res.json();
+            document.getElementById("result").textContent = JSON.stringify(data, null, 2);
+        };
+
+        window.getSingle = async function () {
+            let funcType = document.getElementById("getSingleFuncType").value;
+            let fileName = document.getElementById("getSingleFileName").value;
+
+            let res = await fetch(`/fileImg/api/getSingle?funcType=${funcType}&fileName=${encodeURIComponent(fileName)}`);
+            let data = await res.json();
+            document.getElementById("result").textContent = JSON.stringify(data, null, 2);
+        };
+
+        window.getMultiple = async function () {
+            let funcType = document.getElementById("getMultipleFuncType").value;
+
+            let res = await fetch(`/fileImg/api/getMultipleByFunc?funcType=${funcType}`);
+            let data = await res.json();
+            document.getElementById("result").textContent = JSON.stringify(data, null, 2);
+        };
+    </script>
+</body>
+</html>
