@@ -36,6 +36,7 @@ public class SportTypeController {
         return result;
     }
 
+    
     // 更新多筆 SportType
     @PostMapping("/updateMultiple")
     public String updateSportTypes(@RequestBody List<SportTypeRequestDTO> dtos) {
@@ -44,38 +45,14 @@ public class SportTypeController {
         return result;
     }
 
+    
     // 檢查名稱是否存在
     @PostMapping("/isExistSportTypeName")
     public Boolean isExistSportTypeName(@RequestBody String sportTypeName) {
         Boolean isExist = sportTypeSvc.isExistBySportTypeName(sportTypeName);
         return isExist;
     }
-
-    // 查單筆
-    @PostMapping("/getSingleBySportTypeId")
-    public SportTypeResponseDTO getBySportTypeId(@RequestBody Integer sportTypeId) {
-        SportTypeResponseDTO dto = sportTypeSvc.getBySportTypeId(sportTypeId);
-        return dto;
-    }
-
-    // 查多筆
-    @PostMapping("/getMultipleBySportTypeIds")
-    public List<SportTypeResponseDTO> getBySportTypeIds(@RequestBody List<Integer> sportTypeIds) {
-        List<SportTypeResponseDTO> dtos = sportTypeSvc.getBySportTypeIds(sportTypeIds);
-        return dtos;
-    }
     
-    
-    
- // 查單筆 (分類下運動 + 狀態)
-    @PostMapping("/getSingleBySportTypeIdWithSportDataStatuses")
-    public SportTypeResponseExtraSportsDTO getSingleBySportTypeIdWithSportDataStatuses(
-            @RequestBody @Valid SportTypeIdAndSportDataStatusesRequest req) {
-        return sportTypeSvc.getBySportTypeId_SportDataStatuses(
-                req.getSportTypeId(), 
-                req.getSportDataStatuses()
-        );
-    }
 
     // 查多筆 分類狀態 + 分類下運動狀態
     @PostMapping("/getMultipleBySportTypeDataStatusesWithSportDataStatuses")
@@ -86,31 +63,7 @@ public class SportTypeController {
                 req.getSportDataStatuses()
         );
     }
-    
-    
 
-    // 查單筆 (含狀態篩選)
-    @PostMapping("/getSingleSportTypeIdAndDataStatuses")
-    public SportTypeResponseDTO getBySportTypeIdAndDataStatuses(@RequestBody SportTypeIdAndStatusesRequest req) {
-        SportTypeResponseDTO dto =
-                sportTypeSvc.getBySportTypeIdAndSportTypeDataStatuses(req.getSportTypeId(), req.getStatuses());
-        return dto;
-    }
-
-    // 查多筆 (含狀態篩選)
-    @PostMapping("/getMultipleBySportTypeIdsAndDataStatuses")
-    public List<SportTypeResponseDTO> getBySportTypeIdsAndDataStatuses(@RequestBody SportTypeIdsAndStatusesRequest req) {
-        List<SportTypeResponseDTO> dtos =
-                sportTypeSvc.getBySportTypeIdsAndSportTypeDataStatuses(req.getSportTypeIds(), req.getStatuses());
-        return dtos;
-    }
-
-    // 查全部 (依狀態)
-    @PostMapping("/getMultipleBySportTypeDataStatuses")
-    public List<SportTypeResponseDTO> getBySportTypeDataStatuses(@RequestBody List<Integer> statuses) {
-        List<SportTypeResponseDTO> dtos = sportTypeSvc.getBySportTypeDataStatuses(statuses);
-        return dtos;
-    }
 
     // 更新狀態
     @PostMapping("/updateSportTypeDataStatusBySportTypeIds")
@@ -122,7 +75,7 @@ public class SportTypeController {
     
     
 	/*
-	 * Test
+	 * 
 	 */
 	@PostMapping("/getByComplexCondition")
 	@ResponseBody

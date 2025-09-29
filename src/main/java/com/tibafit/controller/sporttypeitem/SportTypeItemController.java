@@ -27,14 +27,7 @@ public class SportTypeItemController {
         String result = "新增成功";
         return result;
     }
-
-    // 更新多筆
-    @PostMapping("/updateMultiple")
-    public String updateSportTypeItems(@RequestBody @Valid List<SportTypeItemRequestDTO> dtos) {
-        sportTypeItemSvc.updateSportTypeItems(dtos);
-        String result = "更新成功";
-        return result;
-    }
+    
 
     // 檢查是否存在
     @PostMapping("/isExitBySportTypeIdAndSportId")
@@ -42,60 +35,6 @@ public class SportTypeItemController {
         Boolean result =
                 sportTypeItemSvc.isExitBySportTypeIdAndSportId(req.getSportTypeId(), req.getSportId());
         return result;
-    }
-
-    // 查單筆
-    @PostMapping("/getSingleBySportTypeItemId")
-    public SportTypeItemResponseDTO getBySportTypeItemId(@RequestBody @Valid SportTypeItemIdRequest req) {
-        SportTypeItemResponseDTO dto = sportTypeItemSvc.getBySportTypeItemId(req.getSportTypeItemId());
-        return dto;
-    }
-
-    // 查多筆 (sportTypeId)
-    @PostMapping("/getMultipleBySportTypeId")
-    public List<SportTypeItemResponseDTO> getBySportTypeId(@RequestBody @Valid SportTypeIdRequest req) {
-        List<SportTypeItemResponseDTO> dtos = sportTypeItemSvc.getBySportTypeId(req.getSportTypeId());
-        return dtos;
-    }
-
-    // 查單筆 (sportTypeId + sportId)
-    @PostMapping("/getSingleByTypeIdAndSportId")
-    public SportTypeItemResponseDTO getBySportTypeIdAndSportId(@RequestBody @Valid SportTypeIdAndSportIdRequest req) {
-        SportTypeItemResponseDTO dto =
-                sportTypeItemSvc.getBySportTypeIdAndSportId(req.getSportTypeId(), req.getSportId());
-        return dto;
-    }
-
-    // 查單筆 (sportTypeItemId + 資料狀態)
-    @PostMapping("/getSingleBySportTypeItemIdAndDataStatuses")
-    public SportTypeItemResponseDTO getBySportTypeItemIdAndDataStatuses(@RequestBody @Valid SportTypeItemIdAndStatusesRequest req) {
-        SportTypeItemResponseDTO dto =
-                sportTypeItemSvc.getBySportTypeItemIdAndSportTypeItemDataStatuses(req.getSportTypeItemId(), req.getStatuses());
-        return dto;
-    }
-
-    // 查多筆 (sportTypeId + 資料狀態)
-    @PostMapping("/getMultipleBySportTypeIdAndDataStatuses")
-    public List<SportTypeItemResponseDTO> getBySportTypeIdAndStatuses(@RequestBody @Valid SportTypeIdAndStatusesRequest req) {
-        List<SportTypeItemResponseDTO> dtos =
-                sportTypeItemSvc.getBySportTypeIdAndSportTypeItemDataStatuses(req.getSportTypeId(), req.getStatuses());
-        return dtos;
-    }
-
-    // 查單筆 (sportTypeId + sportId + 資料狀態)
-    @PostMapping("/getSingleBySportTypeIdAndSportIdAndDataStatuses")
-    public SportTypeItemResponseDTO getBySportTypeIdAndSportIdAndDataStatuses(@RequestBody @Valid SportTypeIdSportIdAndStatusesRequest req) {
-        SportTypeItemResponseDTO dto =
-                sportTypeItemSvc.getBySportTypeIdAndSportIdAndSportTypeItemDataStatuses(req.getSportTypeId(), req.getSportId(), req.getStatuses());
-        return dto;
-    }
-
-    // 更新狀態 (sportTypeItemIds)
-    @PostMapping("/updateDataStatusBySportTypeItemIds")
-    public Integer updateSportTypeItemDataStatusBySportTypeItemIds(@RequestBody @Valid UpdateStatusByItemIdsRequest req) {
-        Integer affected =
-                sportTypeItemSvc.updateSportTypeItemDataStatusBySportTypeItemIds(req.getDataStatus(), req.getSportTypeItemIds());
-        return affected;
     }
     
     

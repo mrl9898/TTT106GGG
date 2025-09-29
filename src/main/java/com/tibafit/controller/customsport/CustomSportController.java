@@ -27,15 +27,6 @@ public class CustomSportController {
     @Autowired
     private CustomSportService_interface svc;
 	
-	/*
-	 * 
-	 */
-	@PostMapping("/getMultipleAll")
-	@ResponseBody
-	public List<CustomSportResponseDTO> getMultipleAll() {
-		List<CustomSportVO> rawList = svc.getSportAll();			
-		return CustomSportConverter.toDtoList(rawList);
-	}
 	
 	/*
 	 * 
@@ -52,19 +43,6 @@ public class CustomSportController {
 		return CustomSportConverter.toDtoList(rawList);
 	}
 	
-	/*
-	 * 
-	 */
-	@PostMapping("/getSingle")
-	@ResponseBody
-	public CustomSportResponseDTO getSingle(@Valid @RequestBody Map<String, Integer> map) {
-		Integer sportId = map.get("sportId");
-		
-		CustomSportVO rawSport = svc.getSportByPrimaryKey(sportId);			
-
-		return CustomSportConverter.toDTO(rawSport);
-	}
-	
 
 	/*
 	 * 
@@ -78,6 +56,7 @@ public class CustomSportController {
 		System.out.println("update接收到前端資料: " + sports);
 		svc.insertSportMultiple(sports);			
 	}
+	
 	
 	/*
 	 * 

@@ -25,6 +25,7 @@ public class WorkoutPlanController {
 	@Autowired
 	private workoutPlanService_interface workoutPlanSvc;
 	
+	
 	@PostMapping("/insertMultiple")
 	@ResponseBody
 	public void insertMultiple(@Valid @RequestBody WorkoutPlanRequestDtoList list) {
@@ -32,6 +33,7 @@ public class WorkoutPlanController {
 		workoutPlanSvc.insertWorkoutPlanMultiple(dtoList);
 	}
 
+	
 	@PostMapping("/updateMultiple")
 	@ResponseBody
 	public void updateMultiple(@Valid @RequestBody WorkoutPlanRequestDtoList list) {
@@ -39,6 +41,7 @@ public class WorkoutPlanController {
 		workoutPlanSvc.updateWorkoutPlanMultiple(dtoList);
 	}
 
+	
 	/**
 	 * 更新資料狀態
 	 */
@@ -52,17 +55,7 @@ public class WorkoutPlanController {
 		Integer affectNum = workoutPlanSvc.updateWorkoutPlanDataStatusByIds(status, ids);
 		return affectNum;
 	}
-
-	/**
-	 * 查詢單筆計畫
-	 */
-	@PostMapping("/getSingleByWorkoutPlanId")
-	@ResponseBody
-	public WorkoutPlanResponseDTO getSingleByWorkoutPlanId(@RequestBody Map<String, Integer> req) {
-		Integer id = req.get("workoutPlanId");
-		WorkoutPlanResponseDTO dto = workoutPlanSvc.getWorkoutPlanByPrimaryKey(id);
-		return dto;
-	}
+	
 
 	/**
 	 * 依日期區間查詢
@@ -81,6 +74,7 @@ public class WorkoutPlanController {
 		return dtos;
 	}
 
+	
 	/**
 	 * 依日期查詢
 	 */
