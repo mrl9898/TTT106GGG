@@ -24,6 +24,9 @@ public interface SportRepository extends JpaRepository<SportVO, Integer> {
 //	Optional<SportVO> findById(Integer sportId);
 	
 	
+	public Boolean existsBySportName(String sportName);
+	
+	
 	@Query(value = "SELECT * FROM sport WHERE sport_data_status IN :statuses ORDER BY sport_id DESC", nativeQuery = true)
 	List<SportVO> findBySportDataStatuses(@Param("statuses") List<Integer> statuses);
 	
@@ -61,15 +64,15 @@ public interface SportRepository extends JpaRepository<SportVO, Integer> {
     	       "  AND (:updateStart IS NULL OR s.update_datetime >= :updateStart) " +
     	       "  AND (:updateEnd IS NULL OR s.update_datetime <= :updateEnd) " +
     	       "  AND (s.sport_data_status IN :statuses)", 
-    	       nativeQuery = true)
-    	public List<SportVO> findByComplexCondition(
-    	        @Param("nameDesc") String sportNameDescFuzzy,
-    	        @Param("level") String sportLevel,
-    	        @Param("createStart") String createStartDate,
-    	        @Param("createEnd") String createEndDate,
-    	        @Param("updateStart") String updateStartDate,
-    	        @Param("updateEnd") String updateEndDate,
-    	        @Param("statuses") List<Integer> statuses);
+	       nativeQuery = true)
+	public List<SportVO> findByComplexCondition(
+	        @Param("nameDesc") String sportNameDescFuzzy,
+	        @Param("level") String sportLevel,
+	        @Param("createStart") String createStartDate,
+	        @Param("createEnd") String createEndDate,
+	        @Param("updateStart") String updateStartDate,
+	        @Param("updateEnd") String updateEndDate,
+	        @Param("statuses") List<Integer> statuses);
     
 	
     @Modifying

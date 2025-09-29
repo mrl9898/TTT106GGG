@@ -19,6 +19,13 @@ public class SportService implements SportService_Interface {
 
 	@Autowired
 	private SportRepository sportRepo;
+	
+    @Override
+    @Transactional(readOnly = true)
+    public Boolean isExistBySportName(String sportName) {
+        Boolean isExist = sportRepo.existsBySportName(sportName);
+        return isExist;
+    }
 
 	@Override
 	@Transactional(readOnly = true)

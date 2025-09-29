@@ -25,6 +25,13 @@ public class SportController {
 	@Autowired
 	SportService_Interface sportSvc;
 	
+    // 檢查名稱是否存在
+    @PostMapping("/isExistSportName")
+    public Boolean isExistSportName(@RequestBody String sportName) {
+        Boolean isExist = sportSvc.isExistBySportName(sportName);
+        return isExist;
+    }
+	
 	/*
 	 * Test
 	 */

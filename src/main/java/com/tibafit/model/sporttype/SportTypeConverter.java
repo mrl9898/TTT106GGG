@@ -3,8 +3,10 @@ package com.tibafit.model.sporttype;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tibafit.dto.sport.SportResponseDTO;
 import com.tibafit.dto.sporttype.SportTypeRequestDTO;
 import com.tibafit.dto.sporttype.SportTypeResponseDTO;
+import com.tibafit.dto.sporttype.SportTypeResponseExtraSportsDTO;
 import com.tibafit.dto.sporttypeitem.SportTypeItemResponseDTO;
 import com.tibafit.model.sporttypeitem.SportTypeItemConverter;
 import com.tibafit.model.sporttypeitem.SportTypeItemVO;
@@ -131,5 +133,36 @@ public class SportTypeConverter {
         }
         
         return list;
+    }
+    
+    
+    /**
+     * 將 SportTypeResponseDTO 轉成 SportTypeResponseExtraSportsDTO
+     * 額外加 sportResponseDTOs
+     */
+    public static SportTypeResponseExtraSportsDTO toExtraSportsDTO(
+            SportTypeResponseDTO baseDto,
+            List<SportResponseDTO> sportResponseDTOs) {
+
+        if (baseDto == null) {
+            return null;
+        }
+
+        SportTypeResponseExtraSportsDTO dto = new SportTypeResponseExtraSportsDTO();
+
+        // 複製共用欄位
+        dto.setSportTypeId(baseDto.getSportTypeId());
+        dto.setSportTypeName(baseDto.getSportTypeName());
+        dto.setSportTypePic(baseDto.getSportTypePic());
+        dto.setSportTypeDataStatus(baseDto.getSportTypeDataStatus());
+        dto.setSportTypeDataStatusText(baseDto.getSportTypeDataStatusText());
+        dto.setCreateDatetime(baseDto.getCreateDatetime());
+        dto.setUpdateDatetime(baseDto.getUpdateDatetime());
+        dto.setSportTypeItemResponseDTOs(baseDto.getSportTypeItemResponseDTOs());
+
+        // 加額外欄位
+        dto.setSportResponseDTOs(sportResponseDTOs);
+
+        return dto;
     }
 }

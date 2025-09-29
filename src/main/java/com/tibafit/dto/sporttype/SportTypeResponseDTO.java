@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.tibafit.dto.sport.SportResponseDTO;
 import com.tibafit.dto.sporttypeitem.SportTypeItemResponseDTO;
 
 public class SportTypeResponseDTO {
@@ -17,8 +18,8 @@ public class SportTypeResponseDTO {
     private LocalDateTime createDatetime;
     private LocalDateTime updateDatetime;
 
-    private List<SportTypeItemResponseDTO> sportTypeItemResponseDTO;
-
+    private List<SportTypeItemResponseDTO> sportTypeItemResponseDTOs;
+    
     
     public Integer getSportTypeId() {
         return sportTypeId;
@@ -79,10 +80,10 @@ public class SportTypeResponseDTO {
 
     
     public List<SportTypeItemResponseDTO> getSportTypeItemResponseDTOs() {
-        return sportTypeItemResponseDTO;
+        return sportTypeItemResponseDTOs;
     }
-    public void setSportTypeItemResponseDTOs(List<SportTypeItemResponseDTO> sportTypeItemResponseDTO) {
-        this.sportTypeItemResponseDTO = sportTypeItemResponseDTO;
+    public void setSportTypeItemResponseDTOs(List<SportTypeItemResponseDTO> sportTypeItemResponseDTOs) {
+        this.sportTypeItemResponseDTOs = sportTypeItemResponseDTOs;
     }
 
     

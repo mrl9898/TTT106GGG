@@ -47,7 +47,7 @@ public class WebConfig implements WebMvcConfigurer {
 		
 		// 規則四：運動/自訂義運動/運動分類圖片 (外部優先)
 		registry.addResourceHandler("/sportPics/img/**").addResourceLocations(
-				"file:" + normalize(uploadDir) + "/sportPics/",
+				"file:" + normalize(uploadDir) + "/",
 				"classpath:/static/frontend-template/assets/img/sportPics/");
 
 		// 規則五：其他前端靜態資源

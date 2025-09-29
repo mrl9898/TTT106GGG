@@ -182,5 +182,25 @@ public class SportVO implements Serializable {
 	            "}";
 	}	
 	
-	
+	@Override
+	public boolean equals(Object obj) {
+	    if (this == obj) {
+	    	return true;
+	    }
+	    if (!(obj instanceof SportVO)) {
+	    	return false;
+	    }
+	    SportVO other = (SportVO) obj;
+	    
+	    if (this.sportId != null && other.sportId != null) {
+	        return this.sportId.equals(other.sportId);
+	    }
+	    // 兩物件都是 new 時，用記憶體位址判斷
+	    return this == other;
+	}
+
+	@Override
+	public int hashCode() {
+	    return sportId != null ? sportId.hashCode() : System.identityHashCode(this);
+	}
 }

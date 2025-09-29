@@ -4,17 +4,20 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tibafit.dto.sport.SportResponseDTO;
 import com.tibafit.dto.sporttype.SportTypeRequestDTO;
 import com.tibafit.dto.sporttype.SportTypeResponseDTO;
-import com.tibafit.model.sport.SportConverter;
-import com.tibafit.model.sport.SportVO;
+import com.tibafit.dto.sporttype.SportTypeResponseExtraSportsDTO;
 import com.tibafit.service.sporttype.SportTypeService;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -61,6 +64,30 @@ public class SportTypeController {
         List<SportTypeResponseDTO> dtos = sportTypeSvc.getBySportTypeIds(sportTypeIds);
         return dtos;
     }
+    
+    
+    
+ // 查單筆 (分類下運動 + 狀態)
+    @PostMapping("/getSingleBySportTypeIdWithSportDataStatuses")
+    public SportTypeResponseExtraSportsDTO getSingleBySportTypeIdWithSportDataStatuses(
+            @RequestBody @Valid SportTypeIdAndSportDataStatusesRequest req) {
+        return sportTypeSvc.getBySportTypeId_SportDataStatuses(
+                req.getSportTypeId(), 
+                req.getSportDataStatuses()
+        );
+    }
+
+    // 查多筆 分類狀態 + 分類下運動狀態
+    @PostMapping("/getMultipleBySportTypeDataStatusesWithSportDataStatuses")
+    public List<SportTypeResponseExtraSportsDTO> getMultipleBySportTypeDataStatusesWithSportDataStatuses(
+            @RequestBody @Valid SportTypeDataStatusesAndSportDataStatusesRequest req) {
+        return sportTypeSvc.getBySportTypeDataStatuses_SportDataStatuses(
+                req.getSportTypeDataStatuses(), 
+                req.getSportDataStatuses()
+        );
+    }
+    
+    
 
     // 查單筆 (含狀態篩選)
     @PostMapping("/getSingleSportTypeIdAndDataStatuses")
@@ -195,6 +222,50 @@ public class SportTypeController {
 
         public void setSportTypeIds(List<Integer> sportTypeIds) {
             this.sportTypeIds = sportTypeIds;
+        }
+    }
+    
+    public static class SportTypeIdAndSportDataStatusesRequest {
+
+        private Integer sportTypeId;
+        private List<Integer> sportDataStatuses;
+
+        @NotNull(message = "運動分類 ID 不可為空")
+        public Integer getSportTypeId() {
+            return sportTypeId;
+        }
+        public void setSportTypeId(Integer sportTypeId) {
+            this.sportTypeId = sportTypeId;
+        }
+
+        @NotEmpty(message = "運動資料狀態列表不可為空")
+        public List<Integer> getSportDataStatuses() {
+            return sportDataStatuses;
+        }
+        public void setSportDataStatuses(List<Integer> sportDataStatuses) {
+            this.sportDataStatuses = sportDataStatuses;
+        }
+    }
+    
+    public static class SportTypeDataStatusesAndSportDataStatusesRequest {
+
+        private List<Integer> sportTypeDataStatuses;
+        private List<Integer> sportDataStatuses;
+
+        @NotEmpty(message = "運動分類 IDs 不可為空")
+        public List<Integer> getSportTypeDataStatuses() {
+            return sportTypeDataStatuses;
+        }
+        public void setSportTypeIds(List<Integer> sportTypeDataStatuses) {
+            this.sportTypeDataStatuses = sportTypeDataStatuses;
+        }
+
+        @NotEmpty(message = "運動資料狀態列表不可為空")
+        public List<Integer> getSportDataStatuses() {
+            return sportDataStatuses;
+        }
+        public void setSportDataStatuses(List<Integer> sportDataStatuses) {
+            this.sportDataStatuses = sportDataStatuses;
         }
     }
 }
