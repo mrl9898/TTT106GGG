@@ -1,56 +1,80 @@
 package com.tibafit.controller.workoutplanrecord;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import com.tibafit.dto.sport.ApiResponseDTO;
 import com.tibafit.dto.workoutplanrecord.WorkoutPlanRecordRequestDTO;
 import com.tibafit.dto.workoutplanrecord.WorkoutPlanRecordResponseDTO;
 import com.tibafit.service.workoutplanrecord.workoutPlanRecordService_interface;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/workoutPlanRecord/api")
 public class WorkoutPlanRecordController {
 
-	@Autowired
-	private workoutPlanRecordService_interface workoutPlanRecordSvc;
-	
+    @Autowired
+    private workoutPlanRecordService_interface workoutPlanRecordSvc;
 
-	/**
-	 * 批次新增紀錄
-	 */
-	@PostMapping("/insertMultiple")
-	@ResponseBody
-	public List<WorkoutPlanRecordResponseDTO> insertMultiple(@RequestBody List<WorkoutPlanRecordRequestDTO> dtos) {
-		List<WorkoutPlanRecordResponseDTO> result = workoutPlanRecordSvc.insertWorkoutPlanRecordMultiple(dtos);
-		return result;
-	}
+    // 批次新增
+    @PostMapping("/insertMultiple")
+    public ApiResponseDTO<List<WorkoutPlanRecordResponseDTO>> insertMultiple(
+            @Valid @RequestBody InsertMultipleRequest req) {
+        List<WorkoutPlanRecordResponseDTO> result =
+                workoutPlanRecordSvc.insertWorkoutPlanRecordMultiple(req.getRecords());
+        return ApiResponseDTO.success(result);
+    }
 
-	
-	/**
-	 * 批次更新紀錄狀態
-	 */
-	@PostMapping("/updateWorkoutPlanRecordDataStatusByRecordIds")
-	@ResponseBody
-	public Integer updateWorkoutPlanRecordDataStatusByRecordIds(
-			@RequestBody Map<String, Object> req) {
-		@SuppressWarnings("unchecked")
-		Integer dataStatus = (Integer) req.get("dataStatus");
-		@SuppressWarnings("unchecked")
-		List<Integer> workoutPlanRecordIds = (List<Integer>) req.get("workoutPlanRecordIds");
-		Integer affectNum = workoutPlanRecordSvc
-				.updateWorkoutPlanRecordDataStatusByRecordIds(dataStatus, workoutPlanRecordIds);
-		return affectNum;
-	}
+    // 批次更新紀錄狀態
+    @PostMapping("/updateWorkoutPlanRecordDataStatusByRecordIds")
+    public ApiResponseDTO<Integer> updateWorkoutPlanRecordDataStatusByRecordIds(
+            @Valid @RequestBody UpdateStatusRequest req) {
+        Integer result = workoutPlanRecordSvc.updateWorkoutPlanRecordDataStatusByRecordIds(
+                req.getDataStatus(), req.getWorkoutPlanRecordIds());
+        return ApiResponseDTO.success(result);
+    }
+
+    
+    
+    // ------ DTOs ------
+
+    public static class InsertMultipleRequest {
+        private List<WorkoutPlanRecordRequestDTO> records;
+
+        @NotEmpty(message = "records 不可為空")
+        @Valid
+        public List<WorkoutPlanRecordRequestDTO> getRecords() {
+            return records;
+        }
+        public void setRecords(List<WorkoutPlanRecordRequestDTO> records) {
+            this.records = records;
+        }
+    }
+
+    public static class UpdateStatusRequest {
+        private Integer dataStatus;
+        private List<Integer> workoutPlanRecordIds;
+
+        @NotNull(message = "dataStatus 不可為空")
+        public Integer getDataStatus() {
+            return dataStatus;
+        }
+        public void setDataStatus(Integer dataStatus) {
+            this.dataStatus = dataStatus;
+        }
+
+        
+        @NotEmpty(message = "workoutPlanRecordIds 不可為空")
+        public List<Integer> getWorkoutPlanRecordIds() {
+            return workoutPlanRecordIds;
+        }
+        public void setWorkoutPlanRecordIds(List<Integer> workoutPlanRecordIds) {
+            this.workoutPlanRecordIds = workoutPlanRecordIds;
+        }
+    }
 }

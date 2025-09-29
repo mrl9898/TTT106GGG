@@ -40,7 +40,7 @@ public class SportTypeRequestDTO {
         this.sportTypePic = sportTypePic;
     }
     
-    @NotNull(message = "運動分類資料狀態: 不可為空")
+    
     @Min(value = 0, message = "運動分類資料狀態: 最小值為 0")
     @Max(value = 2, message = "運動分類資料狀態: 最大值為 2")
     @Digits(integer = 1, fraction = 0, message = "運動分類狀態只能是整數 (0, 1, 2)")

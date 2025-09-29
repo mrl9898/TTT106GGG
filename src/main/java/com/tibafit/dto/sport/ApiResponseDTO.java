@@ -26,6 +26,10 @@ public class ApiResponseDTO<T> {
         return new ApiResponseDTO<>("P500", msg, null);
     }
     
+    public static <T> ApiResponseDTO<T> parameterProgramError(String msg) {
+        return new ApiResponseDTO<>("PG500", msg, null);
+    }
+    
     public static <T> ApiResponseDTO<T> repeatError(String msg) {
         return new ApiResponseDTO<>("R500", msg, null);
     }

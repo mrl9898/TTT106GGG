@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.tibafit.dto.sport.ApiResponseDTO;
 import com.tibafit.dto.sporttypeitem.SportTypeItemRequestDTO;
-import com.tibafit.dto.sporttypeitem.SportTypeItemResponseDTO;
 import com.tibafit.service.sporttypeitem.SportTypeItemService;
 
 import jakarta.validation.Valid;
@@ -20,36 +20,54 @@ public class SportTypeItemController {
     @Autowired
     private SportTypeItemService sportTypeItemSvc;
 
-    // 新增多筆
+    // 批次新增
     @PostMapping("/insertMultiple")
-    public String insertSportTypeItems(@RequestBody @Valid List<SportTypeItemRequestDTO> dtos) {
-        sportTypeItemSvc.insertSportTypeItems(dtos);
-        String result = "新增成功";
-        return result;
+    public ApiResponseDTO<Void> insertSportTypeItems(@Valid @RequestBody InsertMultipleRequest req) {
+        sportTypeItemSvc.insertSportTypeItems(req.getDtos());
+        Void result = null;
+        return ApiResponseDTO.success(result);
     }
-    
 
     // 檢查是否存在
     @PostMapping("/isExitBySportTypeIdAndSportId")
-    public Boolean isExitBySportTypeIdAndSportId(@RequestBody @Valid SportTypeIdAndSportIdRequest req) {
-        Boolean result =
-                sportTypeItemSvc.isExitBySportTypeIdAndSportId(req.getSportTypeId(), req.getSportId());
-        return result;
-    }
-    
-    
-    // 刪除
-    @PostMapping("/deleteBySportTypeItemIds")
-    public void deleteBySportTypeItemIds(@RequestBody @Valid DeleteBySportTypeItemIdsRequest req) {
-          sportTypeItemSvc.deleteBySportTypeItemIds(req.getSportTypeItemIds());
+    public ApiResponseDTO<Boolean> isExitBySportTypeIdAndSportId(@Valid @RequestBody SportTypeIdAndSportIdRequest req) {
+        Boolean result = sportTypeItemSvc.isExitBySportTypeIdAndSportId(
+        		req.getSportTypeId(), 
+        		req.getSportId()
+        );
+        return ApiResponseDTO.success(result);
     }
 
-    // ==== Request DTOs ====
+    // 批次刪除
+    @PostMapping("/deleteBySportTypeItemIds")
+    public ApiResponseDTO<Void> deleteBySportTypeItemIds(@Valid @RequestBody DeleteBySportTypeItemIdsRequest req) {
+        sportTypeItemSvc.deleteBySportTypeItemIds(req.getSportTypeItemIds());
+        Void result = null;
+        return ApiResponseDTO.success(result);
+    }
+
+    
+    
+    // ------ DTOs ------
+
+    public static class InsertMultipleRequest {
+        private List<SportTypeItemRequestDTO> dtos;
+
+        @NotEmpty(message = "dtos 不可為空")
+        @Valid
+        public List<SportTypeItemRequestDTO> getDtos() {
+            return dtos;
+        }
+        public void setDtos(List<SportTypeItemRequestDTO> dtos) {
+            this.dtos = dtos;
+        }
+    }
+
     public static class SportTypeIdAndSportIdRequest {
         private Integer sportTypeId;
         private Integer sportId;
 
-        @NotNull(message = "運動分類: ID不可為空")
+        @NotNull(message = "運動分類ID不可為空")
         public Integer getSportTypeId() {
             return sportTypeId;
         }
@@ -57,6 +75,7 @@ public class SportTypeItemController {
             this.sportTypeId = sportTypeId;
         }
 
+        
         @NotNull(message = "運動ID不可為空")
         public Integer getSportId() {
             return sportId;
@@ -66,123 +85,6 @@ public class SportTypeItemController {
         }
     }
 
-    public static class SportTypeItemIdRequest {
-        private Integer sportTypeItemId;
-
-        @NotNull(message = "運動分類明細ID不可為空")
-        public Integer getSportTypeItemId() {
-            return sportTypeItemId;
-        }
-        public void setSportTypeItemId(Integer sportTypeItemId) {
-            this.sportTypeItemId = sportTypeItemId;
-        }
-    }
-
-    public static class SportTypeIdRequest {
-        private Integer sportTypeId;
-
-        @NotNull(message = "運動分類ID不可為空")
-        public Integer getSportTypeId() {
-            return sportTypeId;
-        }
-        public void setSportTypeId(Integer sportTypeId) {
-            this.sportTypeId = sportTypeId;
-        }
-    }
-
-    public static class SportTypeItemIdAndStatusesRequest {
-        private Integer sportTypeItemId;
-        private List<Integer> statuses;
-
-        @NotNull(message = "運動分類明細ID不可為空")
-        public Integer getSportTypeItemId() {
-            return sportTypeItemId;
-        }
-        public void setSportTypeItemId(Integer sportTypeItemId) {
-            this.sportTypeItemId = sportTypeItemId;
-        }
-
-        @NotEmpty(message = "狀態列表不可為空")
-        public List<Integer> getStatuses() {
-            return statuses;
-        }
-        public void setStatuses(List<Integer> statuses) {
-            this.statuses = statuses;
-        }
-    }
-
-    public static class SportTypeIdAndStatusesRequest {
-        private Integer sportTypeId;
-        private List<Integer> statuses;
-
-        @NotNull(message = "運動分類ID不可為空")
-        public Integer getSportTypeId() {
-            return sportTypeId;
-        }
-        public void setSportTypeId(Integer sportTypeId) {
-            this.sportTypeId = sportTypeId;
-        }
-
-        @NotEmpty(message = "狀態列表不可為空")
-        public List<Integer> getStatuses() {
-            return statuses;
-        }
-        public void setStatuses(List<Integer> statuses) {
-            this.statuses = statuses;
-        }
-    }
-
-    public static class SportTypeIdSportIdAndStatusesRequest {
-        private Integer sportTypeId;
-        private Integer sportId;
-        private List<Integer> statuses;
-
-        @NotNull(message = "運動分類ID不可為空")
-        public Integer getSportTypeId() {
-            return sportTypeId;
-        }
-        public void setSportTypeId(Integer sportTypeId) {
-            this.sportTypeId = sportTypeId;
-        }
-
-        @NotNull(message = "運動ID不可為空")
-        public Integer getSportId() {
-            return sportId;
-        }
-        public void setSportId(Integer sportId) {
-            this.sportId = sportId;
-        }
-
-        @NotEmpty(message = "狀態列表不可為空")
-        public List<Integer> getStatuses() {
-            return statuses;
-        }
-        public void setStatuses(List<Integer> statuses) {
-            this.statuses = statuses;
-        }
-    }
-
-    public static class UpdateStatusByItemIdsRequest {
-        private Integer dataStatus;
-        private List<Integer> sportTypeItemIds;
-
-        @NotNull(message = "資料狀態不可為空")
-        public Integer getDataStatus() {
-            return dataStatus;
-        }
-        public void setDataStatus(Integer dataStatus) {
-            this.dataStatus = dataStatus;
-        }
-
-        @NotEmpty(message = "運動分類明細IDs不可為空")
-        public List<Integer> getSportTypeItemIds() {
-            return sportTypeItemIds;
-        }
-        public void setSportTypeItemIds(List<Integer> sportTypeItemIds) {
-            this.sportTypeItemIds = sportTypeItemIds;
-        }
-    }
-    
     public static class DeleteBySportTypeItemIdsRequest {
         private List<Integer> sportTypeItemIds;
 
@@ -195,4 +97,3 @@ public class SportTypeItemController {
         }
     }
 }
-

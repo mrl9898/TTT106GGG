@@ -32,13 +32,13 @@ public class SportApiAdvice {
     // JSON format wrong or cannot parse
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ApiResponseDTO<Void> handleNotReadable(HttpMessageNotReadableException ex) {
-        return ApiResponseDTO.parameterError("SApiAdvice JSON format wrong or cannot parse");
+        return ApiResponseDTO.parameterProgramError("SApiAdvice JSON format wrong or cannot parse");
     }
 
     // illegal argument
     @ExceptionHandler(IllegalArgumentException.class)
     public ApiResponseDTO<Void> handleIllegalArgument(IllegalArgumentException ex) {
-        return ApiResponseDTO.parameterError("SApiAdvice Illegal argument error: " + ex.getMessage());
+        return ApiResponseDTO.parameterProgramError("SApiAdvice Illegal argument error: " + ex.getMessage());
     }
 
     // general Exception

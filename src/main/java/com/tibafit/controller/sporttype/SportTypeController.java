@@ -1,17 +1,11 @@
 package com.tibafit.controller.sporttype;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tibafit.dto.sport.ApiResponseDTO;
 import com.tibafit.dto.sporttype.SportTypeRequestDTO;
 import com.tibafit.dto.sporttype.SportTypeResponseDTO;
 import com.tibafit.dto.sporttype.SportTypeResponseExtraSportsDTO;
@@ -28,169 +22,142 @@ public class SportTypeController {
     @Autowired
     private SportTypeService sportTypeSvc;
 
-    // 新增多筆 SportType
+    // 批次新增
     @PostMapping("/insertMultiple")
-    public String insertSportTypes(@RequestBody List<SportTypeRequestDTO> dtos) {
-        sportTypeSvc.insertSportTypes(dtos);
-        String result = "新增成功";
-        return result;
+    public ApiResponseDTO<Void> insertSportTypes(@Valid @RequestBody InsertMultipleRequest req) {
+        sportTypeSvc.insertSportTypes(req.getDtos());
+        Void result = null;
+        return ApiResponseDTO.success(result);
     }
 
-    
-    // 更新多筆 SportType
+    // 批次更新
     @PostMapping("/updateMultiple")
-    public String updateSportTypes(@RequestBody List<SportTypeRequestDTO> dtos) {
-        sportTypeSvc.updateSportTypes(dtos);
-        String result = "更新成功";
-        return result;
+    public ApiResponseDTO<Void> updateSportTypes(@Valid @RequestBody UpdateMultipleRequest req) {
+        sportTypeSvc.updateSportTypes(req.getDtos());
+        Void result = null;
+        return ApiResponseDTO.success(result);
     }
 
-    
     // 檢查名稱是否存在
     @PostMapping("/isExistSportTypeName")
-    public Boolean isExistSportTypeName(@RequestBody String sportTypeName) {
-        Boolean isExist = sportTypeSvc.isExistBySportTypeName(sportTypeName);
-        return isExist;
+    public ApiResponseDTO<Boolean> isExistSportTypeName(@Valid @RequestBody SportTypeNameRequest req) {
+        Boolean result = sportTypeSvc.isExistBySportTypeName(req.getSportTypeName());
+        return ApiResponseDTO.success(result);
     }
-    
 
     // 查多筆 分類狀態 + 分類下運動狀態
     @PostMapping("/getMultipleBySportTypeDataStatusesWithSportDataStatuses")
-    public List<SportTypeResponseExtraSportsDTO> getMultipleBySportTypeDataStatusesWithSportDataStatuses(
-            @RequestBody @Valid SportTypeDataStatusesAndSportDataStatusesRequest req) {
-        return sportTypeSvc.getBySportTypeDataStatuses_SportDataStatuses(
-                req.getSportTypeDataStatuses(), 
-                req.getSportDataStatuses()
-        );
+    public ApiResponseDTO<List<SportTypeResponseExtraSportsDTO>> getMultipleBySportTypeDataStatusesWithSportDataStatuses(
+            @Valid @RequestBody SportTypeDataStatusesAndSportDataStatusesRequest req) {
+        List<SportTypeResponseExtraSportsDTO> result =
+                sportTypeSvc.getBySportTypeDataStatuses_SportDataStatuses(
+                        req.getSportTypeDataStatuses(),
+                        req.getSportDataStatuses()
+                );
+        return ApiResponseDTO.success(result);
     }
 
-
-    // 更新狀態
+    // 批次更新狀態
     @PostMapping("/updateSportTypeDataStatusBySportTypeIds")
-    public Integer updateSportTypeDataStatusBySportTypeIds(@RequestBody UpdateStatusRequest req) {
-        Integer affected =
+    public ApiResponseDTO<Integer> updateSportTypeDataStatusBySportTypeIds(
+            @Valid @RequestBody UpdateStatusRequest req) {
+        Integer result =
                 sportTypeSvc.updateSportTypeDataStatusBySportTypeIds(req.getDataStatus(), req.getSportTypeIds());
-        return affected;
+        return ApiResponseDTO.success(result);
     }
+
+    // 複合條件查詢
+    @PostMapping("/getByComplexCondition")
+    public ApiResponseDTO<List<SportTypeResponseDTO>> getByComplexCondition(
+            @Valid @RequestBody ComplexConditionRequest req) {
+        List<SportTypeResponseDTO> result = sportTypeSvc.getByComplexCondition(
+                req.getSportTypeNameFuzzy(),
+                req.getCreateStartDate(),
+                req.getCreateEndDate(),
+                req.getUpdateStartDate(),
+                req.getUpdateEndDate(),
+                req.getStatuses()
+        );
+        return ApiResponseDTO.success(result);
+    }
+
     
     
-	/*
-	 * 
-	 */
-	@PostMapping("/getByComplexCondition")
-	@ResponseBody
-	public List<SportTypeResponseDTO> getByComplexCondition(@RequestBody Map<String, Object> map) {
-	    ObjectMapper objectMapper = new ObjectMapper();
+    // ------ DTOs ------
 
-	    // 字串型別參數
-	    String sportTypeNameFuzzy = objectMapper.convertValue(map.get("sportTypeNameFuzzy"), String.class);
-	    String createStartDate   = objectMapper.convertValue(map.get("createStartDate"), String.class);
-	    String createEndDate     = objectMapper.convertValue(map.get("createEndDate"), String.class);
-	    String updateStartDate   = objectMapper.convertValue(map.get("updateStartDate"), String.class);
-	    String updateEndDate     = objectMapper.convertValue(map.get("updateEndDate"), String.class);
+    public static class InsertMultipleRequest {
+        private List<SportTypeRequestDTO> dtos;
 
-	    // List<Integer>
-	    List<Integer> statuses = objectMapper.convertValue(map.get("statuses"), new TypeReference<List<Integer>>() {});
-
-
-	    List<SportTypeResponseDTO> dtoList = sportTypeSvc.getByComplexCondition(
-	    	sportTypeNameFuzzy, 
-	        createStartDate, 
-	        createEndDate, 
-	        updateStartDate, 
-	        updateEndDate, 
-	        statuses
-	    );
-
-	     return dtoList;
-	}
-
-    // Request DTO 
-    public static class SportTypeIdAndStatusesRequest {
-
-        private Integer sportTypeId;
-        private List<Integer> statuses;
-
-        @NotNull(message = "運動分類: ID不可為空")
-        public Integer getSportTypeId() {
-            return sportTypeId;
+        @NotEmpty(message = "dtos 不可為空")
+        @Valid
+        public List<SportTypeRequestDTO> getDtos() {
+            return dtos;
         }
-
-        public void setSportTypeId(Integer sportTypeId) {
-            this.sportTypeId = sportTypeId;
-        }
-
-        @NotEmpty(message = "資料狀態: 不可為空")
-        public List<Integer> getStatuses() {
-            return statuses;
-        }
-
-        public void setStatuses(List<Integer> statuses) {
-            this.statuses = statuses;
+        public void setDtos(List<SportTypeRequestDTO> dtos) {
+            this.dtos = dtos;
         }
     }
 
-    public static class SportTypeIdsAndStatusesRequest {
+    public static class UpdateMultipleRequest {
+        private List<SportTypeRequestDTO> dtos;
 
-        private List<Integer> sportTypeIds;
-        private List<Integer> statuses;
-
-        @NotEmpty(message = "運動分類: IDs不可為空")
-        public List<Integer> getSportTypeIds() {
-            return sportTypeIds;
+        @NotEmpty(message = "dtos 不可為空")
+        @Valid
+        public List<SportTypeRequestDTO> getDtos() {
+            return dtos;
         }
-
-        public void setSportTypeIds(List<Integer> sportTypeIds) {
-            this.sportTypeIds = sportTypeIds;
+        public void setDtos(List<SportTypeRequestDTO> dtos) {
+            this.dtos = dtos;
         }
+    }
 
-        @NotEmpty(message = "資料狀態: 不可為空")
-        public List<Integer> getStatuses() {
-            return statuses;
+    public static class SportTypeNameRequest {
+        private String sportTypeName;
+
+        @NotNull(message = "運動分類名稱不可為空")
+        public String getSportTypeName() {
+            return sportTypeName;
         }
-
-        public void setStatuses(List<Integer> statuses) {
-            this.statuses = statuses;
+        public void setSportTypeName(String sportTypeName) {
+            this.sportTypeName = sportTypeName;
         }
     }
 
     public static class UpdateStatusRequest {
-
         private Integer dataStatus;
         private List<Integer> sportTypeIds;
 
-        @NotNull(message = "資料狀態: 不可為空")
+        @NotNull(message = "資料狀態不可為空")
         public Integer getDataStatus() {
             return dataStatus;
         }
-
         public void setDataStatus(Integer dataStatus) {
             this.dataStatus = dataStatus;
         }
 
-        @NotEmpty(message = "運動分類: IDs不可為空")
+        
+        @NotEmpty(message = "運動分類 IDs 不可為空")
         public List<Integer> getSportTypeIds() {
             return sportTypeIds;
         }
-
         public void setSportTypeIds(List<Integer> sportTypeIds) {
             this.sportTypeIds = sportTypeIds;
         }
     }
-    
-    public static class SportTypeIdAndSportDataStatusesRequest {
 
-        private Integer sportTypeId;
+    public static class SportTypeDataStatusesAndSportDataStatusesRequest {
+        private List<Integer> sportTypeDataStatuses;
         private List<Integer> sportDataStatuses;
 
-        @NotNull(message = "運動分類 ID 不可為空")
-        public Integer getSportTypeId() {
-            return sportTypeId;
+        @NotEmpty(message = "運動分類狀態列表不可為空")
+        public List<Integer> getSportTypeDataStatuses() {
+            return sportTypeDataStatuses;
         }
-        public void setSportTypeId(Integer sportTypeId) {
-            this.sportTypeId = sportTypeId;
+        public void setSportTypeDataStatuses(List<Integer> sportTypeDataStatuses) {
+            this.sportTypeDataStatuses = sportTypeDataStatuses;
         }
 
+        
         @NotEmpty(message = "運動資料狀態列表不可為空")
         public List<Integer> getSportDataStatuses() {
             return sportDataStatuses;
@@ -199,26 +166,61 @@ public class SportTypeController {
             this.sportDataStatuses = sportDataStatuses;
         }
     }
-    
-    public static class SportTypeDataStatusesAndSportDataStatusesRequest {
 
-        private List<Integer> sportTypeDataStatuses;
-        private List<Integer> sportDataStatuses;
+    public static class ComplexConditionRequest {
+        private String sportTypeNameFuzzy;
+        private String createStartDate;
+        private String createEndDate;
+        private String updateStartDate;
+        private String updateEndDate;
+        private List<Integer> statuses;
 
-        @NotEmpty(message = "運動分類 IDs 不可為空")
-        public List<Integer> getSportTypeDataStatuses() {
-            return sportTypeDataStatuses;
+        public String getSportTypeNameFuzzy() {
+            return sportTypeNameFuzzy;
         }
-        public void setSportTypeIds(List<Integer> sportTypeDataStatuses) {
-            this.sportTypeDataStatuses = sportTypeDataStatuses;
+        public void setSportTypeNameFuzzy(String sportTypeNameFuzzy) {
+            this.sportTypeNameFuzzy = sportTypeNameFuzzy;
         }
 
-        @NotEmpty(message = "運動資料狀態列表不可為空")
-        public List<Integer> getSportDataStatuses() {
-            return sportDataStatuses;
+        
+        public String getCreateStartDate() {
+            return createStartDate;
         }
-        public void setSportDataStatuses(List<Integer> sportDataStatuses) {
-            this.sportDataStatuses = sportDataStatuses;
+        public void setCreateStartDate(String createStartDate) {
+            this.createStartDate = createStartDate;
+        }
+
+        
+        public String getCreateEndDate() {
+            return createEndDate;
+        }
+        public void setCreateEndDate(String createEndDate) {
+            this.createEndDate = createEndDate;
+        }
+
+        
+        public String getUpdateStartDate() {
+            return updateStartDate;
+        }
+        public void setUpdateStartDate(String updateStartDate) {
+            this.updateStartDate = updateStartDate;
+        }
+
+        
+        public String getUpdateEndDate() {
+            return updateEndDate;
+        }
+        public void setUpdateEndDate(String updateEndDate) {
+            this.updateEndDate = updateEndDate;
+        }
+
+        
+        @NotEmpty(message = "狀態列表不可為空")
+        public List<Integer> getStatuses() {
+            return statuses;
+        }
+        public void setStatuses(List<Integer> statuses) {
+            this.statuses = statuses;
         }
     }
 }
