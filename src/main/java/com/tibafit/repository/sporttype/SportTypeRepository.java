@@ -32,16 +32,23 @@ public interface SportTypeRepository extends JpaRepository<SportTypeVO, Integer>
     
     
     @EntityGraph(attributePaths = { 
-        	"sportTypeItemVOs",
-           	"sportTypeItemVOs.sportVO"
+        "sportTypeItemVOs",
+        "sportTypeItemVOs.sportVO"
     })
-    public Optional<SportTypeVO> findBySportTypeIdAndSportTypeDataStatusIn(Integer sportTypeId, List<Integer> SportTypeDataStatuses);
+    public Optional<SportTypeVO> findBySportTypeIdAndSportTypeDataStatusIn(
+    	Integer sportTypeId, 
+    	List<Integer> SportTypeDataStatuses
+    );
     
     @EntityGraph(attributePaths = { 
     	"sportTypeItemVOs",
        	"sportTypeItemVOs.sportVO"
     })
-    public List<SportTypeVO> findBySportTypeIdInAndSportTypeDataStatusIn(List<Integer> sportTypeIds, List<Integer> SportTypeDataStatuses);
+    public List<SportTypeVO> findBySportTypeIdInAndSportTypeDataStatusIn(
+    	List<Integer> sportTypeIds, 
+    	List<Integer> SportTypeDataStatuses
+    );
+    
     
     @EntityGraph(attributePaths = { 
     	"sportTypeItemVOs",

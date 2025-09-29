@@ -47,10 +47,10 @@ public class ApiResponseDTO<T> {
     public void setReturnMsg(String returnMsg) { 
     	this.returnMsg = returnMsg; 
     }
-    public T getData() { 
+    public T getReturnData() { 
     	return returnData; 
     }
-    public void setData(T returnData) { 
+    public void setReturnData(T returnData) { 
     	this.returnData = returnData; 
     }
 }

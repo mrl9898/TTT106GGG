@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.tibafit.dto.sporttype.SportTypeRequestDTO;
 import com.tibafit.dto.sporttype.SportTypeResponseDTO;
+import com.tibafit.dto.sporttype.SportTypeResponseExtraSportsDTO;
 import com.tibafit.model.sporttype.SportTypeVO;
 import com.tibafit.model.sporttypeitem.SportTypeItemVO;
 
@@ -25,9 +26,16 @@ public interface SportTypeService_interface {
 
     // 查單筆
     public SportTypeResponseDTO getBySportTypeId(Integer sportTypeId);
-
+    
     // 查多筆
     public List<SportTypeResponseDTO> getBySportTypeIds(List<Integer> sportTypeIds);
+    
+    // 查單筆分類 + 分類下運動 (狀態)
+    public SportTypeResponseExtraSportsDTO getBySportTypeId_SportDataStatuses(Integer sportTypeId, List<Integer> sportDataStatuses);
+    
+    // 查多筆分類 (分類) + 分類下運動 (狀態)
+    public List<SportTypeResponseExtraSportsDTO> getBySportTypeDataStatuses_SportDataStatuses(List<Integer> sportTypeDataStatuses, List<Integer> sportDataStatuses);
+
 
     // 查詢狀態範圍內的單筆
     public SportTypeResponseDTO getBySportTypeIdAndSportTypeDataStatuses(Integer sportTypeId, List<Integer> statuses);
