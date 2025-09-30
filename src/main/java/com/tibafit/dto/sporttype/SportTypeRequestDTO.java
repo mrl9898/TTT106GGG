@@ -32,7 +32,6 @@ public class SportTypeRequestDTO {
     }
     
 
-    @Size(max = 255, message = "運動分類圖片: 長度不可超過 255")
     public String getSportTypePic() {
         return sportTypePic;
     }
@@ -41,9 +40,6 @@ public class SportTypeRequestDTO {
     }
     
     
-    @Min(value = 0, message = "運動分類資料狀態: 最小值為 0")
-    @Max(value = 2, message = "運動分類資料狀態: 最大值為 2")
-    @Digits(integer = 1, fraction = 0, message = "運動分類狀態只能是整數 (0, 1, 2)")
     public Integer getSportTypeDataStatus() {
 		return sportTypeDataStatus;
 	}

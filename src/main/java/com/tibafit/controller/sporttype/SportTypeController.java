@@ -12,8 +12,12 @@ import com.tibafit.dto.sporttype.SportTypeResponseExtraSportsDTO;
 import com.tibafit.service.sporttype.SportTypeService;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @RestController
 @RequestMapping("/sportType/api")
@@ -88,7 +92,7 @@ public class SportTypeController {
     public static class InsertMultipleRequest {
         private List<SportTypeRequestDTO> dtos;
 
-        @NotEmpty(message = "dtos 不可為空")
+        @NotEmpty(message = "新增運動分類列表: 不可為空")
         @Valid
         public List<SportTypeRequestDTO> getDtos() {
             return dtos;
@@ -101,7 +105,7 @@ public class SportTypeController {
     public static class UpdateMultipleRequest {
         private List<SportTypeRequestDTO> dtos;
 
-        @NotEmpty(message = "dtos 不可為空")
+        @NotEmpty(message = "更新運動分類列表: 不可為空")
         @Valid
         public List<SportTypeRequestDTO> getDtos() {
             return dtos;
@@ -114,7 +118,8 @@ public class SportTypeController {
     public static class SportTypeNameRequest {
         private String sportTypeName;
 
-        @NotNull(message = "運動分類名稱不可為空")
+        @NotNull(message = "運動分類名稱: 不可為空")
+        @Size(max = 50, message = "運動分類名稱: 長度不可超過 50")
         public String getSportTypeName() {
             return sportTypeName;
         }
@@ -127,7 +132,9 @@ public class SportTypeController {
         private Integer dataStatus;
         private List<Integer> sportTypeIds;
 
-        @NotNull(message = "資料狀態不可為空")
+        @NotNull(message = "運動分類資料狀態: 不可為空")
+        @Min(value = 0, message = "運動分類資料狀態: 只能是 0,1,2")
+        @Max(value = 2, message = "運動分類資料狀態: 只能是 0,1,2")
         public Integer getDataStatus() {
             return dataStatus;
         }
@@ -136,8 +143,8 @@ public class SportTypeController {
         }
 
         
-        @NotEmpty(message = "運動分類 IDs 不可為空")
-        public List<Integer> getSportTypeIds() {
+        @NotEmpty(message = "運動分類IDs: 不可為空")
+        public List<@NotNull(message = "sportTypeId 不可為空")Integer> getSportTypeIds() {
             return sportTypeIds;
         }
         public void setSportTypeIds(List<Integer> sportTypeIds) {
@@ -149,8 +156,12 @@ public class SportTypeController {
         private List<Integer> sportTypeDataStatuses;
         private List<Integer> sportDataStatuses;
 
-        @NotEmpty(message = "運動分類狀態列表不可為空")
-        public List<Integer> getSportTypeDataStatuses() {
+        @NotEmpty(message = "運動分類資料狀態列表: 不可為空")
+        public List<
+	        @NotNull(message = "運動分類資料狀態: 不可為空")
+	        @Min(value = 0, message = "運動分類資料狀態: 只能是 0,1,2")
+	        @Max(value = 2, message = "運動分類資料狀態: 只能是 0,1,2")
+	        Integer> getSportTypeDataStatuses() {
             return sportTypeDataStatuses;
         }
         public void setSportTypeDataStatuses(List<Integer> sportTypeDataStatuses) {
@@ -158,8 +169,12 @@ public class SportTypeController {
         }
 
         
-        @NotEmpty(message = "運動資料狀態列表不可為空")
-        public List<Integer> getSportDataStatuses() {
+        @NotEmpty(message = "運動資料狀態列表: 不可為空")
+        public List<
+	        @NotNull(message = "運動資料狀態: 不可為空")
+	        @Min(value = 0, message = "運動資料狀態: 只能是 0,1,2")
+	        @Max(value = 2, message = "運動資料狀態: 只能是 0,1,2")
+	        Integer> getSportDataStatuses() {
             return sportDataStatuses;
         }
         public void setSportDataStatuses(List<Integer> sportDataStatuses) {
@@ -175,6 +190,8 @@ public class SportTypeController {
         private String updateEndDate;
         private List<Integer> statuses;
 
+        
+        @Size(max = 50, message = "運動分類名稱: 長度不可超過 50")
         public String getSportTypeNameFuzzy() {
             return sportTypeNameFuzzy;
         }
@@ -215,8 +232,12 @@ public class SportTypeController {
         }
 
         
-        @NotEmpty(message = "狀態列表不可為空")
-        public List<Integer> getStatuses() {
+        @NotEmpty(message = "運動分類資料狀態列表: 不可為空")
+        public List<
+	        @NotNull(message = "運動分類資料狀態: 不可為空")
+	        @Min(value = 0, message = "運動分類資料狀態: 只能是 0,1,2")
+	        @Max(value = 2, message = "運動分類資料狀態: 只能是 0,1,2")
+	        Integer> getStatuses() {
             return statuses;
         }
         public void setStatuses(List<Integer> statuses) {

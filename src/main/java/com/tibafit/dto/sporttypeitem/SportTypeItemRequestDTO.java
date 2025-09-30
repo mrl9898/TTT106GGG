@@ -15,7 +15,7 @@ public class SportTypeItemRequestDTO {
         this.sportTypeItemId = sportTypeItemId;
     }
 
-    
+    @NotNull(message = "運動分類ID: 不可為空")
     public Integer getSportTypeId() {
         return sportTypeId;
     }

@@ -16,6 +16,8 @@ import com.tibafit.model.customsport.CustomSportVO;
 import com.tibafit.service.customsport.CustomSportService_interface;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -31,7 +33,6 @@ public class CustomSportController {
     public ApiResponseDTO<List<CustomSportResponseDTO>> getMultipleBySportDataStatuses(
             @Valid @RequestBody GetMultipleByStatusesRequest req) {
         List<Integer> statuses = req.getStatuses();
-        System.out.println("接收到前端資料: " + statuses);
 
         List<CustomSportVO> rawList = svc.getSportByDataStatuses(statuses);
         List<CustomSportResponseDTO> result = CustomSportConverter.toDtoList(rawList);
@@ -43,7 +44,6 @@ public class CustomSportController {
     // 批次新增
     @PostMapping("/insertMultiple")
     public ApiResponseDTO<Void> sportInsertMultiple(@Valid @RequestBody InsertMultipleRequest req) {
-        System.out.println("insert接收到前端資料: " + req.getSports());
         svc.insertSportMultiple(req.getSports());
         Void result = null;
         return ApiResponseDTO.success(result);
@@ -53,8 +53,7 @@ public class CustomSportController {
     // 批次更新
     @PostMapping("/updateMultiple")
     public ApiResponseDTO<Void> updateMultiple(@Valid @RequestBody UpdateMultipleRequest req) {
-//        System.out.println("update接收到前端資料: " + req.getSports());
-//        svc.updateSportMultiple(req.getSports());
+        svc.updateSportMultiple(req.getSports());
         Void result = null;
         return ApiResponseDTO.success(result);
     }
@@ -63,7 +62,6 @@ public class CustomSportController {
     // 批次更新狀態
     @PostMapping("/updateMultipleSportDataStatus")
     public ApiResponseDTO<Void> updateMultipleSportDataStatus(@Valid @RequestBody UpdateMultipleStatusRequest req) {
-        System.out.println("update接收到前端資料: " + req.getSportIds());
         svc.updateSportDataStatusByIds(
         		req.getSportDataStatus(), 
         		req.getSportIds()
@@ -79,8 +77,12 @@ public class CustomSportController {
     public static class GetMultipleByStatusesRequest {
         private List<Integer> statuses;
 
-        @NotEmpty(message = "statuses 不可為空")
-        public List<Integer> getStatuses() {
+        @NotEmpty(message = "自訂義運動資料狀態列表: 不可為空")
+        public List<	        
+	        @NotNull(message = "自訂義運動資料狀態: 不可為空")
+	        @Min(value = 0, message = "自訂義運動資料狀態: 只能是 0,1")
+	        @Max(value = 1, message = "自訂義運動資料狀態: 只能是 0,1") 
+	        Integer> getStatuses() {
             return statuses;
         }
         public void setStatuses(List<Integer> statuses) {
@@ -91,7 +93,7 @@ public class CustomSportController {
     public static class InsertMultipleRequest {
         private List<CustomSportRequestDTO> sports;
 
-        @NotEmpty(message = "sports 不可為空")
+        @NotEmpty(message = "新增自訂義運動列表: 不可為空")
         @Valid
         public List<CustomSportRequestDTO> getSports() {
             return sports;
@@ -104,12 +106,11 @@ public class CustomSportController {
     public static class UpdateMultipleRequest {
         private List<CustomSportRequestDTO> sports;
 
-        @NotEmpty(message = "sports 不可為空")
+        @NotEmpty(message = "更新自訂義運動列表: 不可為空")
         @Valid
         public List<CustomSportRequestDTO> getSports() {
             return sports;
         }
-
         public void setSports(List<CustomSportRequestDTO> sports) {
             this.sports = sports;
         }
@@ -119,7 +120,9 @@ public class CustomSportController {
         private Integer sportDataStatus;
         private List<Integer> sportIds;
 
-        @NotNull(message = "sportDataStatus 不可為空")
+        @NotNull(message = "自訂義運動資料狀態: 不可為空")
+        @Min(value = 0, message = "自訂義運動資料狀態: 只能是 0,1")
+        @Max(value = 1, message = "自訂義運動資料狀態: 只能是 0,1") 
         public Integer getSportDataStatus() {
             return sportDataStatus;
         }
@@ -128,9 +131,9 @@ public class CustomSportController {
         }
 
         
-        @NotEmpty(message = "sportIds 不可為空")
+        @NotEmpty(message = "自訂義運動IDs: 不可為空")
         @Valid
-        public List<@NotNull(message = "sportId 不可為空") Integer> getSportIds() {
+        public List<@NotNull(message = "自訂義運動ID: 不可為空") Integer> getSportIds() {
             return sportIds;
         }
         public void setSportIds(List<Integer> sportIds) {

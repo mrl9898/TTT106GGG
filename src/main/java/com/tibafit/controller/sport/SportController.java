@@ -16,9 +16,12 @@ import com.tibafit.model.sport.SportVO;
 import com.tibafit.service.sport.SportService_Interface;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @RestController
 @RequestMapping("/sport/api")
@@ -93,7 +96,8 @@ public class SportController {
     public static class SportNameRequest {
         private String sportName;
 
-        @NotBlank(message = "sportName 不可為空")
+        @NotBlank(message = "運動名稱: 不可為空")
+        @Size(max = 50, message = "運動名稱: 長度不可超過 50")
         public String getSportName() {
             return sportName;
         }
@@ -105,7 +109,7 @@ public class SportController {
     public static class InsertMultipleRequest {
         private List<SportRequestDTO> sports;
 
-        @NotEmpty(message = "sports 不可為空")
+        @NotEmpty(message = "新增運動列表: 不可為空")
         @Valid
         public List<SportRequestDTO> getSports() {
             return sports;
@@ -119,7 +123,9 @@ public class SportController {
         private Integer sportDataStatus;
         private List<Integer> sportIds;
 
-        @NotNull(message = "sportDataStatus 不可為空")
+        @NotNull(message = "運動資料狀態: 不可為空")
+        @Min(value = 0, message = "運動資料狀態: 只能是 0,1,2")
+        @Max(value = 2, message = "運動資料狀態: 只能是 0,1,2")
         public Integer getSportDataStatus() {
             return sportDataStatus;
         }
@@ -128,9 +134,9 @@ public class SportController {
         }
 
         
-        @NotEmpty(message = "sportIds 不可為空")
+        @NotEmpty(message = "運動IDs: 不可為空")
         @Valid
-        public List<@NotNull(message = "sportId 不可為空") Integer> getSportIds() {
+        public List<@NotNull(message = "運動ID: 不可為空") Integer> getSportIds() {
             return sportIds;
         }
         public void setSportIds(List<Integer> sportIds) {
@@ -147,6 +153,7 @@ public class SportController {
         private String updateEndDate;
         private List<Integer> statuses;
 
+        @Size(max = 50, message = "運動名稱/描述: 長度不可超過 50")
         public String getSportNameDescFuzzy() {
             return sportNameDescFuzzy;
         }
@@ -195,9 +202,13 @@ public class SportController {
         }
 
         
-        @NotEmpty(message = "statuses 不可為空")
+        @NotEmpty(message = "運動資料狀態列表: 不可為空")
         @Valid
-        public List<Integer> getStatuses() {
+        public List<
+	        @NotNull(message = "運動資料狀態: 不可為空")
+	        @Min(value = 0, message = "運動資料狀態: 只能是 0,1,2")
+	        @Max(value = 2, message = "運動資料狀態: 只能是 0,1,2") 
+	        Integer> getStatuses() {
             return statuses;
         }
         public void setStatuses(List<Integer> statuses) {

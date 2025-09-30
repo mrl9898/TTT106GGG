@@ -11,6 +11,8 @@ import com.tibafit.dto.workoutplanrecord.WorkoutPlanRecordResponseDTO;
 import com.tibafit.service.workoutplanrecord.workoutPlanRecordService_interface;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -46,7 +48,7 @@ public class WorkoutPlanRecordController {
     public static class InsertMultipleRequest {
         private List<WorkoutPlanRecordRequestDTO> records;
 
-        @NotEmpty(message = "records 不可為空")
+        @NotEmpty(message = "新增紀錄列表: 不可為空")
         @Valid
         public List<WorkoutPlanRecordRequestDTO> getRecords() {
             return records;
@@ -60,7 +62,9 @@ public class WorkoutPlanRecordController {
         private Integer dataStatus;
         private List<Integer> workoutPlanRecordIds;
 
-        @NotNull(message = "dataStatus 不可為空")
+        @NotNull(message = "紀錄資料狀態: 不可為空")
+        @Min(value = 0, message = "紀錄資料狀態: 只能是 0,1")
+        @Max(value = 1, message = "紀錄資料狀態: 只能是 0,1")
         public Integer getDataStatus() {
             return dataStatus;
         }

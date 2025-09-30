@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 public class SportRequestDTO {
 	private Integer sportId;
@@ -46,6 +47,7 @@ public class SportRequestDTO {
 
 
 	@NotBlank(message="名稱: 請勿空白")
+    @Size(max = 50, message = "名稱: 長度不可超過 50")
 	public String getSportName() {
 		return sportName;
 	}
@@ -55,6 +57,7 @@ public class SportRequestDTO {
 
 	
 	@NotBlank(message="描述: 請勿空白")
+    @Size(max = 255, message = "描述: 長度不可超過 255")
 	public String getSportDescription() {
 		return sportDescription;
 	}
@@ -64,7 +67,7 @@ public class SportRequestDTO {
 
 	
 	@NotNull(message = "強度: 請勿空白")
-//	@Positive(message="運動描述: 請輸入大於0的數字，最多4位整數，小數點後最多2位")
+//	@Positive(message="強度: 請輸入大於0的數字，最多4位整數，小數點後最多2位")
 	@DecimalMin(value = "0.01", inclusive = true, message="強度: 請輸入大於0的數字，最多4位整數，小數點後最多2位")
 	@Digits(integer = 4, fraction = 2, message = "強度: 請輸入大於0的數字，最多4位整數，小數點後最多2位")
 	public Double getSportMets() {
@@ -102,7 +105,7 @@ public class SportRequestDTO {
 		this.sportPic = sportPic;
 	}
 
-	
+
 	public Integer getSportDataStatus() {
 		return sportDataStatus;
 	}
@@ -111,7 +114,7 @@ public class SportRequestDTO {
 	}
 
 	
-	@NotNull(message = "建立人員: 不可為空")
+	@NotNull(message = "建立人員ID: 不可為空")
 	public Integer getAdminId() {
 		return adminId;
 	}

@@ -12,6 +12,8 @@ import com.tibafit.dto.workoutplan.WorkoutPlanResponseDTO;
 import com.tibafit.service.workoutplan.workoutPlanService_interface;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -79,7 +81,7 @@ public class WorkoutPlanController {
     public static class InsertMultipleRequest {
         private List<WorkoutPlanRequestDTO> list;
 
-        @NotEmpty(message = "list 不可為空")
+        @NotEmpty(message = "新增計畫列表: 不可為空")
         @Valid
         public List<WorkoutPlanRequestDTO> getList() {
             return list;
@@ -106,7 +108,9 @@ public class WorkoutPlanController {
         private Integer dataStatus;
         private List<Integer> workoutPlanIds;
 
-        @NotNull(message = "資料狀態不可為空")
+        @NotNull(message = "計畫資料狀態: 不可為空")
+        @Min(value = 0, message = "計畫資料狀態: 只能是 0,1")
+        @Max(value = 1, message = "計畫資料狀態: 只能是 0,1")
         public Integer getDataStatus() {
             return dataStatus;
         }
@@ -130,7 +134,7 @@ public class WorkoutPlanController {
         private String endDate;
         private List<Integer> dataStatuses;
 
-        @NotNull(message = "userId 不可為空")
+        @NotNull(message = "建立人員ID: 不可為空")
         public Integer getUserId() {
             return userId;
         }
@@ -139,7 +143,7 @@ public class WorkoutPlanController {
         }
 
         
-        @NotNull(message = "startDate 不可為空")
+        @NotNull(message = "開始日期: 不可為空")
         @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "startDate 格式必須為 yyyy-MM-dd")
         public String getStartDate() {
             return startDate;
@@ -149,7 +153,7 @@ public class WorkoutPlanController {
         }
 
         
-        @NotNull(message = "endDate 不可為空")
+        @NotNull(message = "結束日期: 不可為空")
         @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "endDate 格式必須為 yyyy-MM-dd")
         public String getEndDate() {
             return endDate;
@@ -159,8 +163,12 @@ public class WorkoutPlanController {
         }
 
         
-        @NotEmpty(message = "dataStatuses 不可為空")
-        public List<Integer> getDataStatuses() {
+        @NotEmpty(message = "計畫資料狀態列表: 不可為空")
+        public List<
+	        @NotNull(message = "計畫資料狀態: 不可為空")
+	        @Min(value = 0, message = "計畫資料狀態: 只能是 0,1")
+	        @Max(value = 1, message = "計畫資料狀態: 只能是 0,1")
+	        Integer> getDataStatuses() {
             return dataStatuses;
         }
         public void setDataStatuses(List<Integer> dataStatuses) {
@@ -173,7 +181,7 @@ public class WorkoutPlanController {
         private String workoutPlanDate;
         private List<Integer> dataStatuses;
 
-        @NotNull(message = "userId 不可為空")
+        @NotNull(message = "建立人員ID: 不可為空")
         public Integer getUserId() {
             return userId;
         }
@@ -182,7 +190,7 @@ public class WorkoutPlanController {
         }
 
         
-        @NotNull(message = "workoutPlanDate 不可為空")
+        @NotNull(message = "計畫安排日期: 不可為空")
         @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "workoutPlanDate 格式必須為 yyyy-MM-dd")
         public String getWorkoutPlanDate() {
             return workoutPlanDate;
@@ -192,8 +200,12 @@ public class WorkoutPlanController {
         }
 
         
-        @NotEmpty(message = "dataStatuses 不可為空")
-        public List<Integer> getDataStatuses() {
+        @NotEmpty(message = "計畫資料狀態列表: 不可為空")
+        public List<
+	        @NotNull(message = "計畫資料狀態: 不可為空")
+	        @Min(value = 0, message = "計畫資料狀態: 只能是 0,1")
+	        @Max(value = 1, message = "計畫資料狀態: 只能是 0,1")
+	        Integer> getDataStatuses() {
             return dataStatuses;
         }
         public void setDataStatuses(List<Integer> dataStatuses) {

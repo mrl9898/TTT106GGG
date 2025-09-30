@@ -53,7 +53,7 @@ public class SportTypeItemController {
     public static class InsertMultipleRequest {
         private List<SportTypeItemRequestDTO> dtos;
 
-        @NotEmpty(message = "dtos 不可為空")
+        @NotEmpty(message = "新增運動分類明細列表: 不可為空")
         @Valid
         public List<SportTypeItemRequestDTO> getDtos() {
             return dtos;
@@ -67,7 +67,7 @@ public class SportTypeItemController {
         private Integer sportTypeId;
         private Integer sportId;
 
-        @NotNull(message = "運動分類ID不可為空")
+        @NotNull(message = "運動分類ID: 不可為空")
         public Integer getSportTypeId() {
             return sportTypeId;
         }
@@ -76,7 +76,7 @@ public class SportTypeItemController {
         }
 
         
-        @NotNull(message = "運動ID不可為空")
+        @NotNull(message = "運動ID: 不可為空")
         public Integer getSportId() {
             return sportId;
         }
@@ -88,7 +88,7 @@ public class SportTypeItemController {
     public static class DeleteBySportTypeItemIdsRequest {
         private List<Integer> sportTypeItemIds;
 
-        @NotEmpty(message = "運動分類明細IDs不可為空")
+        @NotEmpty(message = "運動分類明細IDs: 不可為空")
         public List<Integer> getSportTypeItemIds() {
             return sportTypeItemIds;
         }
