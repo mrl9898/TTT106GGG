@@ -72,7 +72,6 @@ public class SportTypeItemVO implements Serializable {
         this.sportId = sportId;
     }
     @ManyToOne(fetch = FetchType.LAZY, optional=false)
-    @OrderBy("sportId DESC")
     @JoinColumn(name = "sport_id", nullable = false, insertable = false, updatable = false)
     public SportVO getSportVO() {
         return sportVO;

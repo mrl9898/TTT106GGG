@@ -39,7 +39,7 @@ public class CustomSportVO {
 	}
 
 	
-	@Column(name = "sport_name", nullable = false, length = 100)
+	@Column(name = "sport_name", nullable = false, length = 50)
 	public String getSportName() {
 		return sportName;
 	}
@@ -48,7 +48,7 @@ public class CustomSportVO {
 	}
 
 	
-	@Column(name = "sport_description", columnDefinition = "TEXT")
+	@Column(name = "sport_description", length = 255)
 	public String getSportDescription() {
 		return sportDescription;
 	}
@@ -57,7 +57,7 @@ public class CustomSportVO {
 	}
 
 	
-	@Column(name = "sport_estimated_calories")
+	@Column(name = "sport_estimated_calories", nullable = false)
 	public Integer getSportEstimatedCalories() {
 		return sportEstimatedCalories;
 	}

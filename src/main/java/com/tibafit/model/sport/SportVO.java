@@ -65,7 +65,7 @@ public class SportVO implements Serializable {
 	}
 
 	
-	@Column(name = "sport_name")
+	@Column(name = "sport_name", nullable = false, length = 50, unique = true)
 	public String getSportName() {
 		return sportName;
 	}
@@ -74,7 +74,7 @@ public class SportVO implements Serializable {
 	}
 
 
-	@Column(name = "sport_description")
+	@Column(name = "sport_description", length = 255)
 	public String getSportDescription() {
 		return sportDescription;
 	}
@@ -83,7 +83,7 @@ public class SportVO implements Serializable {
 	}
 
 	
-	@Column(name = "sport_mets")
+	@Column(name = "sport_mets", nullable = false, precision = 4, scale = 2)
 	public BigDecimal getSportMets() {
 		return sportMets;
 	}
@@ -92,7 +92,7 @@ public class SportVO implements Serializable {
 	}
 
 	
-	@Column(name = "sport_estimated_calories")
+	@Column(name = "sport_estimated_calories", nullable = false)
 	public Integer getSportEstimatedCalories() {
 		return sportEstimatedCalories;
 	}
@@ -101,7 +101,7 @@ public class SportVO implements Serializable {
 	}
 
 	
-	@Column(name = "sport_level")
+	@Column(name = "sport_level", nullable = false, length = 20)
 	public String getSportLevel() {
 		return sportLevel;
 	}
@@ -110,7 +110,7 @@ public class SportVO implements Serializable {
 	}
 	
 	
-	@Column(name = "sport_pic")
+	@Column(name = "sport_pic", length = 255)
 	public String getSportPic() {
 		return sportPic;
 	}
@@ -119,7 +119,7 @@ public class SportVO implements Serializable {
 	}
 
 	
-	@Column(name = "sport_data_status")
+	@Column(name = "sport_data_status", nullable = false)
 	public Integer getSportDataStatus() {
 		return sportDataStatus;
 	}
@@ -128,7 +128,7 @@ public class SportVO implements Serializable {
 	}
 
 	
-	@Column(name = "admin_id")
+	@Column(name = "admin_id", nullable = false)
 	public Integer getAdminId() {
 		return adminId;
 	}

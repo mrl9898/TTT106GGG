@@ -72,7 +72,7 @@ public class WorkoutPlanVO implements Serializable {
 	}
 	
 	
-	@Column(name = "workout_plan_name", nullable = false)
+	@Column(name = "workout_plan_name", nullable = false, length = 50)
     public String getWorkoutPlanName() {
 		return workoutPlanName;
 	}
