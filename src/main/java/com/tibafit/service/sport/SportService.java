@@ -77,28 +77,50 @@ public class SportService implements SportService_Interface {
 	@Override
 	@Transactional
 	public void insertSport(SportRequestDTO dto) {
-		SportVO vo = SportConverter.toVO(dto);
+		SportVO vo = SportConverter.toNewVO(dto);
 		sportRepo.save(vo);
 	}
 
 	@Override
 	@Transactional
 	public void insertSportMultiple(List<SportRequestDTO> dtos) {
-		List<SportVO> vos = SportConverter.toVoList(dtos);
+		List<SportVO> vos = SportConverter.toNewVoList(dtos);
 		sportRepo.saveAll(vos);
 	}
 
 	@Override
 	@Transactional
 	public void updateSport(SportRequestDTO dto) {
-		SportVO vo = SportConverter.toVO(dto);
+	    if (dto == null || dto.getSportId() == null) {
+	        throw new IllegalArgumentException("SportSvc sportId 不可為空");
+	    }
+		
+	   SportVO oriVo = sportRepo.findById(dto.getSportId())
+	            .orElseThrow(() -> new IllegalArgumentException("SportSvc 查無此 sportId VO: " + dto.getSportId()));
+	   
+		SportVO vo = SportConverter.toUpdateVO(oriVo, dto);
 		sportRepo.save(vo);
 	}
 
 	@Override
 	@Transactional
 	public void updateSportMultiple(List<SportRequestDTO> dtos) {
-		List<SportVO> vos = SportConverter.toVoList(dtos);
+	    if (dtos == null || dtos.isEmpty()) {
+	        return;
+	    }
+	    
+	    List<Integer> ids = new ArrayList<>();
+	    for (SportRequestDTO dto : dtos) {
+	        if (dto != null && dto.getSportId() != null) {
+	            ids.add(dto.getSportId());
+	        }
+	    }
+	    
+	    // PO
+	    List<SportVO> oriVoList = sportRepo.findAllById(ids);
+	    
+		List<SportVO> vos = SportConverter.toUpdateVoList(oriVoList, dtos);
+		
 		sportRepo.saveAll(vos);
 	}
 	

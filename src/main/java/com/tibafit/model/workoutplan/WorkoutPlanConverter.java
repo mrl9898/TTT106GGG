@@ -176,7 +176,9 @@ public class WorkoutPlanConverter {
 	    if (dto.getWorkoutPlanExpectedDuration() != null) {
 	        vo.setWorkoutPlanExpectedDuration(dto.getWorkoutPlanExpectedDuration());
 	    }
-		
+	    
+	   // workoutPlanDataStatus do not update
+	 	
 		return vo;
 	}
 
@@ -303,7 +305,7 @@ public class WorkoutPlanConverter {
 		return dto;
 	}
 
-	// List<RequestDTO> 轉 List<VO> (新增)
+	// List DTO 轉 VO (新增)
 	public static List<WorkoutPlanVO> toNewVoList(List<WorkoutPlanRequestDTO> dtoList) {
 		List<WorkoutPlanVO> voList = new ArrayList<>();
 
@@ -321,7 +323,7 @@ public class WorkoutPlanConverter {
 		return voList;
 	}
 	
-	// List<RequestDTO> 轉 List<VO> (更新) (注意PO議題)
+	// List DTO 轉 VO (更新) (注意PO議題)
 	public static List<WorkoutPlanVO> toUpdateVoList(List<WorkoutPlanVO> oriVoList, List<WorkoutPlanRequestDTO> dtoList) {
 		List<WorkoutPlanVO> voList = new ArrayList<>();
 		

@@ -113,7 +113,7 @@ public class WorkoutPlanRecordConverter {
         return dto;
     }
 
-    // List<RequestDTO> 轉 List<VO>
+    // List DTO 轉 VO (新增)
     public static List<WorkoutPlanRecordVO> toInsertVoList(List<WorkoutPlanRecordRequestDTO> dtoList) {
     	List<WorkoutPlanRecordVO> voList = new ArrayList<>();
         
@@ -131,7 +131,7 @@ public class WorkoutPlanRecordConverter {
         return voList;
     }
 
-    // List<VO> 轉 List<ResponseDTO>
+    // List VO 轉 DTO
     public static List<WorkoutPlanRecordResponseDTO> toDtoList(List<WorkoutPlanRecordVO> voList) {
     	List<WorkoutPlanRecordResponseDTO> dtoList = new ArrayList<>();
     	
