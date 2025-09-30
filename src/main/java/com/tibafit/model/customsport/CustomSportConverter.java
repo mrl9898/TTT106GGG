@@ -129,6 +129,7 @@ public class CustomSportConverter {
 		dto.setCreateDatetime(vo.getCreateDatetime());
 		dto.setUpdateDatetime(vo.getUpdateDatetime());
 		dto.setUserId(vo.getUserId());
+		// TODO: 根據實際需求補值
 		dto.setUserIdText("待補");
 
 		return dto;
