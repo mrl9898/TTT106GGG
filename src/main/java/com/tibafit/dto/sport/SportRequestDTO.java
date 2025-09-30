@@ -63,7 +63,7 @@ public class SportRequestDTO {
 	}
 
 	
-	@NotNull(message = "強度: 請輸入大於0的數字，最多4位整數，小數點後最多2位")
+	@NotNull(message = "強度: 請勿空白")
 //	@Positive(message="運動描述: 請輸入大於0的數字，最多4位整數，小數點後最多2位")
 	@DecimalMin(value = "0.01", inclusive = true, message="強度: 請輸入大於0的數字，最多4位整數，小數點後最多2位")
 	@Digits(integer = 4, fraction = 2, message = "強度: 請輸入大於0的數字，最多4位整數，小數點後最多2位")
@@ -75,13 +75,12 @@ public class SportRequestDTO {
 	}
 
 	
-	@NotNull(message = "卡路里: 請輸入大於0的正整數數字，最多5位整數")
+	@NotNull(message = "卡路里: 請勿空白")
 	@Positive(message="卡路里: 請輸入大於0的正整數數字，最多5位整數")
 	@Digits(integer = 5, fraction = 0, message = "卡路里: 請輸入大於0的正整數數字，最多5位整數")
 	public Integer getSportEstimatedCalories() {
 		return sportEstimatedCalories;
 	}
-
 	public void setSportEstimatedCalories(Integer sportEstimatedCalories) {
 		this.sportEstimatedCalories = sportEstimatedCalories;
 	}
@@ -104,7 +103,6 @@ public class SportRequestDTO {
 	}
 
 	
-	@NotNull(message = "資料狀態: 不可為空")
 	public Integer getSportDataStatus() {
 		return sportDataStatus;
 	}

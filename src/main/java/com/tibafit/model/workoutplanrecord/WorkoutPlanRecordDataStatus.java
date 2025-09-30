@@ -19,7 +19,7 @@ public enum WorkoutPlanRecordDataStatus {
     }
 
     public static String getDisplayNameByCodeNum(Integer codeNum) {
-    	String defultStr = "無資料狀態";
+    	String defultStr = String.valueOf(codeNum);
     	
         if (codeNum == null) {
         	return defultStr;

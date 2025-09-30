@@ -32,7 +32,7 @@ public class SportApiAdvice {
     // JSON format wrong or cannot parse
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ApiResponseDTO<Void> handleNotReadable(HttpMessageNotReadableException ex) {
-        return ApiResponseDTO.parameterProgramError("SApiAdvice JSON format wrong or cannot parse");
+        return ApiResponseDTO.parameterProgramError("SApiAdvice JSON format wrong or cannot parse" + ex.getMessage());
     }
 
     // illegal argument
@@ -45,6 +45,6 @@ public class SportApiAdvice {
     @ExceptionHandler(Exception.class)
     public ApiResponseDTO<Void> handleException(Exception ex) {
         ex.printStackTrace();
-        return ApiResponseDTO.systemError("SApiAdvice System error, plz connect RD memebers");
+        return ApiResponseDTO.systemError("SApiAdvice System error, plz connect RD memebers" + ex.getMessage());
     }
 }

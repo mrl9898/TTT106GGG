@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
-@RequestMapping("/bdMain")
+@RequestMapping("/dMain")
 public class SportBdController {
 
 	/*
 	 * Test
 	 */
-	@GetMapping("/sport")
+	@GetMapping("/bd/sport")
 	public String sportMain(ModelMap model) {
 		return "redirect:/adminlte/sport/sport.html";
 //		return "admin/sport/simple";
@@ -23,7 +23,7 @@ public class SportBdController {
 	/*
 	 * 
 	 */
-	@GetMapping("/customSport")
+	@GetMapping("/bd/customSport")
 	public String customSportMain(ModelMap model) {
 		return "redirect:/adminlte/customSport/customSport.html";
 	}
@@ -31,7 +31,7 @@ public class SportBdController {
 	/*
 	 * 
 	 */
-	@GetMapping("/sportType")
+	@GetMapping("/bd/sportType")
 	public String sportTypeMain(ModelMap model) {
 		return "redirect:/adminlte/sportType/sportType.html";
 	}
@@ -39,7 +39,7 @@ public class SportBdController {
 	/*
 	 * 
 	 */
-	@GetMapping("/sportTypeItem")
+	@GetMapping("/bd/sportTypeItem")
 	public String sportTypeItemMain(ModelMap model) {
 		return "redirect:/adminlte/sportTypeItem/sportTypeItem.html";
 	}
@@ -47,7 +47,7 @@ public class SportBdController {
 	/*
 	 * 
 	 */
-	@GetMapping("/workoutPlan")
+	@GetMapping("/bd/workoutPlan")
 	public String workoutPlanMain(ModelMap model) {
 		return "redirect:/adminlte/workoutPlan/workoutPlan.html";
 	}
@@ -55,7 +55,7 @@ public class SportBdController {
 	/*
 	 * 
 	 */
-	@GetMapping("/workoutPlanRecord")
+	@GetMapping("/bd/workoutPlanRecord")
 	public String workoutPlanRecordMain(ModelMap model) {
 		return "redirect:/adminlte/workoutPlanRecord/workoutPlanRecord.html";
 	}
@@ -63,7 +63,7 @@ public class SportBdController {
 	/*
 	 * 
 	 */
-	@GetMapping("/testUploadFile")
+	@GetMapping("/bd/testUploadFile")
 	public String testUploadFileMain(ModelMap model) {
 		return "redirect:/adminlte/sport/testUploadFile.html";
 	}

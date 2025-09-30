@@ -53,8 +53,8 @@ public class CustomSportController {
     // 批次更新
     @PostMapping("/updateMultiple")
     public ApiResponseDTO<Void> updateMultiple(@Valid @RequestBody UpdateMultipleRequest req) {
-        System.out.println("update接收到前端資料: " + req.getSports());
-        svc.updateSportMultiple(req.getSports());
+//        System.out.println("update接收到前端資料: " + req.getSports());
+//        svc.updateSportMultiple(req.getSports());
         Void result = null;
         return ApiResponseDTO.success(result);
     }
