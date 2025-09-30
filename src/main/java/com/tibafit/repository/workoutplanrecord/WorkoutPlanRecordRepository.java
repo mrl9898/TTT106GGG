@@ -17,70 +17,73 @@ import com.tibafit.model.workoutplanrecord.WorkoutPlanRecordVO;
 @Repository
 public interface WorkoutPlanRecordRepository extends JpaRepository<WorkoutPlanRecordVO, Integer> {
  
- // 計畫ID查詢
- @EntityGraph(attributePaths = {
-    "sportVO",
-	"customSportVO",
-    "workoutPlanVO",
-    "workoutPlanVO.userVO"
- })
- public List<WorkoutPlanRecordVO> findByWorkoutPlanId(Integer workoutPlanId);
- 
- @EntityGraph(attributePaths = {
-    "sportVO",
-	"customSportVO",
-    "workoutPlanVO",
-    "workoutPlanVO.userVO"
- })
- public List<WorkoutPlanRecordVO> findByWorkoutPlanIdAndWorkoutPlanRecordDataStatusIn(Integer workoutPlanId, List<Integer> statuses);
-		 
- @EntityGraph(attributePaths = {
-    "sportVO",
-	"customSportVO",
-    "workoutPlanVO",
-    "workoutPlanVO.userVO"
- })
- public Page<WorkoutPlanRecordVO> findByWorkoutPlanIdAndWorkoutPlanRecordDataStatusIn(Integer workoutPlanId, List<Integer> statuses, Pageable pageable);
- 
-
- @EntityGraph(attributePaths = {
-    "sportVO",
-	"customSportVO",
-    "workoutPlanVO",
-    "workoutPlanVO.userVO"
-})
-public List<WorkoutPlanRecordVO> findByWorkoutPlanIdIn(List<Integer> workoutPlanIds);
- 
- @EntityGraph(attributePaths = {
-    "sportVO",
-	"customSportVO",
-    "workoutPlanVO",
-    "workoutPlanVO.userVO"
-})
-public List<WorkoutPlanRecordVO> findByWorkoutPlanIdInAndWorkoutPlanRecordDataStatusIn(List<Integer> workoutPlanIds, List<Integer> statuses);
- 
- 
- // 計畫紀錄ID查詢
- @EntityGraph(attributePaths = {
-    "sportVO",
-	"customSportVO",
-    "workoutPlanVO",
-    "workoutPlanVO.userVO"
- })
- public Optional<WorkoutPlanRecordVO> findByWorkoutPlanRecordId(Integer workoutPlanRecordId);
- 
- 
- // 計畫紀錄ID查詢
- @EntityGraph(attributePaths = {
-    "sportVO",
-	"customSportVO",
-    "workoutPlanVO",
-    "workoutPlanVO.userVO"
- })
- public List<WorkoutPlanRecordVO> findByWorkoutPlanRecordIdIn(List<Integer> workoutPlanRecordIds);
-
-
- @Modifying
- @Query(value = "UPDATE workout_plan_record SET workout_plan_record_data_status = :status WHERE workout_plan_record_id IN :ids", nativeQuery = true)
- public Integer updateWorkoutPlanRecordDataStatusByRecordIds(@Param("status") Integer status, @Param("ids") List<Integer> recordIds);
+	 // 計畫ID查詢
+	 @EntityGraph(attributePaths = {
+	    "sportVO",
+		"customSportVO",
+	    "workoutPlanVO",
+	    "workoutPlanVO.userVO"
+	 })
+	 public List<WorkoutPlanRecordVO> findByWorkoutPlanId(Integer workoutPlanId);
+	 
+	 
+	 @EntityGraph(attributePaths = {
+	    "sportVO",
+		"customSportVO",
+	    "workoutPlanVO",
+	    "workoutPlanVO.userVO"
+	 })
+	 public List<WorkoutPlanRecordVO> findByWorkoutPlanIdAndWorkoutPlanRecordDataStatusIn(Integer workoutPlanId, List<Integer> statuses);
+			
+	 
+	 @EntityGraph(attributePaths = {
+	    "sportVO",
+		"customSportVO",
+	    "workoutPlanVO",
+	    "workoutPlanVO.userVO"
+	 })
+	 public Page<WorkoutPlanRecordVO> findByWorkoutPlanIdAndWorkoutPlanRecordDataStatusIn(Integer workoutPlanId, List<Integer> statuses, Pageable pageable);
+	 
+	
+	 @EntityGraph(attributePaths = {
+	    "sportVO",
+		"customSportVO",
+	    "workoutPlanVO",
+	    "workoutPlanVO.userVO"
+	})
+	public List<WorkoutPlanRecordVO> findByWorkoutPlanIdIn(List<Integer> workoutPlanIds);
+	 
+	 
+	 @EntityGraph(attributePaths = {
+	    "sportVO",
+		"customSportVO",
+	    "workoutPlanVO",
+	    "workoutPlanVO.userVO"
+	})
+	public List<WorkoutPlanRecordVO> findByWorkoutPlanIdInAndWorkoutPlanRecordDataStatusIn(List<Integer> workoutPlanIds, List<Integer> statuses);
+	 
+	 
+	 // 計畫紀錄ID查詢
+	 @EntityGraph(attributePaths = {
+	    "sportVO",
+		"customSportVO",
+	    "workoutPlanVO",
+	    "workoutPlanVO.userVO"
+	 })
+	 public Optional<WorkoutPlanRecordVO> findByWorkoutPlanRecordId(Integer workoutPlanRecordId);
+	 
+	 
+	 // 計畫紀錄ID查詢
+	 @EntityGraph(attributePaths = {
+	    "sportVO",
+		"customSportVO",
+	    "workoutPlanVO",
+	    "workoutPlanVO.userVO"
+	 })
+	 public List<WorkoutPlanRecordVO> findByWorkoutPlanRecordIdIn(List<Integer> workoutPlanRecordIds);
+	
+	
+	 @Modifying
+	 @Query(value = "UPDATE workout_plan_record SET workout_plan_record_data_status = :status WHERE workout_plan_record_id IN :ids", nativeQuery = true)
+	 public Integer updateWorkoutPlanRecordDataStatusByRecordIds(@Param("status") Integer status, @Param("ids") List<Integer> recordIds);
 }

@@ -24,30 +24,33 @@ public interface SportTypeItemRepository extends JpaRepository<SportTypeItemVO, 
     })
     Optional<SportTypeItemVO> findBySportTypeItemId(Integer sportTypeItemId);
     
+    
     @EntityGraph(attributePaths = { 
     	"sportTypeVO",
        	"sportVO"
     })
     List<SportTypeItemVO> findBySportTypeItemIdIn(List<Integer> sportTypeItemIds);
 
+    
     @EntityGraph(attributePaths = { 
     	"sportTypeVO",
        	"sportVO"
     })
     List<SportTypeItemVO> findBySportTypeId(Integer sportTypeId);
     
+    
     @EntityGraph(attributePaths = { 
     	"sportTypeVO",
        	"sportVO"
-   })
-   List<SportTypeItemVO> findBySportTypeIdIn(List<Integer> sportTypeIds);
+    })
+    List<SportTypeItemVO> findBySportTypeIdIn(List<Integer> sportTypeIds);
 
+    
     @EntityGraph(attributePaths = { 
     	"sportTypeVO",
        	"sportVO"
     })
     Optional<SportTypeItemVO> findBySportTypeIdAndSportId(Integer sportTypeId, Integer sportId);
-    
     
     
     @EntityGraph(attributePaths = { 
@@ -56,12 +59,14 @@ public interface SportTypeItemRepository extends JpaRepository<SportTypeItemVO, 
     })
     Optional<SportTypeItemVO> findBySportTypeItemIdAndSportTypeItemDataStatusIn(Integer sportTypeItemId, List<Integer> SportTypeDataItemStatuses);
 
+    
     @EntityGraph(attributePaths = { 
     	"sportTypeVO",
        	"sportVO"
     })
     List<SportTypeItemVO> findBySportTypeIdAndSportTypeItemDataStatusIn(Integer sportTypeId, List<Integer> SportTypeDataItemStatuses);
 
+    
     @EntityGraph(attributePaths = { 
     	"sportTypeVO",
        	"sportVO"
@@ -69,7 +74,7 @@ public interface SportTypeItemRepository extends JpaRepository<SportTypeItemVO, 
     Optional<SportTypeItemVO> findBySportTypeIdAndSportIdAndSportTypeItemDataStatusIn(Integer sportTypeId, Integer sportId, List<Integer> SportTypeDataItemStatuses);
     
     
-    // TODO: update好像沒用到，因後來加deleteBySportTypeItemIdIn了
+    // TODO: update沒用到，後來決定使用deleteBySportTypeItemIdIn
 	@Modifying
 	@Query(value = "UPDATE sport_type_item SET sport_type_item_data_status = :dataStatus WHERE sport_type_item_id IN :sportTypeItemIds", nativeQuery = true)
 	public Integer updateSportTypeItemDataStatusBySportTypeItemIds(@Param("dataStatus") Integer dataStatus, @Param("sportTypeItemIds") List<Integer> sportTypeItemIds);
