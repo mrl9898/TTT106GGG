@@ -21,15 +21,14 @@ public enum SportTypeDataStatus {
 	}
 	
 	public static String getDisplayNameByCodeNum(Integer codeNum) {
-		try {
-			for (SportTypeDataStatus status : SportTypeDataStatus.values()) {
-				if (status.getCodeNum().equals(codeNum)) {
-					return status.getDisplayName();
-				}
+		String defultStr = String.valueOf(codeNum);
+		
+		for (SportTypeDataStatus status : SportTypeDataStatus.values()) {
+			if (status.getCodeNum().equals(codeNum)) {
+				return status.getDisplayName();
 			}
-			throw new IllegalArgumentException("codeNum can't match : " + codeNum);
-		} catch (IllegalArgumentException e) {
-			throw new RuntimeException("SportDataStatus getDisplayNameByCodeName Error: " + e.getMessage());
 		}
+		
+		return defultStr;
 	}
 }

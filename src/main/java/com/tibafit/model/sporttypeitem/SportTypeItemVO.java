@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 
 @Entity
@@ -29,7 +30,6 @@ public class SportTypeItemVO implements Serializable {
     private Integer sportId;
     private SportVO sportVO;
     
-    private Integer sportTypeItemDataStatus;
     private LocalDateTime createDatetime;
     private LocalDateTime updateDatetime;
 
@@ -72,6 +72,7 @@ public class SportTypeItemVO implements Serializable {
         this.sportId = sportId;
     }
     @ManyToOne(fetch = FetchType.LAZY, optional=false)
+    @OrderBy("sportId DESC")
     @JoinColumn(name = "sport_id", nullable = false, insertable = false, updatable = false)
     public SportVO getSportVO() {
         return sportVO;
@@ -79,14 +80,6 @@ public class SportTypeItemVO implements Serializable {
     public void setSportVO(SportVO sportVO) {
         this.sportVO = sportVO;
     }
-
-    @Column(name = "sport_type_item_data_status", nullable = false)
-    public Integer getSportTypeItemDataStatus() {
-		return sportTypeItemDataStatus;
-	}
-	public void setSportTypeItemDataStatus(Integer sportTypeItemDataStatus) {
-		this.sportTypeItemDataStatus = sportTypeItemDataStatus;
-	}
 	
 	
 	@Column(name = "create_datetime", nullable = false, insertable = false, updatable = false)
@@ -113,7 +106,6 @@ public class SportTypeItemVO implements Serializable {
                "sportTypeItemId=" + sportTypeItemId + 
                ", sportTypeId=" + sportTypeId + 
                ", sportId=" + sportId + 
-               ", sportTypeItemDataStatus=" + sportTypeItemDataStatus + 
                ", createDatetime=" + createDatetime + 
                ", updateDatetime=" + updateDatetime + 
                "}";

@@ -28,29 +28,6 @@ public class SportTypeItemService implements SportTypeItemService_interface {
     }
 
     @Override
-    public void updateSportTypeItems(List<SportTypeItemRequestDTO> dtos) {
-        List<Integer> itemIds = new ArrayList<>();      
-        for (SportTypeItemRequestDTO dto : dtos) {
-            if (dto.getSportTypeItemId() != null) {
-                itemIds.add(dto.getSportTypeItemId());
-            }
-        }
-        
-    	// xxxxxx
-    	System.out.println("SportTypeItemService dtos: " + dtos);
-        
-        // PO
-        List<SportTypeItemVO> oriVos = sportTypeItemRepo.findBySportTypeItemIdIn(itemIds);
-        
-    	// xxxxxx
-    	System.out.println("SportTypeItemService oriVos: " + oriVos);
-
-        List<SportTypeItemVO> vos = SportTypeItemConverter.toUpdateVoList(oriVos, dtos);
-
-        sportTypeItemRepo.saveAll(vos);
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public Boolean isExitBySportTypeIdAndSportId(Integer sportTypeId, Integer sportId) {
         Boolean isExist = sportTypeItemRepo.existsBySportTypeIdAndSportId(sportTypeId, sportId);
@@ -79,48 +56,6 @@ public class SportTypeItemService implements SportTypeItemService_interface {
         Optional<SportTypeItemVO> vo = sportTypeItemRepo.findBySportTypeIdAndSportId(sportTypeId, sportId);
         SportTypeItemResponseDTO dto = SportTypeItemConverter.toDTO(vo.orElse(null));
         return dto;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public SportTypeItemResponseDTO getBySportTypeItemIdAndSportTypeItemDataStatuses(Integer sportTypeItemId, List<Integer> statuses) {
-        Optional<SportTypeItemVO> vo = sportTypeItemRepo.findBySportTypeItemIdAndSportTypeItemDataStatusIn(sportTypeItemId, statuses);
-        SportTypeItemResponseDTO dto = SportTypeItemConverter.toDTO(vo.orElse(null));
-        return dto;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<SportTypeItemResponseDTO> getBySportTypeIdAndSportTypeItemDataStatuses(Integer sportTypeId, List<Integer> statuses) {
-        List<SportTypeItemVO> vos = sportTypeItemRepo.findBySportTypeIdAndSportTypeItemDataStatusIn(sportTypeId, statuses);
-        List<SportTypeItemResponseDTO> dtos = SportTypeItemConverter.toDtoList(vos);
-        return dtos;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public SportTypeItemResponseDTO getBySportTypeIdAndSportIdAndSportTypeItemDataStatuses(Integer sportTypeId, Integer sportId, List<Integer> statuses) {
-        Optional<SportTypeItemVO> vo = sportTypeItemRepo.findBySportTypeIdAndSportIdAndSportTypeItemDataStatusIn(sportTypeId, sportId, statuses);
-        SportTypeItemResponseDTO dto = SportTypeItemConverter.toDTO(vo.orElse(null));
-        return dto;
-    }
-
-    @Override
-    public Integer updateSportTypeItemDataStatusBySportTypeItemIds(Integer dataStatus, List<Integer> sportTypeItemIds) {
-        Integer affectNumOfTypeItem = sportTypeItemRepo.updateSportTypeItemDataStatusBySportTypeItemIds(dataStatus, sportTypeItemIds);
-        return affectNumOfTypeItem;
-    }
-
-    @Override
-    public Integer updateSportTypeItemDataStatusBySportTypeIds(Integer dataStatus, List<Integer> sportTypeIds) {
-        Integer affectNumOfTypeItem = sportTypeItemRepo.updateSportTypeItemDataStatusBySportTypeIds(dataStatus, sportTypeIds);
-        return affectNumOfTypeItem;
-    }
-
-    @Override
-    public Integer updateSportTypeItemDataStatusBySportIds(Integer dataStatus, List<Integer> sportIds) {
-        Integer affectNumOfTypeItem = sportTypeItemRepo.updateSportTypeItemDataStatusBySportIds(dataStatus, sportIds);
-        return affectNumOfTypeItem;
     }
     
     @Override

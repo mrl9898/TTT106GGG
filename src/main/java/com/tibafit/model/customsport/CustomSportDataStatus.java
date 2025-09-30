@@ -21,6 +21,7 @@ public enum CustomSportDataStatus {
 
     public static String getDisplayNameByCodeNum(Integer codeNum) {
     	String defultStr = String.valueOf(codeNum);
+    	
         if (codeNum == null) {
         	return defultStr;
         }

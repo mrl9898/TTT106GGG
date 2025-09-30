@@ -1,7 +1,9 @@
 package com.tibafit.model.sporttype;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.tibafit.dto.sport.SportResponseDTO;
 import com.tibafit.dto.sporttype.SportTypeRequestDTO;
@@ -50,9 +52,8 @@ public class SportTypeConverter {
         if (dto.getSportTypePic() != null) {
             vo.setSportTypePic(dto.getSportTypePic());
         }
-        if (dto.getSportTypeDataStatus() != null) {
-        	vo.setSportTypeDataStatus(dto.getSportTypeDataStatus());
-        }
+
+	    // sportTypeDataStatus do not update
         
         return vo;
     }
@@ -109,15 +110,29 @@ public class SportTypeConverter {
             return list;
         }
         
-        // 兩個 List 對應順序應相同 (一對一)
-        int size = Math.min(oriVos.size(), dtos.size());
-        for (int i = 0; i < size; i++) {
-            SportTypeVO vo = toUpdateVO(oriVos.get(i), dtos.get(i));
-            if (vo != null) {
-                list.add(vo);
+        // build Map
+        Map<Integer, SportTypeVO> oriVoMap = new HashMap<>();
+        for (SportTypeVO oriVo : oriVos) {
+            if (oriVo != null && oriVo.getSportTypeId() != null) {
+                oriVoMap.put(oriVo.getSportTypeId(), oriVo);
             }
         }
-        
+
+        // find oriVo
+        for (SportTypeRequestDTO dto : dtos) {
+            if (dto == null || dto.getSportTypeId() == null) {
+                continue;
+            }
+
+            SportTypeVO oriVo = oriVoMap.get(dto.getSportTypeId());
+            if (oriVo != null) {
+                SportTypeVO vo = toUpdateVO(oriVo, dto);
+                if (vo != null) {
+                    list.add(vo);
+                }
+            }
+        }
+
         return list;
     }
 

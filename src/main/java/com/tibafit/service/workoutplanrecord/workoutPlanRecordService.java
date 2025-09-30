@@ -54,13 +54,6 @@ public class workoutPlanRecordService implements workoutPlanRecordService_interf
 	
     @PersistenceContext
     private EntityManager entityManager;
-
-
-//	@Override
-//	public void updateWorkoutPlanRecordMultiple(List<WorkoutPlanRecordRequestDTO> dtos) {
-//		List<WorkoutPlanRecordVO> vos = WorkoutPlanRecordConverter.toUpdateVoList(dtos);
-//		planRecordRepo.saveAll(vos);
-//	}
 	
 	@Override
 	public Integer updateWorkoutPlanRecordDataStatusByRecordIds(Integer status, List<Integer> recordIds) {
@@ -360,43 +353,6 @@ public class workoutPlanRecordService implements workoutPlanRecordService_interf
 		
 		return returnRecordDTOs;
 	}
-
-//	@Override
-//	public WorkoutPlanRecordResponseDTO patch(Integer id, Map<String, Object> patchMap) {
-//		WorkoutPlanRecordVO vo = planRecordRepo.findById(id).orElseThrow();
-//		if (patchMap != null) {
-//			if (patchMap.containsKey("actualCalories"))
-//				vo.setActualCalories(asInt(patchMap.get("actualCalories")));
-//			if (patchMap.containsKey("actualStartTime"))
-//				vo.setActualStartTime(LocalDateTime.parse(patchMap.get("actualStartTime").toString()));
-//			if (patchMap.containsKey("actualEndTime"))
-//				vo.setActualEndTime(LocalDateTime.parse(patchMap.get("actualEndTime").toString()));
-//			if (patchMap.containsKey("actualDuration"))
-//				vo.setActualDuration(asInt(patchMap.get("actualDuration")));
-//			if (patchMap.containsKey("actualRecordDatetime"))
-//				vo.setActualRecordDatetime(LocalDateTime.parse(patchMap.get("actualRecordDatetime").toString()));
-//			if (patchMap.containsKey("workoutPlanRecordDataStatus"))
-//				vo.setWorkoutPlanRecordDataStatus(asInt(patchMap.get("workoutPlanRecordDataStatus")));
-//			if (patchMap.containsKey("sportFrom"))
-//				vo.setSportFrom(patchMap.get("sportFrom").toString());
-//			if (patchMap.containsKey("sportId"))
-//				vo.setSportId(asInt(patchMap.get("sportId")));
-//			if (patchMap.containsKey("customSportId"))
-//				vo.setCustomSportId(asInt(patchMap.get("customSportId")));
-//		}
-//		WorkoutPlanRecordVO saved = planRecordRepo.save(vo);
-//		return WorkoutPlanRecordConverter.toDTO(saved);
-//	}
-//
-//	private Integer asInt(Object v) {
-//		if (v == null)
-//			return null;
-//		if (v instanceof Integer i)
-//			return i;
-//		if (v instanceof Number n)
-//			return n.intValue();
-//		return Integer.valueOf(v.toString());
-//	}
 
 	@Override
 	public List<WorkoutPlanRecordResponseDTO> getRecordsByWorkoutPlanId(Integer planId) {

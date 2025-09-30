@@ -2,8 +2,6 @@ package com.tibafit.model.sporttype;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -17,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 
 @Entity
@@ -44,6 +43,7 @@ public class SportTypeVO implements Serializable {
     }
     // 雙向關聯
     @OneToMany(mappedBy = "sportTypeVO", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OrderBy("sportId DESC")
     @JsonManagedReference
     public Set<SportTypeItemVO> getSportTypeItemVOs() {
         return sportTypeItemVOs;

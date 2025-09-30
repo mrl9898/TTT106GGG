@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 
 public class CustomSportRequestDTO {
@@ -23,7 +24,9 @@ public class CustomSportRequestDTO {
         this.customSportId = customSportId; 
     }
 
+    
 	@NotBlank(message = "名稱: 不可為空")
+    @Size(max = 50, message = "名稱: 長度不可超過 50")
     public String getSportName() {
         return sportName; 
     }
@@ -31,7 +34,9 @@ public class CustomSportRequestDTO {
         this.sportName = sportName; 
     }
 
+    
     @NotBlank(message = "描述: 不可為空")
+    @Size(max = 255, message = "描述: 長度不可超過 255")
     public String getSportDescription() {
         return sportDescription; 
     }
@@ -39,7 +44,8 @@ public class CustomSportRequestDTO {
         this.sportDescription = sportDescription; 
     }
 
-    @NotNull(message = "卡路里: 請輸入大於0的正整數數字，最多5位整數")
+    
+    @NotNull(message = "卡路里: 不可為空")
 	@Positive(message="卡路里: 請輸入大於0的正整數數字，最多5位整數")
 	@Digits(integer = 5, fraction = 0, message = "卡路里: 請輸入大於0的正整數數字，最多5位整數")
     public Integer getSportEstimatedCalories() {
@@ -49,6 +55,7 @@ public class CustomSportRequestDTO {
         this.sportEstimatedCalories = sportEstimatedCalories; 
     }
 
+    
     public String getSportPic() {
         return sportPic; 
     }
@@ -56,7 +63,8 @@ public class CustomSportRequestDTO {
         this.sportPic = sportPic; 
     }
 
-    @NotNull(message = "資料狀態: 不可為空")
+    
+    
     public Integer getSportDataStatus() {
         return sportDataStatus; 
     }
@@ -64,6 +72,7 @@ public class CustomSportRequestDTO {
         this.sportDataStatus = sportDataStatus; 
     }
 
+    
     @NotNull(message = "建立會員ID: 不可為空")
     public Integer getUserId() {
         return userId; 
@@ -71,6 +80,7 @@ public class CustomSportRequestDTO {
     public void setUserId(Integer userId) {
         this.userId = userId; 
     }
+    
     
     @Override
     public String toString() {

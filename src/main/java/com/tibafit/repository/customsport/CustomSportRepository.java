@@ -14,12 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.tibafit.model.customsport.CustomSportVO;
 
 public interface CustomSportRepository extends JpaRepository<CustomSportVO, Integer> {
-	
-//	List<CustomSportVO> findAll(Sort sort);
-
-//	Page<CustomSportVO> findAll(Pageable pageable);
-	
-//	Optional<CustomSportVO> findById(Integer sportId);
 
     @Query(value = "SELECT * FROM custom_sport WHERE sport_data_status IN :statuses ORDER BY custom_sport_id DESC", nativeQuery = true)
     List<CustomSportVO> findBySportDataStatuses(@Param("statuses") List<Integer> statuses);
@@ -31,9 +25,7 @@ public interface CustomSportRepository extends JpaRepository<CustomSportVO, Inte
     )
     Page<CustomSportVO> findBySportDataStatusesPage(@Param("statuses") List<Integer> statuses, Pageable pageable);
 
-//	List<CustomSportVO> saveAll(List<CustomSportVO> sportVOs);
     
-    @Transactional
     @Modifying
     @Query(value = "UPDATE custom_sport SET sport_data_status = :status WHERE custom_sport_id IN :ids", nativeQuery = true)
     Integer updateSportDataStatusByIds(@Param("status") Integer status, @Param("ids") List<Integer> ids);

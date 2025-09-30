@@ -12,9 +12,6 @@ public class SportTypeItemResponseDTO {
     private Integer sportId;
     private SportResponseDTO sportResponseDTO;
     
-    private Integer sportTypeItemDataStatus;
-    private String sportTypeItemDataStatusText;
-    
     private LocalDateTime createDatetime;
     private LocalDateTime updateDatetime;
 
@@ -47,20 +44,6 @@ public class SportTypeItemResponseDTO {
 	public void setSportResponseDTO(SportResponseDTO sportResponseDTO) {
 		this.sportResponseDTO = sportResponseDTO;
 	}
-
-
-    public Integer getSportTypeItemDataStatus() {
-		return sportTypeItemDataStatus;
-	}
-	public void setSportTypeItemDataStatus(Integer sportTypeItemDataStatus) {
-		this.sportTypeItemDataStatus = sportTypeItemDataStatus;
-	}
-	public String getSportTypeItemDataStatusText() {
-		return sportTypeItemDataStatusText;
-	}
-	public void setSportTypeItemDataStatusText(String sportTypeItemDataStatusText) {
-		this.sportTypeItemDataStatusText = sportTypeItemDataStatusText;
-	}
 	
 	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -87,8 +70,6 @@ public class SportTypeItemResponseDTO {
                "sportTypeItemId=" + sportTypeItemId + 
                ", sportTypeId=" + sportTypeId + 
                ", sportId=" + sportId + 
-               ", sportTypeItemDataStatus=" + sportTypeItemDataStatus + 
-               ", sportTypeItemDataStatusText=" + sportTypeItemDataStatusText + 
                ", createDatetime=" + createDatetime + 
                ", updateDatetime=" + updateDatetime + 
                "}";

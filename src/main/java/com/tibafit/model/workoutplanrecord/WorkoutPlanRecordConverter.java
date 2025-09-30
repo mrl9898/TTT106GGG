@@ -38,9 +38,11 @@ public class WorkoutPlanRecordConverter {
 			checkResult = true;
 		}
 		
-		// TODO: 拋回FE
+		// 拋例外
 		if(!checkResult) {
-			return null;
+	        throw new IllegalArgumentException("WorkoutPlanRecordConverter 運動來源參數不合法: sportFrom=" + tempSportFrom 
+	                + ", sportId=" + tempSportId 
+	                + ", customSportId=" + tempCustomSportId);
 		}
 		
 		LocalDateTime tempActualStartTime = LocalDateTime.parse(dto.getActualStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
@@ -111,7 +113,7 @@ public class WorkoutPlanRecordConverter {
         return dto;
     }
 
-    // List<RequestDTO> 轉 List<VO>
+    // List DTO 轉 VO (新增)
     public static List<WorkoutPlanRecordVO> toInsertVoList(List<WorkoutPlanRecordRequestDTO> dtoList) {
     	List<WorkoutPlanRecordVO> voList = new ArrayList<>();
         
@@ -129,7 +131,7 @@ public class WorkoutPlanRecordConverter {
         return voList;
     }
 
-    // List<VO> 轉 List<ResponseDTO>
+    // List VO 轉 DTO
     public static List<WorkoutPlanRecordResponseDTO> toDtoList(List<WorkoutPlanRecordVO> voList) {
     	List<WorkoutPlanRecordResponseDTO> dtoList = new ArrayList<>();
     	

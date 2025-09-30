@@ -1,5 +1,6 @@
 package com.tibafit.service.customsport;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,18 +40,49 @@ public class CustomSportService implements CustomSportService_interface {
 	
 	@Override
 	@Transactional
-	public void insertSportMultiple(List<CustomSportRequestDTO> dtos) {		
-			List<CustomSportVO> vos = CustomSportConverter.toVoList(dtos);	
-			System.out.println("vos: " + vos);
-			repo.saveAll(vos);
+	public void insertSportMultiple(List<CustomSportRequestDTO> dtos) {	
+	    if (dtos == null || dtos.isEmpty()) {
+	        return;
+	    }
+	    
+		List<CustomSportVO> vos = CustomSportConverter.toNewVoList(dtos);	
+		
+
+		repo.saveAll(vos);
 	}
 	
 
 	@Override
 	@Transactional
 	public void updateSportMultiple(List<CustomSportRequestDTO> dtos) {		
-			List<CustomSportVO> vos = CustomSportConverter.toVoList(dtos);			
-			repo.saveAll(vos);
+	    if (dtos == null || dtos.isEmpty()) {
+	        return;
+	    }
+
+	    List<Integer> ids = new ArrayList<>();
+	    for (CustomSportRequestDTO dto : dtos) {
+	        if (dto != null && dto.getCustomSportId() != null) {
+	            ids.add(dto.getCustomSportId());
+	        }
+	    }
+
+	    if (ids.isEmpty()) {
+	        return;
+	    }
+
+	    // PO
+	    List<CustomSportVO> oriVos = repo.findAllById(ids);
+
+	    if (oriVos.isEmpty()) {
+	        return;
+	    }
+
+	    List<CustomSportVO> vos = CustomSportConverter.toUpdateVoList(oriVos, dtos);
+
+	    
+	    if (!vos.isEmpty()) {
+	        repo.saveAll(vos);
+	    }
 	}
 
 

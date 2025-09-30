@@ -17,12 +17,6 @@ import com.tibafit.model.sport.SportVO;
 public interface SportRepository extends JpaRepository<SportVO, Integer> {
 	static final int DATA_STATUS_DELETE = SportDataStatus.DELETE.getCodeNum();
 	
-//	List<SportVO> findAll(Sort sort);
-
-//	Page<SportVO> findAll(Pageable pageable);
-
-//	Optional<SportVO> findById(Integer sportId);
-	
 	
 	public Boolean existsBySportName(String sportName);
 	
@@ -37,15 +31,6 @@ public interface SportRepository extends JpaRepository<SportVO, Integer> {
 			nativeQuery = true
 			)
 	Page<SportVO> findBySportDataStatusesPage(@Param("statuses") List<Integer> statuses, Pageable pageable);
-	
-	
-	// 新增/更新
-	@Modifying
-//	@Query(value="INSERT INTO sport ( sport_name, sport_description, sport_mets, sport_estimated_calories, sport_level, sport_pic, sport_data_status, admin_id ) VALUES  (?, ?, ?, ?, ?, ?, ?, ?)", nativeQuery=true )
-	SportVO save(SportVO sportVO);
-	
-
-//	List<SportVO> saveAll(List<SportVO> sportVOs);
 	
     
     @Query(value = 
@@ -63,7 +48,8 @@ public interface SportRepository extends JpaRepository<SportVO, Integer> {
     	       "  AND (:createEnd IS NULL OR s.create_datetime <= :createEnd) " +
     	       "  AND (:updateStart IS NULL OR s.update_datetime >= :updateStart) " +
     	       "  AND (:updateEnd IS NULL OR s.update_datetime <= :updateEnd) " +
-    	       "  AND (s.sport_data_status IN :statuses)", 
+    	       "  AND (s.sport_data_status IN :statuses)" +
+    	       "ORDER BY s.sport_id DESC",
 	       nativeQuery = true)
 	public List<SportVO> findByComplexCondition(
 	        @Param("nameDesc") String sportNameDescFuzzy,

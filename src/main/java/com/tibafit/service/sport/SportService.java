@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +31,7 @@ public class SportService implements SportService_Interface {
 	@Override
 	@Transactional(readOnly = true)
 	public List<SportVO> getSportAll() {
-		return sportRepo.findAll();
+		return sportRepo.findAll(Sort.by(Sort.Direction.DESC, "sportId"));
 	}
 
 	@Override
@@ -45,11 +46,7 @@ public class SportService implements SportService_Interface {
 	public List<SportVO> getSportByDataStatuses(List<Integer> sportDataStatuses) {
 		return sportRepo.findBySportDataStatuses(sportDataStatuses);
 	}
-
-//	@Override
-//	public List<SportVO> getSportByNameFuzzy(String keyword) {
-//		return sportRepo.getSportByNameFuzzy(keyword);
-//	}
+	
 
 	@Override
 	public List<SportDataStatus> getSportDataStatusOptions() {
@@ -80,28 +77,50 @@ public class SportService implements SportService_Interface {
 	@Override
 	@Transactional
 	public void insertSport(SportRequestDTO dto) {
-		SportVO vo = SportConverter.toVO(dto);
+		SportVO vo = SportConverter.toNewVO(dto);
 		sportRepo.save(vo);
 	}
 
 	@Override
 	@Transactional
 	public void insertSportMultiple(List<SportRequestDTO> dtos) {
-		List<SportVO> vos = SportConverter.toVoList(dtos);
+		List<SportVO> vos = SportConverter.toNewVoList(dtos);
 		sportRepo.saveAll(vos);
 	}
 
 	@Override
 	@Transactional
 	public void updateSport(SportRequestDTO dto) {
-		SportVO vo = SportConverter.toVO(dto);
+	    if (dto == null || dto.getSportId() == null) {
+	        throw new IllegalArgumentException("SportSvc sportId 不可為空");
+	    }
+		
+	   SportVO oriVo = sportRepo.findById(dto.getSportId())
+	            .orElseThrow(() -> new IllegalArgumentException("SportSvc 查無此 sportId VO: " + dto.getSportId()));
+	   
+		SportVO vo = SportConverter.toUpdateVO(oriVo, dto);
 		sportRepo.save(vo);
 	}
 
 	@Override
 	@Transactional
 	public void updateSportMultiple(List<SportRequestDTO> dtos) {
-		List<SportVO> vos = SportConverter.toVoList(dtos);
+	    if (dtos == null || dtos.isEmpty()) {
+	        return;
+	    }
+	    
+	    List<Integer> ids = new ArrayList<>();
+	    for (SportRequestDTO dto : dtos) {
+	        if (dto != null && dto.getSportId() != null) {
+	            ids.add(dto.getSportId());
+	        }
+	    }
+	    
+	    // PO
+	    List<SportVO> oriVoList = sportRepo.findAllById(ids);
+	    
+		List<SportVO> vos = SportConverter.toUpdateVoList(oriVoList, dtos);
+		
 		sportRepo.saveAll(vos);
 	}
 	

@@ -8,7 +8,7 @@ import com.tibafit.dto.customsport.CustomSportResponseDTO;
 
 public class CustomSportConverter {
 
-	public static CustomSportVO toVO(CustomSportRequestDTO dto) {
+	public static CustomSportVO toNewVO(CustomSportRequestDTO dto) {
 		if (dto == null) {
 			return null;
 		}
@@ -25,8 +25,49 @@ public class CustomSportConverter {
 
 		return vo;
 	}
+	
+	public static CustomSportVO toUpdateVO(CustomSportVO oriVo, CustomSportRequestDTO dto) {
+	    if (oriVo == null || dto == null) {
+	        return null;
+	    }
 
-	public static List<CustomSportVO> toVoList(List<CustomSportRequestDTO> dtoList) {
+	    // copy oriVo
+	    CustomSportVO vo = new CustomSportVO();
+	    vo.setCustomSportId(oriVo.getCustomSportId());
+	    vo.setSportName(oriVo.getSportName());
+	    vo.setSportDescription(oriVo.getSportDescription());
+	    vo.setSportEstimatedCalories(oriVo.getSportEstimatedCalories());
+	    vo.setSportPic(oriVo.getSportPic());
+	    vo.setSportDataStatus(oriVo.getSportDataStatus());
+	    vo.setUserId(oriVo.getUserId());
+	    vo.setCreateDatetime(oriVo.getCreateDatetime());
+	    vo.setUpdateDatetime(oriVo.getUpdateDatetime());
+
+	    // put dto 
+	    if (dto.getSportName() != null) {
+	        vo.setSportName(dto.getSportName());
+	    }
+	    if (dto.getSportDescription() != null) {
+	        vo.setSportDescription(dto.getSportDescription());
+	    }
+	    if (dto.getSportEstimatedCalories() != null) {
+	        vo.setSportEstimatedCalories(dto.getSportEstimatedCalories());
+	    }
+	    if (dto.getSportPic() != null) {
+	        vo.setSportPic(dto.getSportPic());
+	    }
+	    
+	    // customSportDataStatus do not update
+	    
+	    if (dto.getUserId() != null) {
+	        vo.setUserId(dto.getUserId());
+	    }
+
+	    return vo;
+	}
+	
+
+	public static List<CustomSportVO> toNewVoList(List<CustomSportRequestDTO> dtoList) {
 		List<CustomSportVO> voList = new ArrayList<>();
 
 		if (dtoList == null || dtoList.isEmpty()) {
@@ -34,11 +75,42 @@ public class CustomSportConverter {
 		}
 
 		for (CustomSportRequestDTO dto : dtoList) {
-			voList.add(toVO(dto));
+			voList.add(toNewVO(dto));
 		}
 
 		return voList;
 	}
+	
+	
+	public static List<CustomSportVO> toUpdateVoList(List<CustomSportVO> oriVoList, List<CustomSportRequestDTO> dtoList) {
+	    List<CustomSportVO> voList = new ArrayList<>();
+
+	    if (dtoList == null || dtoList.isEmpty() || oriVoList == null || oriVoList.isEmpty()) {
+	        return voList;
+	    }
+
+	    for (CustomSportRequestDTO dto : dtoList) {
+	        if (dto == null || dto.getCustomSportId() == null) {
+	            continue;
+	        }
+
+	        // find oriVo
+	        CustomSportVO oriVo = null;
+	        for (CustomSportVO temp : oriVoList) {
+	            if (dto.getCustomSportId().equals(temp.getCustomSportId())) {
+	                oriVo = temp;
+	                break;
+	            }
+	        }
+
+	        if (oriVo != null) {
+	            voList.add(toUpdateVO(oriVo, dto));
+	        }
+	    }
+
+	    return voList;
+	}
+	
 
 	public static CustomSportResponseDTO toDTO(CustomSportVO vo) {
 		if (vo == null) {
@@ -57,6 +129,7 @@ public class CustomSportConverter {
 		dto.setCreateDatetime(vo.getCreateDatetime());
 		dto.setUpdateDatetime(vo.getUpdateDatetime());
 		dto.setUserId(vo.getUserId());
+		// TODO: 根據實際需求補值
 		dto.setUserIdText("待補");
 
 		return dto;

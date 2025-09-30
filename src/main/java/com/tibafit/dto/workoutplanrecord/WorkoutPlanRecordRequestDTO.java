@@ -115,6 +115,7 @@ public class WorkoutPlanRecordRequestDTO  implements Serializable {
 //    public void setWorkoutPlanRecordDataStatus(Integer workoutPlanRecordDataStatus) {
 //        this.workoutPlanRecordDataStatus = workoutPlanRecordDataStatus;
 //    }
+    
 
     @Override
     public String toString() {

@@ -19,8 +19,8 @@ public enum WorkoutPlanStatus {
 	}
 
 	public static String getDisplayNameByCodeNum(Integer codeNum) {
-		String defultStr = "無狀態";
-
+		String defultStr = String.valueOf(codeNum);
+		
 		if (codeNum == null) {
 			return defultStr;
 		}
@@ -29,7 +29,7 @@ public enum WorkoutPlanStatus {
 				return status.getDisplayName();
 			}
 		}
-
+		
 		return defultStr;
 
 	}

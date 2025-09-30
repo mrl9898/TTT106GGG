@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 //import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 public class WorkoutPlanRequestDTO implements Serializable {
     private Integer workoutPlanId;
@@ -40,7 +41,9 @@ public class WorkoutPlanRequestDTO implements Serializable {
         this.workoutPlanId = workoutPlanId;
     }
     
+    
     @NotBlank(message = "計畫名稱: 不可為空")
+    @Size(max = 50, message = "計畫名稱: 長度不可超過 50")
     public String getWorkoutPlanName() {
 		return workoutPlanName;
 	}
@@ -64,6 +67,7 @@ public class WorkoutPlanRequestDTO implements Serializable {
         this.sportFrom = sportFrom;
     }
 
+    
     public Integer getSportId() {
         return sportId;
     }
@@ -71,6 +75,7 @@ public class WorkoutPlanRequestDTO implements Serializable {
         this.sportId = sportId;
     }
 
+    
     public Integer getCustomSportId() {
         return customSportId;
     }
@@ -78,6 +83,7 @@ public class WorkoutPlanRequestDTO implements Serializable {
         this.customSportId = customSportId;
     }
 
+    
 //    public Integer getWorkoutPlanStatus() {
 //        return workoutPlanStatus;
 //    }
@@ -85,6 +91,7 @@ public class WorkoutPlanRequestDTO implements Serializable {
 //        this.workoutPlanStatus = workoutPlanStatus;
 //    }
 
+    
     @NotNull(message = "計畫安排日期: 不可為空")
     public String getWorkoutPlanDate() {
         return workoutPlanDate;

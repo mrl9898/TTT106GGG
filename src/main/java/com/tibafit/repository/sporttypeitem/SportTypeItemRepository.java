@@ -15,72 +15,42 @@ import com.tibafit.model.sporttypeitem.SportTypeItemVO;
 @Repository
 public interface SportTypeItemRepository extends JpaRepository<SportTypeItemVO, Integer> {
     
-	Boolean existsBySportTypeIdAndSportId(Integer sportTypeId, Integer sportId);
+	public Boolean existsBySportTypeIdAndSportId(Integer sportTypeId, Integer sportId);
     
     
     @EntityGraph(attributePaths = { 
     	"sportTypeVO",
        	"sportVO"
     })
-    Optional<SportTypeItemVO> findBySportTypeItemId(Integer sportTypeItemId);
+    public Optional<SportTypeItemVO> findBySportTypeItemId(Integer sportTypeItemId);
+    
     
     @EntityGraph(attributePaths = { 
     	"sportTypeVO",
        	"sportVO"
     })
-    List<SportTypeItemVO> findBySportTypeItemIdIn(List<Integer> sportTypeItemIds);
+    public List<SportTypeItemVO> findBySportTypeItemIdIn(List<Integer> sportTypeItemIds);
 
-    @EntityGraph(attributePaths = { 
-    	"sportTypeVO",
-       	"sportVO"
-    })
-    List<SportTypeItemVO> findBySportTypeId(Integer sportTypeId);
     
     @EntityGraph(attributePaths = { 
     	"sportTypeVO",
        	"sportVO"
-   })
-   List<SportTypeItemVO> findBySportTypeIdIn(List<Integer> sportTypeIds);
+    })
+    public List<SportTypeItemVO> findBySportTypeId(Integer sportTypeId);
+    
+    
+    @EntityGraph(attributePaths = { 
+    	"sportTypeVO",
+       	"sportVO"
+    })
+    public List<SportTypeItemVO> findBySportTypeIdIn(List<Integer> sportTypeIds);
 
-    @EntityGraph(attributePaths = { 
-    	"sportTypeVO",
-       	"sportVO"
-    })
-    Optional<SportTypeItemVO> findBySportTypeIdAndSportId(Integer sportTypeId, Integer sportId);
-    
-    
     
     @EntityGraph(attributePaths = { 
     	"sportTypeVO",
        	"sportVO"
     })
-    Optional<SportTypeItemVO> findBySportTypeItemIdAndSportTypeItemDataStatusIn(Integer sportTypeItemId, List<Integer> SportTypeDataItemStatuses);
-
-    @EntityGraph(attributePaths = { 
-    	"sportTypeVO",
-       	"sportVO"
-    })
-    List<SportTypeItemVO> findBySportTypeIdAndSportTypeItemDataStatusIn(Integer sportTypeId, List<Integer> SportTypeDataItemStatuses);
-
-    @EntityGraph(attributePaths = { 
-    	"sportTypeVO",
-       	"sportVO"
-    })
-    Optional<SportTypeItemVO> findBySportTypeIdAndSportIdAndSportTypeItemDataStatusIn(Integer sportTypeId, Integer sportId, List<Integer> SportTypeDataItemStatuses);
-    
-    
-    // TODO: update好像沒用到，因後來加deleteBySportTypeItemIdIn了
-	@Modifying
-	@Query(value = "UPDATE sport_type_item SET sport_type_item_data_status = :dataStatus WHERE sport_type_item_id IN :sportTypeItemIds", nativeQuery = true)
-	public Integer updateSportTypeItemDataStatusBySportTypeItemIds(@Param("dataStatus") Integer dataStatus, @Param("sportTypeItemIds") List<Integer> sportTypeItemIds);
-	
-	@Modifying
-	@Query(value = "UPDATE sport_type_item SET sport_type_item_data_status = :dataStatus WHERE sport_type_id IN :sportTypeIds", nativeQuery = true)
-	public Integer updateSportTypeItemDataStatusBySportTypeIds(@Param("dataStatus") Integer dataStatus, @Param("sportTypeIds") List<Integer> sportTypeIds);
-	
-	@Modifying
-	@Query(value = "UPDATE sport_type_item SET sport_type_item_data_status = :dataStatus WHERE sport_id IN :sportIds", nativeQuery = true)
-	public Integer updateSportTypeItemDataStatusBySportIds(@Param("dataStatus") Integer dataStatus, @Param("sportIds") List<Integer> sportIds);
+    public Optional<SportTypeItemVO> findBySportTypeIdAndSportId(Integer sportTypeId, Integer sportId);
 
 
 	public void deleteBySportTypeItemIdIn(List<Integer> sportTypeRecordIds);
