@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 
 @Entity
@@ -72,6 +73,7 @@ public class SportTypeItemVO implements Serializable {
         this.sportId = sportId;
     }
     @ManyToOne(fetch = FetchType.LAZY, optional=false)
+    @OrderBy("sportId DESC")
     @JoinColumn(name = "sport_id", nullable = false, insertable = false, updatable = false)
     public SportVO getSportVO() {
         return sportVO;

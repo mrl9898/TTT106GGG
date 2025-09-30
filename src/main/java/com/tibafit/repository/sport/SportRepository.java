@@ -48,7 +48,8 @@ public interface SportRepository extends JpaRepository<SportVO, Integer> {
     	       "  AND (:createEnd IS NULL OR s.create_datetime <= :createEnd) " +
     	       "  AND (:updateStart IS NULL OR s.update_datetime >= :updateStart) " +
     	       "  AND (:updateEnd IS NULL OR s.update_datetime <= :updateEnd) " +
-    	       "  AND (s.sport_data_status IN :statuses)", 
+    	       "  AND (s.sport_data_status IN :statuses)" +
+    	       "ORDER BY s.sport_id DESC",
 	       nativeQuery = true)
 	public List<SportVO> findByComplexCondition(
 	        @Param("nameDesc") String sportNameDescFuzzy,

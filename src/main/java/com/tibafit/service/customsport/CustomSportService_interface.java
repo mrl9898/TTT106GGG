@@ -19,11 +19,9 @@ public interface CustomSportService_interface {
 	public CustomSportVO getSportByPrimaryKey(Integer sportIds);
 	
 	
-//	public void insertSport(CustomSportRequestDTO dto);
 	public void insertSportMultiple(List<CustomSportRequestDTO> dtos);
 	
 
-//	public void updateSport(CustomSportRequestDTO dto);
 	public void updateSportMultiple(List<CustomSportRequestDTO> dtos);
 	
 	public Integer updateSportDataStatusByIds(Integer targetStatus, List<Integer> sportIds);

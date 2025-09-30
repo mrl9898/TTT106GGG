@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +31,7 @@ public class SportService implements SportService_Interface {
 	@Override
 	@Transactional(readOnly = true)
 	public List<SportVO> getSportAll() {
-		return sportRepo.findAll();
+		return sportRepo.findAll(Sort.by(Sort.Direction.DESC, "sportId"));
 	}
 
 	@Override
@@ -45,11 +46,7 @@ public class SportService implements SportService_Interface {
 	public List<SportVO> getSportByDataStatuses(List<Integer> sportDataStatuses) {
 		return sportRepo.findBySportDataStatuses(sportDataStatuses);
 	}
-
-//	@Override
-//	public List<SportVO> getSportByNameFuzzy(String keyword) {
-//		return sportRepo.getSportByNameFuzzy(keyword);
-//	}
+	
 
 	@Override
 	public List<SportDataStatus> getSportDataStatusOptions() {

@@ -39,9 +39,11 @@ public class WorkoutPlanConverter {
 			checkResult = true;
 		}
 		
-		// TODO: 拋回FE
+		// 拋例外
 		if(!checkResult) {
-			return null;
+	        throw new IllegalArgumentException("WorkoutPlanConverter 運動來源參數不合法: sportFrom=" + tempSportFrom 
+	                + ", sportId=" + tempSportId 
+	                + ", customSportId=" + tempCustomSportId);
 		}
 
 		vo.setWorkoutPlanId(dto.getWorkoutPlanId());
@@ -86,63 +88,94 @@ public class WorkoutPlanConverter {
 		
 	    WorkoutPlanVO vo = new WorkoutPlanVO();
 	    
-		String tempSportFrom = dto.getSportFrom();
-		Integer tempSportId = dto.getSportId();
-		Integer tempCustomSportId = dto.getCustomSportId();
-		
-		boolean checkResult = false;
-		if((WorkoutPlanSportFrom.SYSTEM.getCodeName()).equals(tempSportFrom) && tempSportId != null) {
-			tempCustomSportId = null;
-			checkResult = true;
-		} else if ((WorkoutPlanSportFrom.CUSTOM.getCodeName()).equals(tempSportFrom) && tempCustomSportId != null) {
-			tempSportId = null;
-			checkResult = true;
-		}
-		
-		// TODO: 拋回FE
-		if(!checkResult) {
-			return null;
-		}
+	    
+	    vo.setWorkoutPlanId(oriVo.getWorkoutPlanId());
+	    vo.setWorkoutPlanName(oriVo.getWorkoutPlanName());
+	    vo.setUserId(oriVo.getUserId());
+	    
+	    vo.setSportFrom(oriVo.getSportFrom());
+	    vo.setSportId(oriVo.getSportId());
+	    vo.setCustomSportId(oriVo.getCustomSportId());
+	    
+	    vo.setWorkoutPlanDate(oriVo.getWorkoutPlanDate());
+	    vo.setWorkoutPlanTime(oriVo.getWorkoutPlanTime());
+	    vo.setWorkoutPlanIsNotify(oriVo.getWorkoutPlanIsNotify());
+	    vo.setWorkoutPlanExpectedDuration(oriVo.getWorkoutPlanExpectedDuration());
 
-	    vo.setWorkoutPlanId(dto.getWorkoutPlanId());
-	    vo.setWorkoutPlanName(dto.getWorkoutPlanName() == null ? oriVo.getWorkoutPlanName() : dto.getWorkoutPlanName());
-	    vo.setUserId(dto.getUserId() == null ? oriVo.getUserId() : dto.getUserId());
+	    vo.setWorkoutPlanStatus(oriVo.getWorkoutPlanStatus());
 	    
-	    vo.setSportFrom(dto.getSportFrom() == null ? oriVo.getSportFrom() : tempSportFrom);
+	    vo.setActualTotalCount(oriVo.getActualTotalCount());
+	    vo.setActualTotalDuration(oriVo.getActualTotalDuration());
+	    vo.setActualTotalCalories(oriVo.getActualTotalCalories());
 	    
-		if((WorkoutPlanSportFrom.SYSTEM.getCodeName()).equals(tempSportFrom) && tempSportId != null) {
-			vo.setSportId(tempSportId);
-			vo.setCustomSportId(null);
-		} else if ((WorkoutPlanSportFrom.CUSTOM.getCodeName()).equals(tempSportFrom) && tempCustomSportId != null) {
-			vo.setSportId(null);
-			vo.setCustomSportId(tempCustomSportId);
-		} else {
-			vo.setSportId(oriVo.getSportId());
-			vo.setCustomSportId(oriVo.getCustomSportId());
-		}
+	    vo.setWorkoutPlanDataStatus(oriVo.getWorkoutPlanDataStatus());
+	    
 	    
 
-	    vo.setWorkoutPlanDate(dto.getWorkoutPlanDate() == null
-	        ? oriVo.getWorkoutPlanDate()
-	        : LocalDate.parse(dto.getWorkoutPlanDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-
-	    vo.setWorkoutPlanTime(dto.getWorkoutPlanTime() == null
-	        ? oriVo.getWorkoutPlanTime()
-	        : LocalTime.parse(dto.getWorkoutPlanTime(), DateTimeFormatter.ofPattern("HH:mm")));
-
-	    vo.setWorkoutPlanIsNotify(dto.getWorkoutPlanIsNotify() == null
-	        ? oriVo.getWorkoutPlanIsNotify()
-	        : dto.getWorkoutPlanIsNotify());
-
-	    vo.setWorkoutPlanExpectedDuration(dto.getWorkoutPlanExpectedDuration() == null
-	        ? oriVo.getWorkoutPlanExpectedDuration()
-	        : dto.getWorkoutPlanExpectedDuration());
+	    if (dto.getWorkoutPlanId() != null) {
+	        vo.setWorkoutPlanId(dto.getWorkoutPlanId());
+	    }
+	    if (dto.getWorkoutPlanName() != null) {
+	        vo.setWorkoutPlanName(dto.getWorkoutPlanName());
+	    }
+	    if (dto.getUserId() != null) {
+	        vo.setUserId(dto.getUserId());
+	    }
 	    
-		vo.setWorkoutPlanStatus(oriVo.getWorkoutPlanStatus());
-		vo.setActualTotalCount(oriVo.getActualTotalCount());
-		vo.setActualTotalDuration(oriVo.getActualTotalDuration());
-		vo.setActualTotalCalories(oriVo.getActualTotalCalories());
-		vo.setWorkoutPlanDataStatus(oriVo.getWorkoutPlanDataStatus());
+	    String tempSportFrom = dto.getSportFrom();
+	    Integer tempSportId = dto.getSportId();
+	    Integer tempCustomSportId = dto.getCustomSportId();
+
+	    boolean checkResult = false;
+	    if ((WorkoutPlanSportFrom.SYSTEM.getCodeName()).equals(tempSportFrom) && tempSportId != null) {
+	        tempCustomSportId = null;
+	        checkResult = true;
+	    } else if ((WorkoutPlanSportFrom.CUSTOM.getCodeName()).equals(tempSportFrom) && tempCustomSportId != null) {
+	        tempSportId = null;
+	        checkResult = true;
+	    }
+
+	    // 拋例外
+	    if (tempSportFrom != null && !checkResult) {
+	        throw new IllegalArgumentException("WorkoutPlanConverter 運動來源參數不合法: sportFrom=" + tempSportFrom 
+	                + ", sportId=" + tempSportId 
+	                + ", customSportId=" + tempCustomSportId);
+	    }
+
+	    if (tempSportFrom != null) {
+	        vo.setSportFrom(tempSportFrom);
+	    }
+	    if ((WorkoutPlanSportFrom.SYSTEM.getCodeName()).equals(tempSportFrom) && tempSportId != null) {
+	        vo.setSportId(tempSportId);
+	        vo.setCustomSportId(null);
+	    } else if ((WorkoutPlanSportFrom.CUSTOM.getCodeName()).equals(tempSportFrom) && tempCustomSportId != null) {
+	        vo.setSportId(null);
+	        vo.setCustomSportId(tempCustomSportId);
+	    }
+	    
+
+	    if (dto.getWorkoutPlanDate() != null) {
+	        vo.setWorkoutPlanDate(
+	            LocalDate.parse(dto.getWorkoutPlanDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+	        );
+	    }
+	    
+	    // 可能為null
+	    if (dto.getWorkoutPlanTime() == null) {
+	        vo.setWorkoutPlanTime(null);
+	    } else {
+	        vo.setWorkoutPlanTime(
+		            LocalTime.parse(dto.getWorkoutPlanTime(), DateTimeFormatter.ofPattern("HH:mm"))
+		        );
+	    }
+	    
+	    if (dto.getWorkoutPlanIsNotify() != null) {
+	        vo.setWorkoutPlanIsNotify(dto.getWorkoutPlanIsNotify());
+	    }
+	    
+	    if (dto.getWorkoutPlanExpectedDuration() != null) {
+	        vo.setWorkoutPlanExpectedDuration(dto.getWorkoutPlanExpectedDuration());
+	    }
 		
 		return vo;
 	}

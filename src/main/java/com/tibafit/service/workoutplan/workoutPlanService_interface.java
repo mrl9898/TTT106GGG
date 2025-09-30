@@ -15,8 +15,6 @@ public interface workoutPlanService_interface {
 	
 	public void updateWorkoutPlanMultiple(List<WorkoutPlanRequestDTO> dtos);
 
-//	WorkoutPlanResponseDTO patch(Integer id, Map<String, Object> patchMap);
-
 	WorkoutPlanResponseDTO getWorkoutPlanByPrimaryKey(Integer id);
 
 	public List<WorkoutPlanResponseDTO> getWorkoutPlanByDateRange(Integer userId, LocalDate startDate, LocalDate endDate, List<Integer> statuses);

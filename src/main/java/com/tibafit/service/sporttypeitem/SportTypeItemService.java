@@ -36,14 +36,8 @@ public class SportTypeItemService implements SportTypeItemService_interface {
             }
         }
         
-    	// xxxxxx
-    	System.out.println("SportTypeItemService dtos: " + dtos);
-        
         // PO
         List<SportTypeItemVO> oriVos = sportTypeItemRepo.findBySportTypeItemIdIn(itemIds);
-        
-    	// xxxxxx
-    	System.out.println("SportTypeItemService oriVos: " + oriVos);
 
         List<SportTypeItemVO> vos = SportTypeItemConverter.toUpdateVoList(oriVos, dtos);
 

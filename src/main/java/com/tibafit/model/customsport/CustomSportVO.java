@@ -22,18 +22,7 @@ public class CustomSportVO {
 	
 	private LocalDateTime createDatetime;
 	private LocalDateTime updateDatetime;
-
-//    @PrePersist
-//    protected void onCreate() {
-//        LocalDateTime now = LocalDateTime.now();
-//        this.createDatetime = now;
-//        this.updateDatetime = now;
-//    }
-//
-//    @PreUpdate
-//    protected void onUpdate() {
-//        this.updateDatetime = LocalDateTime.now();
-//    }
+	
 
 	public CustomSportVO() {
 		super();

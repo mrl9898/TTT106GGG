@@ -142,7 +142,7 @@ public class WorkoutPlanVO implements Serializable {
 	
 	// 雙向關聯
 	@OneToMany(mappedBy = "workoutPlanVO", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@OrderBy("actualRecordDatetime asc")
+	@OrderBy("actualStartTime ASC")
 	@JsonManagedReference
 	public Set<WorkoutPlanRecordVO> getWorkoutPlanRecordVOs() {
 		return workoutPlanRecordVOs;

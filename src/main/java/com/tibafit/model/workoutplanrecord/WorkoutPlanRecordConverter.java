@@ -38,9 +38,11 @@ public class WorkoutPlanRecordConverter {
 			checkResult = true;
 		}
 		
-		// TODO: 拋回FE
+		// 拋例外
 		if(!checkResult) {
-			return null;
+	        throw new IllegalArgumentException("WorkoutPlanRecordConverter 運動來源參數不合法: sportFrom=" + tempSportFrom 
+	                + ", sportId=" + tempSportId 
+	                + ", customSportId=" + tempCustomSportId);
 		}
 		
 		LocalDateTime tempActualStartTime = LocalDateTime.parse(dto.getActualStartTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));

@@ -10,11 +10,9 @@ import com.tibafit.model.sporttypeitem.SportTypeItemVO;
 public interface SportTypeItemService_interface {
 
     // 新增
-//    public void insertSportTypeItem(SportTypeItemVO vo);
 	public void insertSportTypeItems(List<SportTypeItemRequestDTO> dtos);
 
     // 更新
-//    public void updateSportTypeItem(SportTypeItemVO vo);
 	public void updateSportTypeItems(List<SportTypeItemRequestDTO> dtos);
     
     // 檢查是否存在 (sportTypeId + sportId)

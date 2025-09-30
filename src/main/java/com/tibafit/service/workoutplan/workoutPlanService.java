@@ -51,45 +51,6 @@ public class workoutPlanService implements workoutPlanService_interface {
 		planRepo.saveAll(vos);
 	}
 
-//	@Override
-//	public WorkoutPlanResponseDTO patch(Integer id, Map<String, Object> patchMap) {
-//		WorkoutPlanVO vo = planRepo.findById(id).orElseThrow();
-//		if (patchMap != null) {
-//			if (patchMap.containsKey("workoutPlanStatus"))
-//				vo.setWorkoutPlanStatus(asInt(patchMap.get("workoutPlanStatus")));
-//			if (patchMap.containsKey("workoutPlanDate"))
-//				vo.setWorkoutPlanDate(LocalDate.parse(patchMap.get("workoutPlanDate").toString()));
-//			if (patchMap.containsKey("workoutPlanTime"))
-//				vo.setWorkoutPlanTime(LocalTime.parse(patchMap.get("workoutPlanTime").toString()));
-//			if (patchMap.containsKey("workoutPlanIsNotify"))
-//				vo.setWorkoutPlanIsNotify(asInt(patchMap.get("workoutPlanIsNotify")));
-//			if (patchMap.containsKey("workoutPlanExpectedDuration"))
-//				vo.setWorkoutPlanExpectedDuration(asInt(patchMap.get("workoutPlanExpectedDuration")));
-//			if (patchMap.containsKey("actualTotalCount"))
-//				vo.setActualTotalCount(asInt(patchMap.get("actualTotalCount")));
-//			if (patchMap.containsKey("actualTotalDuration"))
-//				vo.setActualTotalDuration(asInt(patchMap.get("actualTotalDuration")));
-//			if (patchMap.containsKey("actualTotalCalories"))
-//				vo.setActualTotalCalories(asInt(patchMap.get("actualTotalCalories")));
-//			if (patchMap.containsKey("workoutPlanDataStatus"))
-//				vo.setWorkoutPlanDataStatus(asInt(patchMap.get("workoutPlanDataStatus")));
-//			if (patchMap.containsKey("taskRecordId"))
-//				vo.setTaskRecordId(asInt(patchMap.get("taskRecordId")));
-//		}
-//		WorkoutPlanVO saved = planRepo.save(vo);
-//		return WorkoutPlanConverter.toDTO(saved);
-//	}
-//
-//	private Integer asInt(Object v) {
-//		if (v == null)
-//			return null;
-//		if (v instanceof Integer i)
-//			return i;
-//		if (v instanceof Number n)
-//			return n.intValue();
-//		return Integer.valueOf(v.toString());
-//	}
-
 
 	@Override
 	public WorkoutPlanResponseDTO getWorkoutPlanByPrimaryKey(Integer id) {

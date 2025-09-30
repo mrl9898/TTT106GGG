@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -36,25 +37,56 @@ public interface WorkoutPlanRepository extends JpaRepository<WorkoutPlanVO, Inte
 	public List<WorkoutPlanVO> findByWorkoutPlanIdIn(List<Integer> workoutPlanIds);
 
 	
-	// 日期區間查詢 (區間最長一個月)
-	@EntityGraph(attributePaths = {
-	    "userVO",
-	    "sportVO",
-	    "customSportVO",
-	    "workoutPlanRecordVOs"
-	})
-	public List<WorkoutPlanVO> findByUserIdAndWorkoutPlanDateBetweenAndWorkoutPlanDataStatusIn(Integer userId, LocalDate startDate, LocalDate endDate, List<Integer> statuses);
-	
+//	// 日期區間查詢 (區間最長一個月)
+//	@EntityGraph(attributePaths = {
+//	    "userVO",
+//	    "sportVO",
+//	    "customSportVO",
+//	    "workoutPlanRecordVOs"
+//	})
+//	public List<WorkoutPlanVO> findByUserIdAndWorkoutPlanDateBetweenAndWorkoutPlanDataStatusIn(Integer userId, LocalDate startDate, LocalDate endDate, List<Integer> statuses);
+	@Query("SELECT DISTINCT w FROM WorkoutPlanVO w " +
+		       "LEFT JOIN FETCH w.sportVO s " +
+		       "LEFT JOIN FETCH w.customSportVO cs " +
+		       "LEFT JOIN FETCH w.workoutPlanRecordVOs wr " +
+		       "WHERE w.userId = :userId " +
+		       "  AND w.workoutPlanDate BETWEEN :startDate AND :endDate " +
+		       "  AND w.workoutPlanDataStatus IN :statuses " +
+		       "ORDER BY " +
+		       "  CASE WHEN w.workoutPlanTime IS NULL THEN 1 ELSE 0 END ASC, " + 
+		       "  w.workoutPlanTime ASC, " +                                    
+		       "  w.workoutPlanId ASC")                                         
+		List<WorkoutPlanVO> findByUserIdAndWorkoutPlanDateBetweenAndWorkoutPlanDataStatusIn(
+		        @Param("userId") Integer userId,
+		        @Param("startDate") LocalDate startDate,
+		        @Param("endDate") LocalDate endDate,
+		        @Param("statuses") List<Integer> statuses);
+
 
 	// 單日期查詢
-	@EntityGraph(attributePaths = {
-	    "userVO",
-	    "sportVO",
-	    "customSportVO",
-	    "workoutPlanRecordVOs"
-	})
-	public List<WorkoutPlanVO> findByUserIdAndWorkoutPlanDateAndWorkoutPlanDataStatusIn(Integer userId,
-			LocalDate workoutPlanDate, List<Integer> statuses);
+//	@EntityGraph(attributePaths = {
+//	    "userVO",
+//	    "sportVO",
+//	    "customSportVO",
+//	    "workoutPlanRecordVOs"
+//	})
+//	public List<WorkoutPlanVO> findByUserIdAndWorkoutPlanDateAndWorkoutPlanDataStatusIn(Integer userId,
+//			LocalDate workoutPlanDate, List<Integer> statuses);
+	@Query("SELECT DISTINCT w FROM WorkoutPlanVO w " +
+		       "LEFT JOIN FETCH w.sportVO s " +
+		       "LEFT JOIN FETCH w.customSportVO cs " +
+		       "LEFT JOIN FETCH w.workoutPlanRecordVOs wr " +
+		       "WHERE w.userId = :userId " +
+		       "  AND w.workoutPlanDate = :workoutPlanDate " +
+		       "  AND w.workoutPlanDataStatus IN :statuses " +
+		       "ORDER BY " +
+		       "  CASE WHEN w.workoutPlanTime IS NULL THEN 1 ELSE 0 END ASC, " +
+		       "  w.workoutPlanTime ASC, " +                                    
+		       "  w.workoutPlanId ASC")                                         
+		List<WorkoutPlanVO> findByUserIdAndWorkoutPlanDateAndWorkoutPlanDataStatusIn(
+		        @Param("userId") Integer userId,
+		        @Param("workoutPlanDate") LocalDate workoutPlanDate,
+		        @Param("statuses") List<Integer> statuses);
 	
 	
 	// 單日期查詢

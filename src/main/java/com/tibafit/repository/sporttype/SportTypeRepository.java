@@ -3,6 +3,7 @@ package com.tibafit.repository.sporttype;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,7 +11,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.tibafit.model.sport.SportVO;
 import com.tibafit.model.sporttype.SportTypeVO;
 
 @Repository
@@ -54,7 +54,7 @@ public interface SportTypeRepository extends JpaRepository<SportTypeVO, Integer>
     	"sportTypeItemVOs",
        	"sportTypeItemVOs.sportVO"
     })
-    public List<SportTypeVO> findBySportTypeDataStatusIn(List<Integer> SportTypeDataStatuses);
+    public List<SportTypeVO> findBySportTypeDataStatusIn(List<Integer> SportTypeDataStatuses, Sort sort);
     
     
 	@Query(value = 
@@ -65,7 +65,8 @@ public interface SportTypeRepository extends JpaRepository<SportTypeVO, Integer>
 		       "  AND (:createEnd IS NULL OR s.create_datetime <= :createEnd) " +
 		       "  AND (:updateStart IS NULL OR s.update_datetime >= :updateStart) " +
 		       "  AND (:updateEnd IS NULL OR s.update_datetime <= :updateEnd) " +
-		       "  AND (s.sport_type_data_status IN :statuses)", 
+		       "  AND (s.sport_type_data_status IN :statuses)" +
+		       "ORDER BY s.sport_type_id ASC",
 		       nativeQuery = true)
 		public List<SportTypeVO> findByComplexCondition(
 		        @Param("name") String sportTypeNameFuzzy,

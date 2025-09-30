@@ -10,7 +10,6 @@ import com.tibafit.dto.workoutplanrecord.WorkoutPlanRecordRequestDTO;
 import com.tibafit.dto.workoutplanrecord.WorkoutPlanRecordResponseDTO;
 
 public interface workoutPlanRecordService_interface {
-//	public void updateWorkoutPlanRecordMultiple(List<WorkoutPlanRecordRequestDTO> dtos);
 	
 	public Integer updateWorkoutPlanRecordDataStatusByRecordIds(Integer status, List<Integer> recordIds);
 	

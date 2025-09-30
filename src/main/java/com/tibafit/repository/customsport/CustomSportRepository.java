@@ -26,7 +26,6 @@ public interface CustomSportRepository extends JpaRepository<CustomSportVO, Inte
     Page<CustomSportVO> findBySportDataStatusesPage(@Param("statuses") List<Integer> statuses, Pageable pageable);
 
     
-    @Transactional
     @Modifying
     @Query(value = "UPDATE custom_sport SET sport_data_status = :status WHERE custom_sport_id IN :ids", nativeQuery = true)
     Integer updateSportDataStatusByIds(@Param("status") Integer status, @Param("ids") List<Integer> ids);

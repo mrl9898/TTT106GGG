@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,22 +36,14 @@ public class SportTypeService implements SportTypeService_interface {
 	@Autowired
 	private SportTypeItemRepository sportTypeItemRepo;
 
-//    @Override
-//    public SportTypeVO insertSportType(SportTypeVO vo) {
-//        SportTypeVO saved = sportTypeRepo.save(vo);
-//        return saved;
-//    }
+
 	@Override
 	public void insertSportTypes(List<SportTypeRequestDTO> dtos) {
 		List<SportTypeVO> vos = SportTypeConverter.toNewVoList(dtos);
 		sportTypeRepo.saveAll(vos);
 	}
 
-//    @Override
-//    public SportTypeVO updateSportType(SportTypeVO vo) {
-//        SportTypeVO updated = sportTypeRepo.save(vo);
-//        return updated;
-//    }
+
 	@Override
 	public void updateSportTypes(List<SportTypeRequestDTO> dtos) {
 		List<Integer> typeIds = new ArrayList<>();
@@ -60,14 +53,8 @@ public class SportTypeService implements SportTypeService_interface {
 			}
 		}
 
-		// xxxxxx
-		System.out.println("SportTypeService dtos: " + dtos);
-
 		// PO
 		List<SportTypeVO> oriVos = sportTypeRepo.findBySportTypeIdIn(typeIds);
-
-		// xxxxxx
-		System.out.println("SportTypeService oriVos: " + oriVos);
 
 		List<SportTypeVO> vos = SportTypeConverter.toUpdateVoList(oriVos, dtos);
 
@@ -147,10 +134,10 @@ public class SportTypeService implements SportTypeService_interface {
 	    // 無 sportTypeDataStatuses 查全部
 	    if (sportTypeDataStatuses == null || sportTypeDataStatuses.isEmpty()) {
 	    	// PO
-	    	typeVos = sportTypeRepo.findAll();
+	    	typeVos = sportTypeRepo.findAll(Sort.by(Sort.Direction.ASC, "sportTypeId"));
 	    } else {
 		    // PO
-		    typeVos = sportTypeRepo.findBySportTypeDataStatusIn(sportTypeDataStatuses);
+		    typeVos = sportTypeRepo.findBySportTypeDataStatusIn(sportTypeDataStatuses, Sort.by(Sort.Direction.ASC, "sportTypeId"));
 	    }
 
 	    if (typeVos == null || typeVos.isEmpty()) {
@@ -215,7 +202,7 @@ public class SportTypeService implements SportTypeService_interface {
 	@Override
 	@Transactional(readOnly = true)
 	public List<SportTypeResponseDTO> getBySportTypeDataStatuses(List<Integer> statuses) {
-		List<SportTypeVO> vos = sportTypeRepo.findBySportTypeDataStatusIn(statuses);
+		List<SportTypeVO> vos = sportTypeRepo.findBySportTypeDataStatusIn(statuses, Sort.by(Sort.Direction.ASC, "sportTypeId"));
 		List<SportTypeResponseDTO> dtos = SportTypeConverter.toDtoList(vos);
 		return dtos;
 	}
