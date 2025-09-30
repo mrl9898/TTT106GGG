@@ -3,16 +3,18 @@ package com.tibafit.controller.sporttype;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.tibafit.dto.sport.ApiResponseDTO;
 import com.tibafit.dto.sporttype.SportTypeRequestDTO;
 import com.tibafit.dto.sporttype.SportTypeResponseDTO;
 import com.tibafit.dto.sporttype.SportTypeResponseExtraSportsDTO;
-import com.tibafit.service.sporttype.SportTypeService;
+import com.tibafit.service.sporttype.SportTypeService_interface;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -24,7 +26,7 @@ import jakarta.validation.constraints.Size;
 public class SportTypeController {
 
     @Autowired
-    private SportTypeService sportTypeSvc;
+    private SportTypeService_interface sportTypeSvc;
 
     // 批次新增
     @PostMapping("/insertMultiple")

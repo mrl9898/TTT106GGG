@@ -6,7 +6,6 @@ public class SportTypeItemRequestDTO {
     private Integer sportTypeItemId;
     private Integer sportTypeId;
     private Integer sportId;
-    private Integer sportTypeItemDataStatus;
 
     public Integer getSportTypeItemId() {
         return sportTypeItemId;
@@ -33,21 +32,12 @@ public class SportTypeItemRequestDTO {
     }
     
     
-    public Integer getSportTypeItemDataStatus() {
-		return sportTypeItemDataStatus;
-	}
-	public void setSportTypeItemDataStatus(Integer sportTypeItemDataStatus) {
-		this.sportTypeItemDataStatus = sportTypeItemDataStatus;
-	}
-    
-    
     @Override
     public String toString() {
         return "SportTypeItemRequestDTO {" +
                "sportTypeItemId=" + sportTypeItemId + 
                ", sportTypeId=" + sportTypeId + 
                ", sportId=" + sportId + 
-               ", sportTypeItemDataStatus=" + sportTypeItemDataStatus + 
                "}";
     }
 }

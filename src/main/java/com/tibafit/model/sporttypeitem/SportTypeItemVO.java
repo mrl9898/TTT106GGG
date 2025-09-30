@@ -30,7 +30,6 @@ public class SportTypeItemVO implements Serializable {
     private Integer sportId;
     private SportVO sportVO;
     
-    private Integer sportTypeItemDataStatus;
     private LocalDateTime createDatetime;
     private LocalDateTime updateDatetime;
 
@@ -81,14 +80,6 @@ public class SportTypeItemVO implements Serializable {
     public void setSportVO(SportVO sportVO) {
         this.sportVO = sportVO;
     }
-
-    @Column(name = "sport_type_item_data_status", nullable = false)
-    public Integer getSportTypeItemDataStatus() {
-		return sportTypeItemDataStatus;
-	}
-	public void setSportTypeItemDataStatus(Integer sportTypeItemDataStatus) {
-		this.sportTypeItemDataStatus = sportTypeItemDataStatus;
-	}
 	
 	
 	@Column(name = "create_datetime", nullable = false, insertable = false, updatable = false)
@@ -115,7 +106,6 @@ public class SportTypeItemVO implements Serializable {
                "sportTypeItemId=" + sportTypeItemId + 
                ", sportTypeId=" + sportTypeId + 
                ", sportId=" + sportId + 
-               ", sportTypeItemDataStatus=" + sportTypeItemDataStatus + 
                ", createDatetime=" + createDatetime + 
                ", updateDatetime=" + updateDatetime + 
                "}";
