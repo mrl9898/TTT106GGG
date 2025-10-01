@@ -65,7 +65,7 @@ public class SportVO implements Serializable {
 	}
 
 	
-	@Column(name = "sport_name", nullable = false, length = 50, unique = true)
+	@Column(name = "sport_name", nullable = false, length = 50)
 	public String getSportName() {
 		return sportName;
 	}

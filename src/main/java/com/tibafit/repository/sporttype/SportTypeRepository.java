@@ -16,7 +16,7 @@ import com.tibafit.model.sporttype.SportTypeVO;
 @Repository
 public interface SportTypeRepository extends JpaRepository<SportTypeVO, Integer> {
 
-	public Boolean existsBySportTypeName(String sportTypeName);
+	public Boolean existsBySportTypeNameAndSportTypeDataStatusNot(String sportTypeName, Integer notStatus);
 
     @EntityGraph(attributePaths = { 
     	"sportTypeItemVOs",

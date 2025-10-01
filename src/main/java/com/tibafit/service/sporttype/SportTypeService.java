@@ -64,7 +64,7 @@ public class SportTypeService implements SportTypeService_interface {
 	@Override
 	@Transactional(readOnly = true)
 	public Boolean isExistBySportTypeName(String sportTypeName) {
-		Boolean isExist = sportTypeRepo.existsBySportTypeName(sportTypeName);
+		Boolean isExist = sportTypeRepo.existsBySportTypeNameAndSportTypeDataStatusNot(sportTypeName, SportTypeDataStatus.DELETE.getCodeNum());
 		return isExist;
 	}
 

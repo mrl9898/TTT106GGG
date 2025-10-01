@@ -53,7 +53,7 @@ public class SportTypeVO implements Serializable {
     }
 
     
-    @Column(name = "sport_type_name", nullable = false, length = 50, unique = true)
+    @Column(name = "sport_type_name", nullable = false, length = 50)
     public String getSportTypeName() {
         return sportTypeName;
     }

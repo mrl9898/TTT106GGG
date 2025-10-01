@@ -18,7 +18,7 @@ public interface SportRepository extends JpaRepository<SportVO, Integer> {
 	static final int DATA_STATUS_DELETE = SportDataStatus.DELETE.getCodeNum();
 	
 	
-	public Boolean existsBySportName(String sportName);
+	public Boolean existsBySportNameAndSportDataStatusNot(String sportName, Integer notStatus);
 	
 	
 	@Query(value = "SELECT * FROM sport WHERE sport_data_status IN :statuses ORDER BY sport_id DESC", nativeQuery = true)
